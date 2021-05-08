@@ -6,7 +6,7 @@
 #    By: skern <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 17:40:42 by skern             #+#    #+#              #
-#    Updated: 2021/05/08 20:07:27 by skern            ###   ########.fr        #
+#    Updated: 2021/05/08 20:15:44 by skern            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,19 +19,18 @@ OBJS		= ${SRCS:.c=.o}
 
 CC			= gcc
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g 
 
 %.c.o:
-			$(CC) ${CFLAGS} $< -o ${<:.c=.o} -g
+			$(CC) ${CFLAGS} $< -o ${<:.c=.o}
 
 ${NAME}:	$(OBJS)
-			$(CC) ${CFLAGS} ${OBJS} -o ${NAME} -g
+			$(CC) ${CFLAGS} ${OBJS} -o ${NAME}
 
 all:		${NAME}
 
 clean:		
 			rm -f ${OBJS}
-			rm -f ${OBJS:.o=.d}
 
 fclean:		clean
 			rm ${NAME}

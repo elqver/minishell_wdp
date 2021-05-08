@@ -1,12 +1,35 @@
 #include "ast.h"
 #include "ast_node.h"
 
+void			print_ast(t_ast *root)
+{
+	if (root == NULL)
+	{
+		printf("Taki ti ne ochen: root = NULL\n");
+		return ;
+	}
+	printf("Node data: %c\n", root->data);
+	if (root->left != NULL)
+	{
+		printf("LEFT {\n");
+		print_ast(root->left);
+		printf("}\n");
+	}
+	if (root->right != NULL)
+	{
+		printf("RIGHT {\n");
+		print_ast(root->right);
+		printf("}\n");
+	}
+}
+
 static t_ast	*insert_lower(t_ast **root, t_ast **current, t_ast *node)
 {
 	(void) root;
 	if ((*current)->right != NULL)
 	{
 		printf("Right not empty\n");
+		print_ast(*root);
 		return (NULL);
 	}
 	(*current)->right = node;
@@ -17,12 +40,14 @@ static t_ast	*insert_lower(t_ast **root, t_ast **current, t_ast *node)
 
 static t_ast	*insert_higher(t_ast **root, t_ast **current, t_ast *node)
 {
-	if ((*current)->priority < node->priority)
+	/*
+	if ((*current)->priority > node->priority)
 	{
 		*current = (*current)->parent;
 		insert_higher(root, current, node);
 		return (*root);
 	}
+	*/
 	while ((*current)->parent != NULL && (*current)->priority < node->priority)
 	{
 		*current = (*current)->parent;
@@ -31,6 +56,7 @@ static t_ast	*insert_higher(t_ast **root, t_ast **current, t_ast *node)
 	{
 		node->left = (*current)->right;
 		(*current)->right = node;
+		(*current) = node;
 		return (*root);
 	}
 	*root = node;
@@ -38,7 +64,6 @@ static t_ast	*insert_higher(t_ast **root, t_ast **current, t_ast *node)
 	*current = node;
 	return (*root);
 }
-
 
 static t_ast	*insert(t_ast **root, t_ast **current, t_ast *node)
 {
@@ -81,24 +106,3 @@ t_ast			*build_ast(t_token *t)
 	return (root);
 }
 
-void			print_ast(t_ast *root)
-{
-	if (root == NULL)
-	{
-		printf("Taki ti ne ochen: root = NULL\n");
-		return ;
-	}
-	printf("Node data: %c\n", root->data);
-	if (root->left != NULL)
-	{
-		printf("LEFT {\n");
-		print_ast(root->left);
-		printf("}\n");
-	}
-	if (root->right != NULL)
-	{
-		printf("RIGHT {\n");
-		print_ast(root->right);
-		printf("}\n");
-	}
-}
