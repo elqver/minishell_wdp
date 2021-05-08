@@ -8,6 +8,6 @@
 # include "plus_ast_node.h"
 
 t_ast	*build_ast(t_token *t);
-void	print_ast(t_ast *root);
+void	print_ast(t_ast *root, int pref_len);
 
 #endif
