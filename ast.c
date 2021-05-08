@@ -1,92 +1,46 @@
 #include "ast.h"
+#include "ast_node.h"
 
-int		num_exec(t_ast *self)
+static t_ast	*insert_lower(t_ast **root, t_ast **current, t_ast *node)
 {
-	return ((int)(self->data - '0'));
+	(void) root;
+	if ((*current)->right != NULL)
+	{
+		printf("Right not empty\n");
+		return (NULL);
+	}
+	(*current)->right = node;
+	node->parent = *current;
+	*current = node;
+	return (node);
 }
 
-t_ast	*create_num_node(char data)
+static t_ast	*insert_higher(t_ast **root, t_ast **current, t_ast *node)
 {
-	t_ast	*new;
-
-	new = calloc(sizeof(t_ast), 1);
-	new->exec = num_exec;
-	new->data = data;
-	new->priority = 2;
-	return (new);
+	if ((*current)->priority < node->priority)
+	{
+		*current = (*current)->parent;
+		insert_higher(root, current, node);
+		return (*root);
+	}
+	while ((*current)->parent != NULL && (*current)->priority < node->priority)
+	{
+		*current = (*current)->parent;
+	}
+	if ((*current)->priority > node->priority)
+	{
+		node->left = (*current)->right;
+		(*current)->right = node;
+		return (*root);
+	}
+	*root = node;
+	node->left = *current;
+	*current = node;
+	return (*root);
 }
 
-int		is_num(t_token *t)
-{
-	return (isdigit(t->data[0]));
-}
 
-int		plus_exec(t_ast *self)
-{
-	int	left_operand;
-	int	right_operand;
-	int	operator;
-
-	left_operand = self->left->exec(self->left);
-	right_operand = self->right->exec(self->right);
-	return (left_operand + right_operand);
-}
-
-t_ast	*create_plus_node(void)
-{
-	t_ast	*new;
-
-	new = calloc(sizeof(t_ast), 1);
-	new->exec = plus_exec;
-	new->data = '+';
-	new->priority = 0;
-	return (new);
-}
-
-int		is_plus(t_token *t)
-{
-	return (t->data[0] == '+');
-}
-
-int		mult_exec(t_ast *self)
-{
-	int	left_operand;
-	int	right_operand;
-	int	operator;
-
-	left_operand = self->left->exec(self->left);
-	right_operand = self->right->exec(self->right);
-	return (left_operand * right_operand);
-}
-
-t_ast	*create_mult_node(void)
-{
-	t_ast	*new;
-
-	new = calloc(sizeof(t_ast), 1);
-	new->exec = mult_exec;
-	new->data = '*';
-	new->priority = 1;
-	return (new);
-}
-
-int		is_mult(t_token *t)
-{
-	return (t->data[0] == '*');
-}
-
-t_ast	*create_node_by_token(t_token *t)
-{
-	if (is_num(t))
-		return (create_num_node(t->data[0]));
-	if (is_mult(t))
-		return (create_mult_node());
-	if (is_plus(t))
-		return (create_plus_node());
-	return (NULL);
-}
-
-t_ast	*insert(t_ast **root, t_ast **current, t_ast *node)
+static t_ast	*insert(t_ast **root, t_ast **current, t_ast *node)
 {
 	if (root == NULL || current == NULL)
 		return (NULL);
@@ -96,18 +50,14 @@ t_ast	*insert(t_ast **root, t_ast **current, t_ast *node)
 		*current = node;
 		return (node);
 	}
+	if (node->priority < (*current)->priority)
+		return (insert_lower(root, current, node));
 	if (node->priority > (*current)->priority)
-	{
-		if ((*current)->right != NULL)
-		{
-			printf("Right not empty\n");
-			return (NULL);
-		}
-		(*current)->right = node;
-	}
+		return (insert_higher(root, current, node));
+	return (NULL);
 }
 
-t_ast	*build_ast(t_token *t)
+t_ast			*build_ast(t_token *t)
 {
 	t_ast	*root = NULL;
 	t_ast	*current = NULL;
@@ -116,6 +66,11 @@ t_ast	*build_ast(t_token *t)
 	while (t != NULL)
 	{
 		node_to_insert = create_node_by_token(t);
+		if (node_to_insert == NULL)
+		{
+			printf("Error creating node\n");
+			return (NULL);
+		}
 		if (insert(&root, &current, node_to_insert) == NULL)
 		{
 			printf("Error while inserting node to ast\n");
@@ -124,4 +79,26 @@ t_ast	*build_ast(t_token *t)
 		t = t->next;
 	}
 	return (root);
+}
+
+void			print_ast(t_ast *root)
+{
+	if (root == NULL)
+	{
+		printf("Taki ti ne ochen: root = NULL\n");
+		return ;
+	}
+	printf("Node data: %c\n", root->data);
+	if (root->left != NULL)
+	{
+		printf("LEFT {\n");
+		print_ast(root->left);
+		printf("}\n");
+	}
+	if (root->right != NULL)
+	{
+		printf("RIGHT {\n");
+		print_ast(root->right);
+		printf("}\n");
+	}
 }
