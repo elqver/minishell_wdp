@@ -4,7 +4,7 @@
 # include "tokenizer.h"
 # include "ast_struct.h"
 
-t_ast		*create_num_node(char data);
+t_ast		*create_num_node(char *data);
 int			is_num(t_token *t);
 
 #endif

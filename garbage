@@ -1,0 +1,80 @@
+/*
+static t_token		*new_node(char *data)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));
+	new->data = strdup(data);
+	new->next = NULL;
+	return (new);
+}
+
+static t_token		*append(t_token **root, char *data)
+{
+	t_token	*ptr;
+
+	if (root == NULL)
+		return (NULL);
+	if (*root == NULL)
+	{
+		*root = new_node(data);
+		return (*root);
+	}
+	ptr = *root;
+	while (ptr->next != NULL)
+		ptr = ptr->next;
+	ptr->next = new_node(data);
+	return (*root);
+}
+
+static int			is_operator(char *s)
+{
+	if ((s[0] == '*' && s[1] == '*') && !is_operator(s + 2))
+		return (1);
+	return ((s[0] == '+' ||	\
+			s[0] == '-' ||	\
+			s[0] == '*' ||	\
+			s[0] == '/') &&
+			!is_operator(s + 1));
+}
+
+static size_t		numlen(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (isdigit(s[i]))
+		i++;
+	return (i);
+}
+
+t_token				*tokenizer(char *s)
+{
+	t_token *lst = NULL;
+	char	*a;
+
+	while (*s)
+	{
+		while (isspace(*s))
+			s++;
+		if (is_operator(s))
+			a 
+		s++;
+	}
+	return (lst);
+}
+
+void				print_token_list(t_token *t)
+{
+	if (t == NULL)
+	{
+		printf("Null pointer passed\n");
+		return ;
+	}
+	while (t != NULL)
+	{
+		printf("%s\n", t->data);
+		t = t->next;
+	}
+}
+*/

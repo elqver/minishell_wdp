@@ -16,8 +16,8 @@ t_ast		*create_mult_node(void)
 
 	new = calloc(sizeof(t_ast), 1);
 	new->exec = mult_exec;
-	new->data = '*';
-	new->priority = 1;
+	new->data = strdup("*");
+	new->priority = 2;
 	return (new);
 }
 

@@ -7,7 +7,7 @@ typedef struct		s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	int				(*exec)(struct s_ast *self);
-	char			data;
+	char			*data;
 	int				priority;
 }					t_ast;
 

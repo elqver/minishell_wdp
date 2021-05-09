@@ -16,8 +16,8 @@ t_ast		*create_plus_node(void)
 
 	new = calloc(sizeof(t_ast), 1);
 	new->exec = plus_exec;
-	new->data = '+';
-	new->priority = 2;
+	new->data = strdup("+");
+	new->priority = 3;
 	return (new);
 }
 

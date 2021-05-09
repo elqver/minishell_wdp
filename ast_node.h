@@ -6,6 +6,9 @@
 # include "num_ast_node.h"
 # include "mul_ast_node.h"
 # include "plus_ast_node.h"
+# include "sub_ast_node.h"
+# include "div_ast_node.h"
+# include "exp_ast_node.h"
 
 t_ast	*create_node_by_token(t_token *t);
 

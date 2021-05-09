@@ -1,11 +1,45 @@
 #include "ast.h"
 #include "ast_node.h"
 
+static void		red(void)
+{
+	printf(RED);
+}
+
+static void		yellow(void)
+{
+	printf(YEL);
+}
+
+static void		green(void)
+{
+	printf(GRE);
+}
+
+static void		white(void)
+{
+	printf(WHI);
+}
+
+static void		choose_color(int p)
+{
+	if (p % 3 == 0)
+		green();
+	else if (p % 3 == 1)
+		red();
+	else
+		yellow();
+}
+
+
 static void		print_tab(int pref_len)
 {
+	int p = pref_len;
+	white();
 	printf("|");
 	while (pref_len--)
 		printf("\t|");
+	choose_color(p);
 }
 
 void			print_ast(t_ast *root, int pref_len)
@@ -16,7 +50,9 @@ void			print_ast(t_ast *root, int pref_len)
 		return ;
 	}
 	print_tab(pref_len);
-	printf("Node data: %c %p\n", root->data, root);
+	white();
+	printf("Node data: %s\n", root->data);
+	choose_color(pref_len);
 	if (root->left != NULL)
 	{
 		print_tab(pref_len);
@@ -25,6 +61,7 @@ void			print_ast(t_ast *root, int pref_len)
 		print_tab(pref_len);
 		printf("}\n");
 	}
+	choose_color(pref_len);
 	if (root->right != NULL)
 	{
 		print_tab(pref_len);
@@ -53,6 +90,14 @@ static t_ast	*insert_higher(t_ast **root, t_ast **current, t_ast *node)
 
 	if ((*current)->priority > node->priority)
 	{
+		/*
+		node->parent = (*current)->parent;
+		node->parent->right = node;
+		node->left = *current;
+		(*current)->parent = node;
+		*current = node;
+		return (*root);
+		*/
 		node->left = (*current)->right;
 		(*current)->right = node;
 		node->parent = *current;
@@ -69,9 +114,10 @@ static t_ast	*insert_higher(t_ast **root, t_ast **current, t_ast *node)
 	}
 	if ((*current)->priority == node->priority)
 	{
-		node->left = (*current)->right;
-		node->parent = *current;
-		(*current)->right = node;
+		node->parent = (*current)->parent;
+		node->parent->right = node;
+		node->left = *current;
+		(*current)->parent = node;
 		*current = node;
 		return (*root);
 	}

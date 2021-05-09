@@ -2,10 +2,10 @@
 
 static int	num_exec(t_ast *self)
 {
-	return ((int)(self->data - '0'));
+	return (atoi(self->data));
 }
 
-t_ast		*create_num_node(char data)
+t_ast		*create_num_node(char *data)
 {
 	t_ast	*new;
 
@@ -18,5 +18,12 @@ t_ast		*create_num_node(char data)
 
 int			is_num(t_token *t)
 {
-	return (isdigit(t->data[0]));
+	size_t	i;
+
+	i = 0;
+	while (isdigit(t->data[i]))
+		i++;
+	if (t->data[i] == '\0')
+		return (1);
+	return (0);
 }
