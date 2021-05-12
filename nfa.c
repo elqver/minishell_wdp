@@ -17,16 +17,16 @@ t_state					*new_state(int final,
 int						change_state(t_state **current_state, char c)
 {
 	t_transition	*transition;
+
 	if (*current_state == NULL)
 	{
 		printf("strange thing happend -> current_state of automate is NULL\n");
 		return (-1);
 	}
-
 	transition = (*current_state)->transition_list;
 	while (transition != NULL)
 	{
-		if(transition->condition(c))
+		if (transition->condition(c))
 		{
 			*current_state = transition->target;
 			return (transition->target->final);
@@ -35,8 +35,6 @@ int						change_state(t_state **current_state, char c)
 	}
 	return (-1);
 }
-
-
 
 /*
  * returns -1 if s doesn't match regex

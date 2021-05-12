@@ -11,7 +11,7 @@ typedef struct			s_transition
 	struct s_transition	*next;
 }						t_transition;
 
-t_transition		*new_transition(int (* condition)(char c),
+_transition		*new_transition(int (* condition)(char c),
 										struct s_state *target);
 
 t_transition		*append_transition(t_transition **transition_list,
