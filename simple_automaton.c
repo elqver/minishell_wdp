@@ -1,4 +1,3 @@
-#include "condition.h"
 #include "nfa.h"
 #include "transition.h"
 

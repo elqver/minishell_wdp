@@ -1,6 +1,9 @@
 #ifndef AST_H
 # define AST_H
 
+# include <stdlib.h>
+# include <stdio.h>
+
 typedef struct			s_child_list
 {
 	struct s_child_list	*next;
@@ -11,6 +14,7 @@ typedef struct			s_ast
 {
 	struct s_ast		*parent;
 	t_child_list		*child_list;
+	int					type;
 	int					priority;
 	int					(* execute)(struct s_ast *self);
 }						t_ast;

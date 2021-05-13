@@ -10,6 +10,7 @@
 # define WORD	1
 # define REDIR	2
 # define PIPE	3
+# define SQUOT	4
 
 # define ARG_P		0
 # define COMMAND_P	1

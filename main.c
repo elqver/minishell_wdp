@@ -13,5 +13,6 @@ int		main(int ac, char **av)
 	t = new_tokenizer();
 	t->exec(t, av[1]);
 	print_token_list(t->token_list);
+	sleep(100);
 	return (0);
 }

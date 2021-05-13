@@ -62,12 +62,14 @@ void		free_token_list(t_token *t)
 
 int			automatonize(t_tokenizer *self, char *s)
 {
-	static t_state	*(* automata[4])(void) = {redir_automaton,
+	static t_state	*(* automata[5])(void) = {redir_automaton,
 												word_automaton,
-												pipe_automaton, NULL};
-	static int		token_properties[3][2] = {{REDIR, ARG_P},
+												pipe_automaton,
+												single_quote_automaton, NULL};
+	static int		token_properties[4][2] = {{REDIR, ARG_P},
 												{WORD, ARG_P},
-												{PIPE, PIPE_P}};
+												{PIPE, PIPE_P},
+												{SQUOT, ARG_P}};
 	int				lexeme_len;
 	int				i;
 
