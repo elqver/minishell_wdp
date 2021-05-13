@@ -58,7 +58,9 @@ int	check_string(t_state *regex, char *s)
 			match_found = 1;
 		i++;
 	}
-	return (status * i - 1);
+	if (status == 1)
+		return (i - 1);
+	return (-1);
 }
 
 int			main(int ac, char **av)
