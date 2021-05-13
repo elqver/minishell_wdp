@@ -76,21 +76,21 @@ int			main(int ac, char **av)
 	printf("Parsing %s\n", s);
 	while (*s)
 	{
-		res = check_string(word_automaton(), s);
-		if (res != -1)
-		{
-			t = *(s + res + 1);
-			*(s + res + 1) = '\0';
-			printf("				Word token: %s\n", s);
-			*(s + res + 1) = t;
-			s += res;
-		}
 		res = check_string(redir_automaton(), s);
 		if (res != -1)
 		{
 			t = *(s + res + 1);
 			*(s + res + 1) = '\0';
 			printf("				Redir token: %s\n", s);
+			*(s + res + 1) = t;
+			s += res;
+		}
+		res = check_string(word_automaton(), s);
+		if (res != -1)
+		{
+			t = *(s + res + 1);
+			*(s + res + 1) = '\0';
+			printf("				Word token: %s\n", s);
 			*(s + res + 1) = t;
 			s += res;
 		}

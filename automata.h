@@ -5,6 +5,7 @@
 # include "transition.h"
 
 # include <string.h>					// TODO: replace
+# include <ctype.h>						// TODO: replace
 
 t_state	*word_automaton(void);
 t_state	*redir_automaton(void);
