@@ -1,43 +1,24 @@
-#include "condition.h"
-#include "nfa.h"
-#include "transition.h"
+#include "automata.h"
 
-int		right_redir_condition(char c)
+static int	right_redir_condition(char c)
 {
 	return (c == '>');
 }
 
-int		left_redir_condition(char c)
+static int	left_redir_condition(char c)
 {
 	return (c == '<');
 }
 
-t_state	*redir_automaton(void)
+t_state		*redir_automaton(void)
 {
-	t_state			*s1;
-	t_state			*s2;
 	t_state			*s3;
-	t_transition	*t1;
-	t_transition	*t2;
-	t_transition	*t3;
-	t_transition	*t4;
+	t_transition	*t1_t2;
 
-
-}
-
-/*
-t_state	*automaton(void)
-{
-	return (new_state(0, 1,
-			new_transition(right_redir_condition,
-			new_state(1, 0,
-			new_transition(right_redir_condition,
-			new_state(1, 0, NULL))))));
-}
-*/
-
-int main(int ac, char **argv)
-{
-	printf("argv[1] = %s\n", argv[1]);
-	printf("check automaton: %d\n", check_string(redir_automaton(), argv[1]));
+	s3 = new_state(1, 0, NULL);
+	t1_t2 = new_transition(left_redir_condition, s3);
+	append_transition(&t1_t2, right_redir_condition,
+						new_state(1, 0,
+						new_transition(right_redir_condition, s3)));
+	return (new_state(0, 1, t1_t2));
 }
