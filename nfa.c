@@ -110,7 +110,6 @@ static int 				is_state_in_state_list(t_state_list *state_list,
 			return (1);
 		state_list = state_list->next;
 	}
-
 	return (0);
 }
 
@@ -121,7 +120,6 @@ static void				expand_state_list_from_state(t_state_list *state_list,
 
 	if (state == NULL || is_state_in_state_list(state_list, state))
 		return ;
-
 	append_state_list(&state_list, state);
 	transition = state->transition_list;
 	while (transition != NULL)
@@ -140,7 +138,7 @@ static t_state_list 	*find_all_automaton_nodes(t_state *state)
 	return (state_list);
 }
 
-void					destuct_regex(t_state *state)
+void					destroy_regex(t_state *state)
 {
 	free_state_list(find_all_automaton_nodes(state));
 }

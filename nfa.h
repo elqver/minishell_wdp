@@ -17,7 +17,7 @@ t_state					*new_state(int final,
 										t_transition *transition_list);
 int						change_state(t_state **current_state, char c);
 int						get_lexeme_len(t_state *regex, char *s);
-void					destuct_regex(t_state *state);
+void					destroy_regex(t_state *state);
 
 typedef struct			s_state_list
 {

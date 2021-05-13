@@ -2,9 +2,9 @@
 
 static void	print_token(t_token *t)
 {
-	printf("Token value:	%s\n", t->data);
-	printf("Token type:	%d\n", t->type);
-	printf("Token priority:	%d\n", t->priority);
+	printf("Token value:\t%s\n", t->data);
+	printf("Token type:\t%d\n", t->type);
+	printf("Token priority:\t%d\n", t->priority);
 }
 
 void	print_token_list(t_token *t)
@@ -62,28 +62,29 @@ void		free_token_list(t_token *t)
 
 int			automatonize(t_tokenizer *self, char *s)
 {
-	static t_state	*(* automata[5])(void) = {redir_automaton,
-												word_automaton,
+	static t_state	*(* automata[6])(void) = {redir_automaton, word_automaton,
 												pipe_automaton,
-												single_quote_automaton, NULL};
-	static int		token_properties[4][2] = {{REDIR, ARG_P},
-												{WORD, ARG_P},
-												{PIPE, PIPE_P},
-												{SQUOT, ARG_P}};
+												single_quote_automaton,
+												double_quote_automaton, NULL};
+	static int		token_properties[5][2] = {{REDIR, ARG_P}, {WORD, ARG_P},
+												{PIPE, PIPE_P}, {SQUOT, ARG_P},
+												{DQUOT, ARG_P}};
+	t_state			*automaton;
 	int				lexeme_len;
 	int				i;
 
-	i = 0;
-	while (automata[i] != NULL)
+	i = -1;
+	while (automata[i++] != NULL)
 	{
-		lexeme_len = get_lexeme_len(automata[i](), s);
+		automaton = automata[i]();
+		lexeme_len = get_lexeme_len(automaton, s);
+		destuct_regex
 		if (lexeme_len >= 0)
 		{
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
 								token_properties[i][0], token_properties[i][1]);
 			return (lexeme_len);
 		}
-		i++;
 	}
 	free_token_list(self->token_list);
 	return (-1);

@@ -8,9 +8,10 @@
 # include <string.h> // TODO: you know it
 
 # define WORD	1
-# define REDIR	2
-# define PIPE	3
-# define SQUOT	4
+# define SQUOT	2
+# define DQUOT	3
+# define REDIR	4
+# define PIPE	5
 
 # define ARG_P		0
 # define COMMAND_P	1
