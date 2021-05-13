@@ -77,42 +77,30 @@ int			main(int ac, char **av)
 		res = check_string(word_automaton(), s);
 		if (res != -1)
 		{
-			printf("word automaton returned %d\n", res);
 			t = *(s + res + 1);
 			*(s + res + 1) = '\0';
-			printf("Word token: %s\n", s);
+			printf("				Word token: %s\n", s);
 			*(s + res + 1) = t;
 			s += res;
-			printf("currently at '%c' symbol\n", *s);
 		}
-		else
-			printf("\t\t\t\tword automaton returned -1\n");
 		res = check_string(redir_automaton(), s);
 		if (res != -1)
 		{
-			printf("redir automaton returned %d\n", res);
 			t = *(s + res + 1);
 			*(s + res + 1) = '\0';
-			printf("Redir token: %s\n", s);
+			printf("				Redir token: %s\n", s);
 			*(s + res + 1) = t;
 			s += res;
-			printf("currently at '%c' symbol\n", *s);
 		}
-		else
-			printf("\t\t\t\tredir automaton returned -1\n");
 		res = check_string(pipe_automaton(), s);
 		if (res != -1)
 		{
-			printf("pipe automaton returned %d\n", res + 1);
 			t = *(s + res + 1);
 			*(s + res + 1) = '\0';
-			printf("Pipe token: %s\n", s);
+			printf("				Pipe token: %s\n", s);
 			*(s + res + 1) = t;
 			s += res;
-			printf("currently at '%c' symbol\n", *s);
 		}
-		else
-			printf("\t\t\t\tpipe automaton returned -1\n");
 		s++;
 	}
 	return (0);
