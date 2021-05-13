@@ -3,6 +3,7 @@
 
 # include <stdlib.h>
 # include <stdio.h>
+# include "tokenizer.h"
 
 typedef struct			s_child_list
 {
@@ -14,9 +15,13 @@ typedef struct			s_ast
 {
 	struct s_ast		*parent;
 	t_child_list		*child_list;
+	char				*data;
 	int					type;
 	int					priority;
 	int					(* execute)(struct s_ast *self);
 }						t_ast;
+
+t_ast	*build_ast(t_token *token);
+void	print_ast(t_ast *a, int pref_len);
 
 #endif 

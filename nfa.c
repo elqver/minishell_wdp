@@ -97,6 +97,7 @@ void					free_state_list(t_state_list *state_list)
 		tmp = state_list->next;
 		free_transiton_list(state_list->state->transition_list);
 		free(state_list->state);
+		free(state_list);
 		state_list = tmp;
 	}
 }
@@ -113,14 +114,14 @@ static int 				is_state_in_state_list(t_state_list *state_list,
 	return (0);
 }
 
-static void				expand_state_list_from_state(t_state_list *state_list,
+static void				expand_state_list_from_state(t_state_list **state_list,
 														t_state *state)
 {
 	t_transition	*transition;
 
-	if (state == NULL || is_state_in_state_list(state_list, state))
+	if (state == NULL || is_state_in_state_list(*state_list, state))
 		return ;
-	append_state_list(&state_list, state);
+	append_state_list(state_list, state);
 	transition = state->transition_list;
 	while (transition != NULL)
 	{
@@ -129,12 +130,26 @@ static void				expand_state_list_from_state(t_state_list *state_list,
 	}
 }
 
+static int				len_state_list(t_state_list *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}
+
 static t_state_list 	*find_all_automaton_nodes(t_state *state)
 {
 	t_state_list *state_list;
 
 	state_list = NULL;
-	expand_state_list_from_state(state_list, state);
+	expand_state_list_from_state(&state_list, state);
+	//printf("len of state_list %d\n", len_state_list(state_list));
 	return (state_list);
 }
 

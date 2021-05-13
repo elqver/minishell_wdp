@@ -1,27 +1,28 @@
-NAME		:= minishell
+NAME		= minishell
 
-objs		:= main.o tokenizer.o nfa.o transition.o \
-   			   word_automaton.o pipe_automaton.o redir_automaton.o \
-			   single_quote_automaton.o double_quote_automaton.o
+objs		= main.o tokenizer.o nfa.o transition.o				\
+   			   word_automaton.o pipe_automaton.o redir_automaton.o	\
+			   single_quote_automaton.o double_quote_automaton.o	\
+			   ast.o
 
-#VPATH		:= .
+#VPATH		= .
 
-CC			:= gcc
+CC			= gcc
 
-#CFLAGS		:= -Wall -Werror -Wextra
+#CFLAGS		= -Wall -Werror -Wextra
 
-DEBUG		:= -g
+DEBUG		= -g
 
 all:		$(NAME)
 
-deps		:= $(patsubst %.o,%.d,$(objs))
+deps		= $(patsubst %.o,%.d,$(objs))
 -include	$(deps)
 DEPFLAGS	= -MMD -MF $(@:.o=.d)
 
 $(NAME):	$(objs)
 			$(CC) $(DEBUG) $^ -o $@
 
-$.o:		%.c
+%.o:		%.c
 			$(CC) $(DEBUG) -c $< $(DEPFLAGS)
 
 clean:

@@ -74,11 +74,11 @@ int			automatonize(t_tokenizer *self, char *s)
 	int				i;
 
 	i = -1;
-	while (automata[i++] != NULL)
+	while (automata[++i] != NULL)
 	{
 		automaton = automata[i]();
 		lexeme_len = get_lexeme_len(automaton, s);
-		destuct_regex
+		destroy_regex(automaton);
 		if (lexeme_len >= 0)
 		{
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
