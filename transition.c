@@ -30,3 +30,14 @@ t_transition		*append_transition(t_transition **transition_list,
 
 	return (*transition_list);
 }
+
+void				free_transiton_list(t_transition *transition_list)
+{
+	t_transition *tmp;
+	while (transition_list != NULL)
+	{
+		tmp = transition_list->next;
+		free(transition_list);
+		transition_list = tmp;
+	}
+}

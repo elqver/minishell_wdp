@@ -18,4 +18,6 @@ t_transition		*append_transition(t_transition **transition_list,
 											int (*condition)(char c),
 											struct s_state *target);
 
+void				free_transiton_list(t_transition *transition_list);
+
 #endif
