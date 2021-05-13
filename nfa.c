@@ -41,7 +41,7 @@ int						change_state(t_state **current_state, char c)
  * returns -1 if s doesn't match regex
  * returns length of pattern otherwise
  */
-int	check_string(t_state *regex, char *s)
+int	get_lexeme_len(t_state *regex, char *s)
 {
 	int	i;
 	int	status;
@@ -53,57 +53,12 @@ int	check_string(t_state *regex, char *s)
 	{
 		status = change_state(&regex, s[i]);
 		if (status == -1)
-			return (match_found * i - 1);
+			return (match_found * (i + 1) - 1);
 		if (status == 1)
 			match_found = 1;
 		i++;
 	}
 	if (status == 1)
-		return (i - 1);
+		return (i);
 	return (-1);
-}
-
-int			main(int ac, char **av)
-{
-	if (ac == 1)
-	{
-		printf("No input arguments\n");
-		return (1);
-	}
-	char	*s = av[1];
-	char	t;
-	int		res;
-	printf("Parsing %s\n", s);
-	while (*s)
-	{
-		res = check_string(redir_automaton(), s);
-		if (res != -1)
-		{
-			t = *(s + res + 1);
-			*(s + res + 1) = '\0';
-			printf("				Redir token: %s\n", s);
-			*(s + res + 1) = t;
-			s += res;
-		}
-		res = check_string(word_automaton(), s);
-		if (res != -1)
-		{
-			t = *(s + res + 1);
-			*(s + res + 1) = '\0';
-			printf("				Word token: %s\n", s);
-			*(s + res + 1) = t;
-			s += res;
-		}
-		res = check_string(pipe_automaton(), s);
-		if (res != -1)
-		{
-			t = *(s + res + 1);
-			*(s + res + 1) = '\0';
-			printf("				Pipe token: %s\n", s);
-			*(s + res + 1) = t;
-			s += res;
-		}
-		s++;
-	}
-	return (0);
 }

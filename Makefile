@@ -1,6 +1,6 @@
 NAME		:= minishell
 
-objs		:= nfa.o transition.o \
+objs		:= main.o tokenizer.o nfa.o transition.o \
    			   word_automaton.o pipe_automaton.o redir_automaton.o
 
 #VPATH		:= .
