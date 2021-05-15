@@ -181,6 +181,8 @@ static t_ast	*insert_word_node(t_ast **root, t_ast **current, t_ast *node)
 
 static t_ast	*insert_pipe_node(t_ast **root, t_ast **current, t_ast *node)
 {
+	if (get_last_child((*current)->child_list)->type == REDIR)
+		return (NULL);
 	if ((*current)->parent == NULL)
 		(*root) = node;
 	node->parent = (*current)->parent;
@@ -208,17 +210,32 @@ static t_ast	*insert(t_ast **root, t_ast **current, t_ast *node)
 	return (NULL);
 }
 
+static int		is_last_token_valid(t_token *token)
+{
+	t_token	*last_token;
+
+	last_token = get_last_token(token);
+	if (last_token->type == PIPE)
+	{
+		printf ("last pipe have not right argument! Error occured.\n");
+		return (0);
+	}
+	if (last_token->type == REDIR)
+	{
+		printf( "last redirection have not right argument! Error occured.\n");
+		return (0);
+	}
+	return (1);	
+}
+
 t_ast			*build_ast(t_token *token)
 {
 	t_ast	*root = NULL;
 	t_ast	*current = NULL;
 	t_ast	*node_to_insert = NULL;
 
-	if (get_last_token(token)->priority == PIPE_P)
-	{
-		printf ("last pipe have not right argument! Error occured.\n"); //replace with allowd function
+	if (!is_last_token_valid(token))
 		return (NULL);
-	}
 	while (token != NULL)
 	{
 		node_to_insert = create_ast_node(token);
@@ -237,7 +254,6 @@ t_ast			*build_ast(t_token *token)
 		}
 		token = token->next;
 	}
-
 	return root;
 }
 
@@ -252,6 +268,15 @@ void	free_child_list(t_child_list *t)
 		free(t);
 		t = tmp->next;
 	}
+}
+
+t_ast	*get_last_child(t_child_list *child_list)
+{
+	if (child_list == NULL)
+		return (NULL);
+	while (child_list->next != NULL)
+		child_list = child_list->next;
+	return (child_list->child);
 }
 
 void	destroy_ast(t_ast *ast)

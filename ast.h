@@ -12,6 +12,7 @@ typedef struct			s_child_list
 }						t_child_list; 
 
 void	free_child_list(t_child_list *t);
+t_ast	*get_last_child(t_child_list *child_list);
 
 typedef struct			s_ast
 {
