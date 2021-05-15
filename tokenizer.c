@@ -60,6 +60,15 @@ void		free_token_list(t_token *t)
 	}
 }
 
+t_token			*get_last_token(t_token *t)
+{
+	if (t == NULL)
+		return (NULL);
+	while (t->next != NULL)
+		t = t->next;
+	return (t);
+}
+
 int			automatonize(t_tokenizer *self, char *s)
 {
 	static t_state	*(* automata[6])(void) = {redir_automaton, word_automaton,

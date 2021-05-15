@@ -11,6 +11,8 @@ typedef struct			s_child_list
 	struct s_ast		*child;
 }						t_child_list; 
 
+void	free_child_list(t_child_list *t);
+
 typedef struct			s_ast
 {
 	struct s_ast		*parent;
@@ -22,6 +24,7 @@ typedef struct			s_ast
 }						t_ast;
 
 t_ast	*build_ast(t_token *token);
+void	destroy_ast(t_ast *ast);
 void	print_ast(t_ast *a, int pref_len);
 
 #endif 

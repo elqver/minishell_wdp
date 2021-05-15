@@ -30,6 +30,7 @@ void			print_token_list(t_token *t);
 t_token			*new_token(char *s, int type, int priority);
 t_token			*append_token_list(t_token **t, char *s, int type, int priority);
 void			free_token_list(t_token *t);
+t_token			*get_last_token(t_token *t);
 
 typedef struct		s_tokenizer
 {
