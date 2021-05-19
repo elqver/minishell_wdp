@@ -15,6 +15,5 @@ int		main(int ac, char **av)
 	t->exec(t, av[1]);
 	print_token_list(t->token_list);
 	print_ast(build_ast(t->token_list), 0);
-	sleep(33);
 	return (0);
 }

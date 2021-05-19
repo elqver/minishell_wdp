@@ -48,35 +48,32 @@ static void		print_tab(int pref_len)
 
 void			print_ast(t_ast *root, int pref_len)
 {
-	t_child_list	*tmp_child;
 	if (root == NULL)
 	{
 		printf("Taki ti ne ochen: root = NULL\n");
 		return ;
 	}
+	print_tab(pref_len);
 	white();
-	print_tab(pref_len);
-	printf("Node type: %d\n", root->type);
-	print_tab(pref_len);
-	printf("Node priority: %d\n", root->priority);
-	print_tab(pref_len);
-	if (root->data)
-		printf("Node data: %s\n", root->data);
-	else
-		printf("Node data: NULL\n");
+	printf("Node data: %s\n", root->data);
 	choose_color(pref_len);
-
-	tmp_child = root->child_list;	
-	while (tmp_child != NULL)
+	if (root->left != NULL)
 	{
 		print_tab(pref_len);
-		printf("Child: {\n");
-		print_ast(tmp_child->child, pref_len + 1);
+		printf("LEFT {\n");
+		print_ast(root->left, pref_len + 1);
 		print_tab(pref_len);
 		printf("}\n");
-		tmp_child = tmp_child->next;
 	}
-	white();
+	choose_color(pref_len);
+	if (root->right != NULL)
+	{
+		print_tab(pref_len);
+		printf("RIGHT {\n");
+		print_ast(root->right, pref_len + 1);
+		print_tab(pref_len);
+		printf("}\n");
+	}
 }
 
 static t_ast	*create_ast_node(t_token *token)
@@ -92,181 +89,75 @@ static t_ast	*create_ast_node(t_token *token)
 	return (node);
 }
 
-t_child_list	*create_child_list(t_ast *child)
+static t_ast	*insert(t_ast **ast, t_ast *node)
 {
-	t_child_list	*node;
-
-	node = malloc(sizeof(t_child_list));
-	if (node == NULL)
+	if (ast == NULL || node == NULL)
 		return (NULL);
-	node->child = child;
-	node->next = NULL;
-	return (node);
-}
-
-static t_ast	*append_child_list(t_ast *parent, t_ast *child)
-{
-	t_child_list	*ptr;
-
-	if (parent == NULL || child == NULL)
-		return (NULL);
-	if (parent->child_list == NULL)
+	if ((*ast) == NULL)
 	{
-		parent->child_list = create_child_list(child);
-		if (parent->child_list)
-			return (parent);
-		return (NULL);
-	}
-	ptr = parent->child_list;
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = create_child_list(child);
-	return (parent);
-}
-
-static t_ast	*create_command_node(void)
-{
-	t_ast	*node;
-
-	node = calloc(sizeof(t_ast), 1);
-	if (node == NULL)
+		*ast = node;
 		return (node);
-	node->type = COMMAND;
-	node->priority = COMMAND_P;
-	return (node);
+	}
+	if ((*ast)->priority < node->priority)
+	{
+		node->right = (*ast);
+		(*ast) = node;
+	}
+	else if ((*ast)->priority == PIPE_P)
+		insert(&((*ast)->left), node);
+	else if ((*ast)->priority == node->priority)
+		insert(&((*ast)->right), node);
+	else if ((*ast)->priority > node->priority)
+	{
+		if ((*ast)->left == NULL)
+			insert(&((*ast)->left), node);
+		else
+			insert(&((*ast)->right), node);
+	}
+	return (*ast);
 }
 
-static t_ast	*insert_first_node(t_ast **root, t_ast **current, t_ast *node)
+int				is_ast_valid(t_ast *ast)
 {
-	if (node->priority != ARG_P)
-	{
-		printf("Line should begin with a command! Error occured.\n"); //Replace it with allowd function later;
-		return (NULL);
-	}
-	*root = create_command_node();
-	if (*root == NULL)
-		return (NULL);
-	*current = *root;
-	if (append_child_list(*root, node) == NULL)
-	{
-		free(root);
-		return (NULL);
-	}
-
-	return (*root);
+	if (ast == NULL)
+		return (1);
+	if (ast->priority == PIPE_P)
+		if (!(ast->left && ast->right))
+			return (0);
+	if (ast->priority == REDIR_P)
+		if (!(ast->left))
+			return (0);
+	if (ast->priority == ARG_P)
+		if (ast->left)
+			return (0);
+	
+	return (is_ast_valid(ast->left) && is_ast_valid(ast->right));
 }
 
-static t_ast	*insert_word_node(t_ast **root, t_ast **current, t_ast *node)
+void	*destroy_ast(t_ast *ast)
 {
-	t_ast	*tmp;
-
-	tmp = create_command_node();
-	if (tmp == NULL)
+	if (ast == NULL)
 		return (NULL);
-	if (append_child_list(*current, tmp) == NULL)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	tmp->parent = *current;
-	*current = tmp;
-	node->parent = tmp;
-	if (append_child_list(*current, node) == NULL)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	return (tmp);
-}
-
-static t_ast	*insert_pipe_node(t_ast **root, t_ast **current, t_ast *node)
-{
-	if ((*current)->parent == NULL)
-		(*root) = node;
-	node->parent = (*current)->parent;
-	if (node->parent != NULL)
-		node->parent->child_list->next->child = node;
-	(*current)->parent = node;
-	if (append_child_list(node, *current) == NULL)
-		return (NULL);
-	*current = node;
-	return (node);
-}
-
-static t_ast	*insert(t_ast **root, t_ast **current, t_ast *node)
-{
-	if (root == NULL || current == NULL)
-		return (NULL);
-	if (*root == NULL || *current == NULL)
-		return (insert_first_node(root, current, node));
-	if (node->priority == ARG_P && (*current)->priority == COMMAND_P)
-		return (append_child_list(*current, node));
-	if (node->priority == ARG_P && (*current)->priority == PIPE_P)
-		return (insert_word_node(root, current, node));
-	if (node->priority == PIPE_P && (*current)->priority == COMMAND_P)
-		return (insert_pipe_node(root, current, node));
+	destroy_ast(ast->left);
+	destroy_ast(ast->right);
+	free(ast->data);
+	free(ast);
 	return (NULL);
 }
 
 t_ast			*build_ast(t_token *token)
 {
-	t_ast	*root = NULL;
-	t_ast	*current = NULL;
-	t_ast	*node_to_insert = NULL;
+	t_ast	*root;
+	t_ast	*node_to_insert;
 
-	if (get_last_token(token)->priority == PIPE_P)
-	{
-		printf ("last pipe have not right argument! Error occured.\n"); //replace with allowd function
-		return (NULL);
-	}
+	root = NULL;
 	while (token != NULL)
 	{
-		node_to_insert = create_ast_node(token);
-		if (node_to_insert == NULL)
-		{
-			if (root != NULL)
-				destroy_ast(root);
+		if (insert(&root, create_ast_node(token)) == NULL)
 			return (NULL);
-		}
-		if (insert(&root, &current, node_to_insert) == NULL)
-		{
-			if (root != NULL)
-				destroy_ast(root);
-			printf("Error while inserting node to ast\n");
-			return (NULL);
-		}
 		token = token->next;
 	}
-
+	if (!is_ast_valid(root))
+		return (destroy_ast(root));
 	return root;
-}
-
-void	free_child_list(t_child_list *t)
-{
-	t_child_list	*tmp;
-
-	tmp = t;
-	while (t != NULL)
-	{
-		tmp = t;	
-		free(t);
-		t = tmp->next;
-	}
-}
-
-void	destroy_ast(t_ast *ast)
-{
-	t_child_list	*tmp_child_list;
-
-	if (ast == NULL)
-		return ;
-	tmp_child_list = ast->child_list;
-	while (tmp_child_list != NULL)
-	{
-		destroy_ast(tmp_child_list->child);
-		tmp_child_list = tmp_child_list->next;
-	}
-	free(ast->parent);
-	free_child_list(ast->child_list);
-	free(ast->data);
 }

@@ -69,13 +69,14 @@ t_token			*get_last_token(t_token *t)
 	return (t);
 }
 
+
 int			automatonize(t_tokenizer *self, char *s)
 {
 	static t_state	*(* automata[6])(void) = {redir_automaton, word_automaton,
 												pipe_automaton,
 												single_quote_automaton,
 												double_quote_automaton, NULL};
-	static int		token_properties[5][2] = {{REDIR, ARG_P}, {WORD, ARG_P},
+	static int		token_properties[5][2] = {{REDIR, REDIR_P}, {WORD, ARG_P},
 												{PIPE, PIPE_P}, {SQUOT, ARG_P},
 												{DQUOT, ARG_P}};
 	t_state			*automaton;

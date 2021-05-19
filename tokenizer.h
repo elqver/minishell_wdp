@@ -15,7 +15,7 @@
 # define COMMAND	6
 
 # define ARG_P		0
-# define COMMAND_P	1
+# define REDIR_P	1
 # define PIPE_P		2
 
 typedef struct		s_token
