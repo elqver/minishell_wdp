@@ -12,7 +12,7 @@ typedef struct			s_ast
 	char				*data;
 	int					priority;
 	int					type;
-	int					(* execute)(struct s_ast *self);
+	int					(* exec)(struct s_ast *self, char **envp);
 }						t_ast;
 
 t_ast	*build_ast(t_token *token);

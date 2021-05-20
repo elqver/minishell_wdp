@@ -40,12 +40,4 @@ typedef struct		s_tokenizer
 
 t_tokenizer		*new_tokenizer(void);
 
-/*
- * Usage scenario:
- *
- * tokenizer = new_tokenizer();
- * my_tokens_1 = tokenizer->exec(tokenizer, my_s_1);
- * my_tokens_2 = tokenizer->exec(tokenizer, my_s_2);
- */
-
 #endif

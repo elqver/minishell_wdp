@@ -2,7 +2,7 @@
 #include "tokenizer.h"
 #include "ast.h"
 
-int		main(int ac, char **av)
+int		main(int ac, char **av, char **envp)
 {
 	t_tokenizer *t;
 	t_ast		*ast;
@@ -14,10 +14,9 @@ int		main(int ac, char **av)
 	}
 	t = new_tokenizer();
 	t->exec(t, av[1]);
-	print_token_list(t->token_list);
+	//print_token_list(t->token_list);
 	ast = build_ast(t->token_list);
 	print_ast(ast, 0);
-	ast->execute(ast);
-	
+	ast->exec(ast, envp);
 	return (0);
 }

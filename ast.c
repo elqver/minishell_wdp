@@ -2,6 +2,7 @@
 #include "tokenizer.h"
 #include "command_pipe.h"
 #include "command_command.h"
+#include "command_redir.h"
 
 # define RED "\033[0;31m"
 # define YEL "\033[0;33m"
@@ -80,14 +81,13 @@ void			print_ast(t_ast *root, int pref_len)
 
 static t_ast	*create_ast_node(t_token *token)
 {
-	t_ast	*node;
-	
 	if (token->type == PIPE)
-		node = create_pipe_node();
+		return (create_pipe_node());
 	if (token->type == WORD)
-		node = create_command_node(token);
-
-	return (node);
+		return (create_command_node(token));
+	if (token->type == REDIR)
+		return (create_redir_node(token));
+	return (NULL);
 }
 
 static t_ast	*insert(t_ast **ast, t_ast *node)
@@ -131,7 +131,6 @@ int				is_ast_valid(t_ast *ast)
 	if (ast->priority == ARG_P)
 		if (ast->left)
 			return (0);
-	
 	return (is_ast_valid(ast->left) && is_ast_valid(ast->right));
 }
 
@@ -158,6 +157,7 @@ t_ast			*build_ast(t_token *token)
 			return (NULL);
 		token = token->next;
 	}
+	//print_ast(root, 0);
 	if (!is_ast_valid(root))
 		return (destroy_ast(root));
 	return root;
