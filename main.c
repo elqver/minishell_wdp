@@ -5,6 +5,7 @@
 int		main(int ac, char **av)
 {
 	t_tokenizer *t;
+	t_ast		*ast;
 
 	if (ac == 1)
 	{
@@ -14,6 +15,9 @@ int		main(int ac, char **av)
 	t = new_tokenizer();
 	t->exec(t, av[1]);
 	print_token_list(t->token_list);
-	print_ast(build_ast(t->token_list), 0);
+	ast = build_ast(t->token_list);
+	print_ast(ast, 0);
+	ast->execute(ast);
+	
 	return (0);
 }

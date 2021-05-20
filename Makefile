@@ -3,6 +3,7 @@ NAME		= minishell
 objs		= main.o tokenizer.o nfa.o transition.o				\
    			   word_automaton.o pipe_automaton.o redir_automaton.o	\
 			   single_quote_automaton.o double_quote_automaton.o	\
+			   command_command.o command_pipe.o \
 			   ast.o
 
 #VPATH		= .

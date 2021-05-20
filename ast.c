@@ -1,5 +1,7 @@
 #include "ast.h"
 #include "tokenizer.h"
+#include "command_pipe.h"
+#include "command_command.h"
 
 # define RED "\033[0;31m"
 # define YEL "\033[0;33m"
@@ -79,13 +81,12 @@ void			print_ast(t_ast *root, int pref_len)
 static t_ast	*create_ast_node(t_token *token)
 {
 	t_ast	*node;
+	
+	if (token->type == PIPE)
+		node = create_pipe_node();
+	if (token->type == WORD)
+		node = create_command_node(token);
 
-	node = calloc(sizeof(t_ast), 1);
-	if (node == NULL)
-		return (NULL);
-	node->data = strdup(token->data);
-	node->type = token->type;
-	node->priority = token->priority;
 	return (node);
 }
 
