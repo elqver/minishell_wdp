@@ -34,6 +34,7 @@ typedef struct			s_history
 
 t_history	*new_history_node(t_string *s);
 t_history	*push_history(t_history **h, t_string *s);
+t_history	*get_newest_entry(t_history *h);
 
 typedef struct			s_backup
 {

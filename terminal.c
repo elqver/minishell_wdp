@@ -51,23 +51,28 @@ void		user_interface(t_history *history)
 	t_string	*editing;
 	char 		c;
 
-	print_prompt();
 	editing = new_string();
-	push_history(&history, new_string());
+	printf("before push history\n");
+	push_history(&history, NULL);
+	printf("after push history\n");
 	backup = NULL;
 	c = 0;
+	print_prompt();
 	while (c != '\n')
 	{
 		read(0, &c, 1);
 		if (c == '\e')
 			execute_escape_sequence(&history, &backup, &editing, read_escape_sequence());
 		else
-		append_string(editing, c);
+			append_string(editing, c);
 		tputs(delete_line, 1, ft_putchar);
 		tputs(restore_cursor, 1, ft_putchar);
 		print_prompt();
 		ft_putstr(editing->string);
 	}
+	history = get_newest_entry(history);
+	pop_string(editing);
+	history->data = editing;
 	clear_backup_list(backup);
 }
 
@@ -77,7 +82,6 @@ void		terminal(void)
 	t_history	*input_history;
 
 	input_history = NULL;
-	print_prompt();
 	while (0xDEFEC8EDFACE)
 	{
 		tputs(save_cursor, 1, ft_putchar);

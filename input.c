@@ -71,3 +71,10 @@ t_history	*push_history(t_history **h, t_string *s)
 	*h = new;
 	return (new);
 }
+
+t_history	*get_newest_entry(t_history *h)
+{
+	while (h->newer != NULL)
+		h = h->newer;
+	return (h);
+}
