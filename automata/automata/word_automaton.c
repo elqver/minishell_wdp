@@ -1,5 +1,4 @@
-#include "automata.h"
-
+#include "../nfa/nfa.h"
 
 static int	word_symbol_condition(char c)
 {

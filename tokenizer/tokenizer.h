@@ -1,7 +1,7 @@
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-# include "automata.h"
+# include "../automata/nfa/nfa.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>

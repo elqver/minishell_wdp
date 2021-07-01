@@ -1,4 +1,4 @@
-#include "automata.h"
+#include "../nfa/nfa.h"
 
 static int		not_single_quote_condition(char c)
 {

@@ -1,4 +1,4 @@
-#include "automata.h"
+#include "../nfa/nfa.h"
 
 static int	right_redir_condition(char c)
 {

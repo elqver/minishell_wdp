@@ -1,9 +1,11 @@
 #ifndef NFA_H
 # define NFA_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "transition.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include "../transition/transition.h"
+# include <string.h>					// TODO: replace
+# include <ctype.h>						// TODO: replace
 
 typedef struct			s_state 
 {
@@ -29,5 +31,11 @@ t_state_list			*new_state_list(t_state *state);
 void					append_state_list(t_state_list **state_list,
 											t_state *state);
 void					free_state_list(t_state_list *state_list);
+
+t_state	*word_automaton(void);
+t_state	*single_quote_automaton(void);
+t_state	*double_quote_automaton(void);
+t_state	*redir_automaton(void);
+t_state	*pipe_automaton(void);
 
 #endif

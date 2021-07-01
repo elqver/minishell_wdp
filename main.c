@@ -1,6 +1,6 @@
-#include "nfa.h"
-#include "tokenizer.h"
-#include "ast.h"
+#include "automata/nfa/nfa.h"
+#include "tokenizer/tokenizer.h"
+#include "ast/ast.h"
 
 int		main(int ac, char **av, char **envp)
 {

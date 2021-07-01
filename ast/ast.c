@@ -1,8 +1,6 @@
 #include "ast.h"
-#include "tokenizer.h"
-#include "command_pipe.h"
-#include "command_command.h"
-#include "command_redir.h"
+#include "../tokenizer/tokenizer.h"
+#include "../command/command_commands.h"
 
 # define RED "\033[0;31m"
 # define YEL "\033[0;33m"
@@ -157,7 +155,6 @@ t_ast			*build_ast(t_token *token)
 			return (NULL);
 		token = token->next;
 	}
-	//print_ast(root, 0);
 	if (!is_ast_valid(root))
 		return (destroy_ast(root));
 	return root;

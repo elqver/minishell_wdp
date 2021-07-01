@@ -1,4 +1,4 @@
-#include "automata.h"
+#include "../nfa/nfa.h"
 
 static int	pipe_condition(char c)
 {

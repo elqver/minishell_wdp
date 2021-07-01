@@ -3,7 +3,7 @@
 
 # include <stdlib.h>
 # include <stdio.h>
-# include "tokenizer.h"
+# include "../tokenizer/tokenizer.h"
 
 typedef struct			s_ast
 {

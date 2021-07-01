@@ -1,5 +1,4 @@
 #include "nfa.h"
-#include "automata.h"
 
 t_state					*new_state(int final,
 										int initial,

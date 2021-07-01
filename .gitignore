@@ -1,3 +1,7 @@
+# La importante
+*.DS_Store
+
+
 # Prerequisites
 *.d
 

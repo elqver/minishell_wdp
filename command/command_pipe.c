@@ -1,4 +1,4 @@
-#include "command_pipe.h"
+#include "command_commands.h"
 #include <sys/wait.h>
 
 static int	substitution_in(t_ast *node, int fd_redirect[2], char **envp)

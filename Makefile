@@ -7,7 +7,8 @@ objs		= main.o tokenizer.o nfa.o transition.o				\
 			   command_command.o command_pipe.o command_redir.o \
 			   ast.o
 
-#VPATH		= .
+VPATH		= ast:automata/automata:automata/nfa:automata/transition: \
+				command:tokenizer:utils
 
 CC			= gcc
 
