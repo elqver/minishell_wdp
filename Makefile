@@ -16,6 +16,9 @@ CC			= gcc
 
 DEBUG		= -g
 
+READLINE	= -lreadline -L/Users/$(USER)/.brew/Cellar/readline/8.1/lib/ \
+				-I/Users/$(USER)/.brew/Cellar/readline/8.1/include
+
 all:		$(NAME)
 
 deps		= $(patsubst %.o,%.d,$(objs))
@@ -23,7 +26,7 @@ deps		= $(patsubst %.o,%.d,$(objs))
 DEPFLAGS	= -MMD -MF $(@:.o=.d)
 
 $(NAME):	$(objs)
-			$(CC) $(DEBUG) $^ -o $@
+			$(CC) $(DEBUG) $(READLINE) $^ -o $@
 
 %.o:		%.c
 			$(CC) $(DEBUG) -c $< $(DEPFLAGS)

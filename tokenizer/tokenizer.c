@@ -3,7 +3,6 @@
 static void	print_token(t_token *t)
 {
 	printf("Token value:\t%s\n", t->data);
-	printf("Token type:\t%d\n", t->type);
 	printf("Token priority:\t%d\n", t->priority);
 }
 
@@ -18,7 +17,7 @@ void	print_token_list(t_token *t)
 	}
 }
 
-t_token		*new_token(char *s, int type, int priority)
+t_token		*new_token(char *s, int priority)
 {
 	t_token	*new;
 
@@ -26,25 +25,24 @@ t_token		*new_token(char *s, int type, int priority)
 	new->data = s; //strdup(s);					 // TODO: replace with own
 				   // automatonize() calls append_... with strndup,
 				   // think about memory management
-	new->type = type;
 	new->priority = priority;
 	new->next = NULL;
 	return (new);
 }
 
-t_token		*append_token_list(t_token **t, char *s, int type, int priority)
+t_token		*append_token_list(t_token **t, char *s, int priority)
 {
 	t_token	*ptr;
 
 	if (*t == NULL)
 	{
-		*t = new_token(s, type, priority);
+		*t = new_token(s, priority);
 		return (*t);
 	}
 	ptr = *t;
 	while (ptr->next != NULL)
 		ptr = ptr->next;
-	ptr->next = new_token(s, type, priority);
+	ptr->next = new_token(s, priority);
 	return (*t);
 }
 
@@ -56,6 +54,9 @@ void		free_token_list(t_token *t)
 	{
 		tmp = t;
 		t = t->next;
+		free(tmp->data); // I wrote it later with no thinking CARE
+							// Might be danger if no string saved in token
+							// Or if it's achivable in other places
 		free(tmp);
 	}
 }
@@ -72,13 +73,9 @@ t_token			*get_last_token(t_token *t)
 
 int			automatonize(t_tokenizer *self, char *s)
 {
-	static t_state	*(* automata[6])(void) = {redir_automaton, word_automaton,
-												pipe_automaton,
-												single_quote_automaton,
-												double_quote_automaton, NULL};
-	static int		token_properties[5][2] = {{REDIR, REDIR_P}, {WORD, ARG_P},
-												{PIPE, PIPE_P}, {SQUOT, ARG_P},
-												{DQUOT, ARG_P}};
+	static t_state	*(* automata[4])(void) = {redir_automaton, word_automaton,
+												pipe_automaton, NULL};
+	static int		token_properties[3] = {REDIR_P, ARG_P, PIPE_P};
 	t_state			*automaton;
 	int				lexeme_len;
 	int				i;
@@ -92,7 +89,7 @@ int			automatonize(t_tokenizer *self, char *s)
 		if (lexeme_len >= 0)
 		{
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
-								token_properties[i][0], token_properties[i][1]);
+								token_properties[i]);
 			return (lexeme_len);
 		}
 	}
@@ -102,9 +99,10 @@ int			automatonize(t_tokenizer *self, char *s)
 
 int			tokenize_string(t_tokenizer *self, char *s)
 {
-	int	tmp;
+	int	tmp; // how many chars skiped in automatonize (lexeme_len to be clear)
 
-	free_token_list(self->token_list); // we wrote that with some thinking but it could be useful
+	free_token_list(self->token_list); // we wrote that with some thinking
+										// but it could be useful
 	tmp = 1;
 	while (*s != '\0')
 	{

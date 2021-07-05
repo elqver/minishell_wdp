@@ -8,7 +8,7 @@ int		is_executable_in_dir(char *executable, char *dir)
 
    dirp = opendir(dir);
    if (dirp == NULL)
-		   return (0);
+	   return (0);
    len = strlen(executable);
    while ((dp = readdir(dirp)) != NULL)
    {
