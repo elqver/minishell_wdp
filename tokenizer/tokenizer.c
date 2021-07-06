@@ -22,9 +22,7 @@ t_token		*new_token(char *s, int priority)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
-	new->data = s; //strdup(s);					 // TODO: replace with own
-				   // automatonize() calls append_... with strndup,
-				   // think about memory management
+	new->data = s;
 	new->priority = priority;
 	new->next = NULL;
 	return (new);
@@ -44,21 +42,6 @@ t_token		*append_token_list(t_token **t, char *s, int priority)
 		ptr = ptr->next;
 	ptr->next = new_token(s, priority);
 	return (*t);
-}
-
-void		free_token_list(t_token *t)
-{
-	t_token	*tmp;
-
-	while (t != NULL)
-	{
-		tmp = t;
-		t = t->next;
-		free(tmp->data); // I wrote it later with no thinking CARE
-							// Might be danger if no string saved in token
-							// Or if it's achivable in other places
-		free(tmp);
-	}
 }
 
 t_token			*get_last_token(t_token *t)
@@ -93,7 +76,6 @@ int			automatonize(t_tokenizer *self, char *s)
 			return (lexeme_len);
 		}
 	}
-	free_token_list(self->token_list);
 	return (-1);
 }
 
@@ -101,8 +83,6 @@ int			tokenize_string(t_tokenizer *self, char *s)
 {
 	int	tmp; // how many chars skiped in automatonize (lexeme_len to be clear)
 
-	free_token_list(self->token_list); // we wrote that with some thinking
-										// but it could be useful
 	tmp = 1;
 	while (*s != '\0')
 	{
@@ -114,6 +94,22 @@ int			tokenize_string(t_tokenizer *self, char *s)
 		tmp = 1;
 	}
 	return (0);
+}
+
+void	destroy_tokenizer(t_tokenizer *self)
+{
+	t_token *token;
+	t_token *tmp;
+
+	token = self->token_list;
+	while (token != NULL)
+	{
+		tmp = token->next;
+		free(token->data);
+		free(token);
+		token = tmp;
+	}
+	free(self);
 }
 
 t_tokenizer	*new_tokenizer(void)

@@ -11,4 +11,3 @@ t_env	**get(t_env **env_list)
 {
 	return (env_list);
 }
-

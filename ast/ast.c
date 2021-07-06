@@ -146,7 +146,7 @@ void	*destroy_ast(t_ast *ast)
 t_ast			*build_ast(t_token *token)
 {
 	t_ast	*root;
-	t_ast	*node_to_insert;
+	//t_ast	*node_to_insert;
 
 	root = NULL;
 	while (token != NULL)

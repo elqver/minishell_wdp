@@ -4,8 +4,6 @@
 
 int			get_fd_of_redir(char *redir)
 {
-	unsigned	fd;
-
 	if (!isdigit(*redir)) //???
 		return (-1);
 	return (atoi(redir));
@@ -66,7 +64,7 @@ static int	two_right_redir(t_ast *self)
 	return (0);
 }
 
-static int	redir_exec(t_ast *self, char **envp)
+static int	redir_exec(t_ast *self)
 {
 	int	redir_type;
 
@@ -77,7 +75,7 @@ static int	redir_exec(t_ast *self, char **envp)
 		one_right_redir(self);
 	if (redir_type == TWO_RIGHT_REDIR)
 		two_right_redir(self);
-	self->right->exec(self->right, envp);
+	self->right->exec(self->right);
 	return (1);
 }
 
@@ -86,7 +84,6 @@ t_ast		*create_redir_node(t_token *token)
 	t_ast	*redir_node;
 
 	redir_node = calloc(sizeof(t_ast), 1);
-	redir_node->type = REDIR;
 	redir_node->priority = REDIR_P;
 	redir_node->exec = redir_exec;
 	redir_node->data = strdup(token->data); //Replace this with ft

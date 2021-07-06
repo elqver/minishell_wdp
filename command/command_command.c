@@ -1,4 +1,5 @@
 #include "command_commands.h"
+#include "../builtins/builtins.h"
 
 int		is_executable_in_dir(char *executable, char *dir)
 {
@@ -22,7 +23,7 @@ int		is_executable_in_dir(char *executable, char *dir)
    return (0);
 }
 
-int		execute_command_from_path(char **av, char **env)
+int		execute_command_from_path(char **av)
 {
 	char		**paths_arr;
 	char		*path;
@@ -36,7 +37,7 @@ int		execute_command_from_path(char **av, char **env)
 		{
 			path = ft_strjoin(paths_arr[i], "/");
 			path = ft_strjoin(path, av[0]);		// LEAKS !!!!!!!!!!!!!!
-			execve(path, av, env);
+			execve(path, av, array_from_list(*env_list(get)));
 			exit(1);
 		}
 		i++;
@@ -75,12 +76,38 @@ char		**generate_args_arr(t_ast *self)
 	return (argv);
 }
 
-int			execute_command(t_ast *self, char **envp)
+void	delete_args_arr(char **args)
 {
-	char	**args;
+	unsigned int	i;
 
+	i = 0;
+	while (args[i] != NULL)
+		free(args[i++]);
+	free(args);
+}
+
+int			execute_command(t_ast *self)
+{
+	char		**args;
+	static char *builtins_names[8] = {"echo", "cd", "pwd", \
+		"export", "unset", "env", "exit", NULL};
+	static void	(*builtins[8])(char **) = {echo, cd, pwd, env_export, unset, env, wdp_exit, NULL};
+	int			i;
+
+	i = 0;
 	args = generate_args_arr(self);
-	return (execute_command_from_path(args, envp));
+	while (builtins[i] != NULL)
+	{
+		if (strcmp(self->data, builtins_names[i]) == 0)
+		{
+			builtins[i](args);
+			delete_args_arr(args);
+			return (69);
+		}
+		i++;
+	}
+	return (execute_command_from_path(args));
+	return (1);
 }
 
 t_ast		*create_command_node(t_token *token)
@@ -91,8 +118,6 @@ t_ast		*create_command_node(t_token *token)
 	command_node->priority = 1;
 	command_node->exec = execute_command;
 	command_node->data = strdup(token->data); //Replace this with ft
-	command_node->type = WORD;
 	command_node->priority = ARG_P;
-
 	return (command_node);
 }

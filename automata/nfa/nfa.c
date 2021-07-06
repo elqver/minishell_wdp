@@ -20,7 +20,7 @@ int						change_state(t_state **current_state, char c)
 
 	if (*current_state == NULL)
 	{
-		printf("strange thing happend -> current_state of automate is NULL\n");
+		printf("strange thing happend -> current_state of automate is NULL\n"); // TODO: delete
 		return (-1);
 	}
 	transition = (*current_state)->transition_list;
@@ -129,26 +129,12 @@ static void				expand_state_list_from_state(t_state_list **state_list,
 	}
 }
 
-static int				len_state_list(t_state_list *lst)
-{
-	int i;
-
-	i = 0;
-	while (lst != NULL)
-	{
-		i++;
-		lst = lst->next;
-	}
-	return (i);
-}
-
 static t_state_list 	*find_all_automaton_nodes(t_state *state)
 {
 	t_state_list *state_list;
 
 	state_list = NULL;
 	expand_state_list_from_state(&state_list, state);
-	//printf("len of state_list %d\n", len_state_list(state_list));
 	return (state_list);
 }
 

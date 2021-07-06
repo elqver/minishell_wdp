@@ -2,6 +2,7 @@
 # define COMMAND_COMMANDS_H
 
 #include "../ast/ast.h"
+#include "../builtins/env.h"
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>

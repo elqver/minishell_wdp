@@ -5,10 +5,15 @@ objs		= main.o tokenizer.o nfa.o transition.o				\
 			   single_quote_automaton.o double_quote_automaton.o	\
 			   ft_string.o	\
 			   command_command.o command_pipe.o command_redir.o \
-			   ast.o
+			   ast.o \
+			   \
+			   env_singleton.o new_env_node.o create_env_list.o declare_x.o \
+			   array_from_list.o append_env_list.o split_append_env.o env_substr.o \
+			   echo.o cd.o pwd.o env_export.o unset.o env.o wdp_exit.o \
+			   print_env_list.o find_env_var.o
 
 VPATH		= ast:automata/automata:automata/nfa:automata/transition: \
-				command:tokenizer:utils
+				command:tokenizer:utils:builtins
 
 CC			= gcc
 

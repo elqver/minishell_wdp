@@ -98,6 +98,12 @@ void	print_env_list(void)
 	_print_env_list(*env_list(get));
 }
 
+void	env(t_ast *node)
+{
+	(void)node;
+	print_env_list();
+}
+
 static void	_delete_env_list(t_env **list)
 {
 	t_env	*t;

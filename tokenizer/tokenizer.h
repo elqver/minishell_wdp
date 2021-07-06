@@ -37,5 +37,6 @@ typedef struct		s_tokenizer
 }					t_tokenizer;
 
 t_tokenizer		*new_tokenizer(void);
+void			destroy_tokenizer(t_tokenizer *self);
 
 #endif

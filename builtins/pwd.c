@@ -1,10 +1,12 @@
-#include "pwd.h"
+//#include "pwd.h"
+#include "builtins.h"
+#include <limits.h>
 
-void	pwd(t_ast *pwd_node, char **envp)
+void	pwd(char **args)
 {
 	char	*cwd;
 
-	(void)pwd_node;
+	(void)args;
 	cwd = NULL;
 	cwd = getcwd(cwd, PATH_MAX);
 	write(1, cwd, strlen(cwd));

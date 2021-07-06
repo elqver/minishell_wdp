@@ -75,7 +75,10 @@ static void	*tcs(t_env *p1, t_env *p2, int i)
 	if ((p1->var[i] == p2->var[i]) && p1->var[i])
 		return (tcs(p1, p2, i + 1));
 	if (p1->var[i] > p2->var[i])
+	{
 		swap(&(p1->var), &(p2->var));
+		swap(&(p1->val), &(p2->val));
+	}
 	if (p2->next != NULL)
 		return (tcs(p1, p2->next, 0));
 	return (tcs(p1->next, p1->next->next, 0));
@@ -99,9 +102,11 @@ t_ast	*declare_x(void)
 	return ((void *) -1); // that means everything went well
 }
 
+/*
 int	main(int ac, char **av, char **envp)
 {
 	create_env_list(envp);
 	declare_x();
 	delete_env_list();
 }
+*/

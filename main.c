@@ -1,9 +1,12 @@
+#include "builtins/env.h"
 #include "automata/nfa/nfa.h"
 #include "tokenizer/tokenizer.h"
 #include "ast/ast.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <string.h> // TODO: replace later
+
+void	rl_replace_line(char *a, int b);
 
 char	*cut_out_substring(char **line, int start, int length)
 {
@@ -22,7 +25,6 @@ char	*cut_out_substring(char **line, int start, int length)
 	while (++i < len - length)
 		new_line[i] = (*line)[i + length];
 	new_line[i] = '\0';
-
 	*line = new_line;
 	return (new_line);
 }
@@ -51,39 +53,21 @@ char	*insert_substring(char **line, int index, char *subs)
 	return (new_line);
 }
 
-
-void	handle_env(char **line)
-{
-	int	i;
-
-	i = 0;
-	while ((*line)[i])
-	{
-		if ((*line)[i] == '<<') // YEP!
-			while (is_space((*line)[i]))
-				i++;
-		if ($)
-			replace env handle_line(env)
-			handle_line();
-			return();
-		i++;
-	}
-}
-
 void	handle_line(char **line)
 {
 	t_tokenizer	*t;
 	t_ast		*ast;
 
-	handle_env(line);
 	t = new_tokenizer(); // TODO: LEAK HERE
 	t->exec(t, *line);
 	ast = build_ast(t->token_list);
 	ast->exec(ast);
 	destroy_ast(ast);
+	destroy_tokenizer(t);
+	//print_ast(ast, 0);
 }
 
-void	main_loop(char **envp)
+void	main_loop(void)
 {
 	char *line;
 	
@@ -112,9 +96,15 @@ void	signal_handler(int signo)
 
 int		main(int argc, char *argv[], char *envp[])
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_handler);	
+	//signal(SIGQUIT, SIG_IGN);
+	//signal(SIGINT, signal_handler);	
+	printf("vv\n");
+	for (int i = 0; envp[i] != NULL; i++)
+		printf(" >> %s\n", envp[i]);
+	printf("\n^^\n");
+	
+	create_env_list(envp);
 
-	main_loop(envp);
+	main_loop();
 }
 
