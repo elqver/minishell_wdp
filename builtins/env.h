@@ -23,6 +23,7 @@ void	create_env_list(char **envp);
 void	delete_env_list(void);
 
 t_env	*find_env_var(char const *name);
+char	*find_env_val(char const *name);
 
 //t_env	*split_append_env(t_env **list, char *env);
 t_env	*split_append_env(char *env);

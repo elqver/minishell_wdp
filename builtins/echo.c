@@ -5,6 +5,11 @@ void	echo(char **args)
 	unsigned int	i;
 	int				newline_flag;
 
+	if (args[1] == NULL)
+	{
+		write(1, "\n", 1);
+		return ;
+	}
 	newline_flag = 1;
 	i = 1;
 	if (strcmp(args[1], "-n") == 0)

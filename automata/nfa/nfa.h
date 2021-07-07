@@ -33,9 +33,10 @@ void					append_state_list(t_state_list **state_list,
 void					free_state_list(t_state_list *state_list);
 
 t_state	*word_automaton(void);
-t_state	*single_quote_automaton(void);
-t_state	*double_quote_automaton(void);
+//t_state	*single_quote_automaton(void);
+//t_state	*double_quote_automaton(void);
 t_state	*redir_automaton(void);
 t_state	*pipe_automaton(void);
+//t_state	*env_automaton(void);
 
 #endif

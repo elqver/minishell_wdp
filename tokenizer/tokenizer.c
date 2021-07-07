@@ -112,11 +112,21 @@ void	destroy_tokenizer(t_tokenizer *self)
 	free(self);
 }
 
+int	tokenizer_executor(t_tokenizer *self, char **line)
+{
+	// pretokenizer -- handle env
+	handle_envs(line);
+	tokenize_string(self, *line);
+	// posttokenizer -- quotes resection
+	return (0xBEEF);
+}
+
 t_tokenizer	*new_tokenizer(void)
 {
 	t_tokenizer	*t;
 
 	t = calloc(sizeof(t_tokenizer), 1);
-	t->exec = tokenize_string;
+	//t->exec = tokenize_string;
+	t->exec = tokenizer_executor;
 	return (t);
 }
