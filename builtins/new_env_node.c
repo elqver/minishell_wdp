@@ -8,7 +8,10 @@ t_env	*new_env_node(char *var, char *val)
 	if (new == NULL)
 		return (NULL);
 	new->var = strdup(var); // TODO: replace with ft_ and check for NULL
-	new->val = strdup(val); // TODO: replace with ft_
+	if (val != NULL)
+		new->val = strdup(val); // TODO: replace with ft_
+	else
+		new->val = NULL;
 	new->next = NULL;
 	return (new);
 }

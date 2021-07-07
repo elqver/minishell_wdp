@@ -28,6 +28,7 @@ int		execute_command_from_path(char **av)
 	char		**paths_arr;
 	char		*path;
 	unsigned	i;
+	pid_t		pid;
 
 	paths_arr = ft_split(getenv("PATH"), ':');
 	i = 0;
@@ -37,8 +38,14 @@ int		execute_command_from_path(char **av)
 		{
 			path = ft_strjoin(paths_arr[i], "/");
 			path = ft_strjoin(path, av[0]);		// LEAKS !!!!!!!!!!!!!!
-			execve(path, av, array_from_list(*env_list(get)));
-			exit(1);
+			pid = fork();
+			if (pid == 0)
+			{
+				execve(path, av, array_from_list(*env_list(get)));
+				exit(1);
+			}
+			waitpid(pid, NULL, 0);
+			return (0);
 		}
 		i++;
 	}

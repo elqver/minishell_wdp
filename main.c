@@ -15,6 +15,7 @@ void	handle_line(char **line)
 
 	t = new_tokenizer(); // TODO: LEAK HERE
 	t->exec(t, line);
+	print_token_list(t->token_list);
 	ast = build_ast(t->token_list);
 	ast->exec(ast);
 	destroy_ast(ast);
@@ -51,14 +52,6 @@ void	signal_handler(int signo)
 
 int		main(int argc, char *argv[], char *envp[])
 {
-	//signal(SIGQUIT, SIG_IGN);
-	//signal(SIGINT, signal_handler);	
-	/*
-	printf("vv\n");
-	for (int i = 0; envp[i] != NULL; i++)
-		printf(" >> %s\n", envp[i]);
-	printf("\n^^\n");
-	*/
 	create_env_list(envp);
 	main_loop();
 }

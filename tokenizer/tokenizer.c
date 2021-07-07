@@ -71,7 +71,6 @@ int			automatonize(t_tokenizer *self, char *s)
 		destroy_regex(automaton);
 		if (lexeme_len >= 0)
 		{
-			printf("i = %d\n", i);
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
 								token_properties[i]);
 			return (lexeme_len);
@@ -90,7 +89,6 @@ int			tokenize_string(t_tokenizer *self, char *s)
 		if (!isspace(*s))
 		{
 			tmp = automatonize(self, s);
-			printf("TMP = %d\n", tmp);
 		}
 		if (tmp == -1)
 			return (-1);
@@ -139,13 +137,9 @@ void	resect_quotes(t_tokenizer *self)
 int	tokenizer_executor(t_tokenizer *self, char **line)
 {
 	// pretokenizer -- handle env == DONE
-	printf("LINE = |%s|\n", *line);
 	handle_envs(line);
-	printf("LINE = |%s|\n", *line);
 	tokenize_string(self, *line);
-	print_token_list(self->token_list);
 	resect_quotes(self);
-	print_token_list(self->token_list);
 	// posttokenizer -- quotes resection
 	return (0xBEEF);
 }

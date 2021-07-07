@@ -38,17 +38,31 @@ void	delete_env_arr(char **env_arr)
 	free(env_arr);
 }
 
+static int count_nulled_envs(t_env *env)
+{
+	int	count;
+
+	count = 0;
+	while (env != NULL)
+	{
+		if (env->val == NULL)
+			count++;
+		env = env->next;
+	}
+	return (count);
+}
+
 char	**array_from_list(t_env *env)
 {
 	char	**env_arr;
 	int		i;
 
-	env_arr = calloc(sizeof(char *), list_len(env) + 1);
+	env_arr = calloc(sizeof(char *), list_len(env) - count_nulled_envs(env) + 1);
 	i = 0;
 	while (env != NULL)
 	{
-		env_arr[i] = strdup_env(env);
-		i++;
+		if (env->val != NULL)
+			env_arr[i++] = strdup_env(env);
 		env = env->next;
 	}
 	env_arr[i] = NULL;

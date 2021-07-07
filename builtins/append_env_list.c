@@ -44,7 +44,15 @@ t_env	*append_env_list(char *var, char *val)
 	if (tmp)
 	{
 		free(tmp->val);
-		tmp->val = strdup(val); // TODO: replace with ft_
+		if (val == NULL)
+		{
+			tmp->val = NULL;
+			return (tmp);
+		}
+		if (val == NULL)
+			tmp->val = NULL;
+		else
+			tmp->val = strdup(val); // TODO: replace with ft_
 		return (tmp);
 	}
 	return (_append_env_list(env_list(get), var, val));

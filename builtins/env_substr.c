@@ -8,8 +8,10 @@ static char	*_substr(char *str, char *start, char *end)
 {
 	char	*sub;
 
-	if (str == NULL || start == NULL || end == NULL)
+	if (str == NULL || start == NULL)
 		return (NULL);
+	if (end == NULL)
+		end = strchr(str, '\0');
 	sub = calloc(sizeof(char), end - start + 1);
 	if (sub == NULL)
 		return (NULL);
@@ -24,5 +26,10 @@ char	*var_substr(char *str)
 
 char	*val_substr(char *str)
 {
-	return (_substr(str, strchr(str, '=') + 1, strchr(str, '\0')));
+	char	*eq_ptr;
+
+	eq_ptr = strchr(str, '=');
+	if (eq_ptr == NULL)
+		return (NULL);
+	return (_substr(str, eq_ptr + 1, strchr(str, '\0')));
 }

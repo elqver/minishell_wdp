@@ -3,8 +3,13 @@
 void	print_env(char *var, char *val)
 {
 	write(1, var, strlen(var)); // TODO: replace with ft_
-	write(1, "=", 1);
-	write(1, val, strlen(val)); // TODO: replace with your mom
+	if (val)
+	{
+		write(1, "=", 1);
+		write(1, "\"", 1);
+		write(1, val, strlen(val)); // TODO: replace with your mom
+		write(1, "\"", 1);
+	}
 	write(1, "\n", 1);
 }
 
@@ -21,4 +26,3 @@ void	print_env_list(void)
 {
 	_print_env_list(*env_list(get));
 }
-

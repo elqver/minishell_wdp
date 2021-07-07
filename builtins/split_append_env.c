@@ -11,11 +11,6 @@ t_env	*split_append_env(char *env)
 	if (var == NULL)
 		return (NULL);
 	val = val_substr(env);
-	if (val == NULL)
-	{
-		free(var);
-		return (NULL);
-	}
 	new_env = append_env_list(var, val);
 	free(var);
 	free(val);
