@@ -3,7 +3,7 @@
 
 #include <ctype.h> // TODO: delete
 
-static char	*resect_substring(char **line, int start, int length)
+char	*resect_substring(char **line, int start, int length)
 {
 	char	*new_line;
 	int		i;
@@ -25,7 +25,7 @@ static char	*resect_substring(char **line, int start, int length)
 	return (new_line);
 }
 
-static char	*insert_substring(char **line, int index, char *subs)
+char	*insert_substring(char **line, int index, char *subs)
 {
 	char	*new_line;
 	int		line_len;
@@ -104,23 +104,17 @@ static void	handle_env(char **line, int i)
 	free(env);
 }
 
-int	skip_single_quotes(char *line, unsigned int *_i)
+static int	skip_single_quotes(char *line, unsigned int *i)
 {
-	unsigned int	i;
+	static t_state	*automaton;
+	int				lexeme_len;
 
-	i = *_i;
-	printf("line[i] = |%c|\n", line[i]);
-	//printf("%d\n", line[i] != '\'');
-	if (line[i] != '\'')
-	{
-		printf("here!!!!!!!!!!!!!!!\n");
-		return (0);
-	}
-	while (line[i] != '\'' && line[i])
-		i++;
-	if (line[i] == '\0')
+	if (automaton == NULL)
+		automaton = single_quote_automaton();
+	lexeme_len = get_lexeme_len(automaton, line + *i);
+	if (lexeme_len == -1)
 		return (-1);
-	*_i = ++i;
+	*i += lexeme_len;
 	return (0);
 }
 
@@ -131,10 +125,8 @@ int	handle_envs(char **line)
 	i = 0;
 	while ((*line)[i])
 	{
-		printf(">> before skip i = %d\n", i);
-		if (skip_single_quotes(*line, &i) == -1)
+		if ((*line)[i] == '\'' && skip_single_quotes(*line, &i) == -1)
 			return (-1);
-		printf(">> after skip i = %d\n", i);
 		handle_env(line, i);
 		i++;
 	}

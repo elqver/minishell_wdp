@@ -2,7 +2,7 @@
 
 static int	word_symbol_condition(char c)
 {
-	return (!strchr("><| \t\n\v\f\r", c));
+	return (!strchr("><| \t\n\v\f\r\'\"", c));
 }
 
 static int		not_single_quote_condition(char c)
@@ -43,7 +43,7 @@ t_state		*word_automaton(void)
 	append_transition(&ssq->transition_list, single_quote_condition, sm);
 
 	sdq->transition_list = new_transition(not_double_quote_condition, sdq);
-	append_transition(&ssq->transition_list, double_quote_condition, sm);
+	append_transition(&sdq->transition_list, double_quote_condition, sm);
 
 	return (sm);
 }

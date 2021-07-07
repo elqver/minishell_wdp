@@ -56,9 +56,9 @@ t_token			*get_last_token(t_token *t)
 
 int			automatonize(t_tokenizer *self, char *s)
 {
-	static t_state	*(* automata[4])(void) = {redir_automaton, word_automaton,
+	static t_state	*(* automata[4])(void) = {word_automaton, redir_automaton,
 												pipe_automaton, NULL};
-	static int		token_properties[3] = {REDIR_P, ARG_P, PIPE_P};
+	static int		token_properties[3] = {ARG_P, REDIR_P, PIPE_P};
 	t_state			*automaton;
 	int				lexeme_len;
 	int				i;
@@ -71,6 +71,7 @@ int			automatonize(t_tokenizer *self, char *s)
 		destroy_regex(automaton);
 		if (lexeme_len >= 0)
 		{
+			printf("i = %d\n", i);
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
 								token_properties[i]);
 			return (lexeme_len);
@@ -87,7 +88,10 @@ int			tokenize_string(t_tokenizer *self, char *s)
 	while (*s != '\0')
 	{
 		if (!isspace(*s))
+		{
 			tmp = automatonize(self, s);
+			printf("TMP = %d\n", tmp);
+		}
 		if (tmp == -1)
 			return (-1);
 		s += tmp;
@@ -112,11 +116,36 @@ void	destroy_tokenizer(t_tokenizer *self)
 	free(self);
 }
 
+void	resect_quotes(t_tokenizer *self)
+{
+	int	i;
+	t_token	*token;
+
+	token = self->token_list;
+	while (token)
+	{
+		i = 0;
+		while (token->data[i])
+		{
+			if (token->data[i] == '\'' || token->data[i] == '"')
+				resect_substring(&(token->data), i, 1);
+			i++;
+		}
+		token = token->next;
+	}
+} 
+
+
 int	tokenizer_executor(t_tokenizer *self, char **line)
 {
-	// pretokenizer -- handle env
+	// pretokenizer -- handle env == DONE
+	printf("LINE = |%s|\n", *line);
 	handle_envs(line);
+	printf("LINE = |%s|\n", *line);
 	tokenize_string(self, *line);
+	print_token_list(self->token_list);
+	resect_quotes(self);
+	print_token_list(self->token_list);
 	// posttokenizer -- quotes resection
 	return (0xBEEF);
 }

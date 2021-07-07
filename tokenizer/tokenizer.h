@@ -25,7 +25,8 @@ void			free_token_list(t_token *t);
 t_token			*get_last_token(t_token *t);
 
 int				handle_envs(char **line);
-int				resect_quotes(char **line);
+char			*resect_substring(char **line, int start, int length);
+char			*insert_substring(char **line, int index, char *subs);
 
 typedef struct		s_tokenizer
 {
@@ -33,6 +34,7 @@ typedef struct		s_tokenizer
 	int				(* exec)(struct s_tokenizer *, char **);
 }					t_tokenizer;
 
+void			resect_quotes(t_tokenizer	*self);
 t_tokenizer		*new_tokenizer(void);
 void			destroy_tokenizer(t_tokenizer *self);
 
