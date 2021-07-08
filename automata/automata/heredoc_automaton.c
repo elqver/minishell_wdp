@@ -35,7 +35,7 @@ static int	left_arrow_condition(char c)
 	return (c == '<');
 }
 
-t_state	*heredock_automaton(void)
+t_state	*heredoc_automaton(void)
 {
 	t_state	*s1;
 	t_state	*s2;
