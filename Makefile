@@ -10,12 +10,14 @@ objs		= main.o tokenizer.o nfa.o transition.o				\
 			   \
 			   env_singleton.o new_env_node.o create_env_list.o declare_x.o \
 			   array_from_list.o append_env_list.o split_append_env.o env_substr.o \
-			   echo.o cd.o pwd.o env_export.o unset.o env.o wdp_exit.o \
+			   echo.o cd.o pwd.o env_export.o unset.o env_print.o wdp_exit.o \
 			   print_env_list.o find_env_var.o \
-			   handle_envs.o find_env_val.o
+			   handle_envs.o find_env_val.o \
+			   word_symbol.o single_quotes.o double_quotes.o redir.o \
+			   pipe.o space.o dollar.o env_symbol.o
 
 VPATH		= ast:automata/automata:automata/nfa:automata/transition: \
-				command:tokenizer:utils:builtins
+			   automata/conditions:command:tokenizer:utils:builtins
 
 CC			= gcc
 

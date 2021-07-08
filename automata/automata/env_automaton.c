@@ -1,15 +1,5 @@
 #include "../nfa/nfa.h"
 
-static int	letter_underscore_condition(char c)
-{
-	return (isalpha(c) || c == '_');
-}
-
-static int	letter_digit_underscore_condition(char c)
-{
-	return (isalnum(c) || c == '_');
-}
-
 t_state	*env_automaton(void)
 {
 	t_state		*s1;

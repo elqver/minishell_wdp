@@ -3,16 +3,6 @@
 
 #include <ctype.h> // TODO: delete
 
-static int	letter_underscore_condition(char c)
-{
-	return (isalpha(c) || c == '_');
-}
-
-static int	letter_digit_underscore_condition(char c)
-{
-	return (isalnum(c) || c == '_');
-}
-
 static t_state	*create_export_automaton(void)
 {
 	t_state		*s1;

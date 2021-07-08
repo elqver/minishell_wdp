@@ -1,21 +1,17 @@
 #include "../nfa/nfa.h"
 
+/*
 static int	word_symbol_condition(char c)
 {
 	return (!strchr("><| \t\n\v\f\r\'\"", c));
 }
 
-static int	space_symbol_condition(char c)
-{
-	return (!strchr("\t\n\v\f\r", c));
-}
-
-static int		not_single_quote_condition(char c)
+static int	not_single_quote_condition(char c)
 {
 	return (c != '\'');
 }
 
-static int		single_quote_condition(char c)
+static int	single_quote_condition(char c)
 {
 	return (c == '\'');
 }
@@ -30,10 +26,16 @@ static int	not_double_quote_condition(char c)
 	return (c != '"');
 }
 
-static int	left_arrow_condition(char c)
+static int	left_redir_condition(char c)
 {
 	return (c == '<');
 }
+
+static int	space_condition(char c)
+{
+	return (c == ' ');
+}
+*/
 
 t_state	*heredoc_automaton(void)
 {
@@ -59,11 +61,12 @@ t_state	*heredoc_automaton(void)
 	append_transition(&sdq->transition_list, double_quote_condition, sm);
 
 	s3 = new_state(0, 0, new_transition(word_symbol_condition, sm));
+	append_transition(&s3->transition_list, space_condition, s3);
 	append_transition(&s3->transition_list, single_quote_condition, ssq);
 	append_transition(&s3->transition_list, double_quote_condition, sdq);
 
-	s2 = new_state(0, 0, new_transition(left_arrow_condition, s3));
-	s1 = new_state(0, 0, new_transition(left_arrow_condition, s2));
+	s2 = new_state(0, 0, new_transition(left_redir_condition, s3));
+	s1 = new_state(0, 0, new_transition(left_redir_condition, s2));
 
 	return (s1);
 }

@@ -1,20 +1,5 @@
 #include "../nfa/nfa.h"
 
-static int	right_redir_condition(char c)
-{
-	return (c == '>');
-}
-
-static int	left_redir_condition(char c)
-{
-	return (c == '<');
-}
-
-static int	digit_condition(char c)
-{
-	return (isdigit(c)); // TODO: replace with own
-}
-
 t_state		*redir_automaton(void)
 {
 	t_state		*s1;

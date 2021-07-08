@@ -1,15 +1,5 @@
 #include "../nfa/nfa.h"
 
-static int		not_single_quote_condition(char c)
-{
-	return (c != '\'');
-}
-
-static int		single_quote_condition(char c)
-{
-	return (c == '\'');
-}
-
 t_state			*single_quote_automaton(void)
 {
 	t_state		*s2;

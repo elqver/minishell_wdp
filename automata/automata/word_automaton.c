@@ -1,30 +1,5 @@
 #include "../nfa/nfa.h"
 
-static int	word_symbol_condition(char c)
-{
-	return (!strchr("><| \t\n\v\f\r\'\"", c));
-}
-
-static int		not_single_quote_condition(char c)
-{
-	return (c != '\'');
-}
-
-static int		single_quote_condition(char c)
-{
-	return (c == '\'');
-}
-
-static int	double_quote_condition(char c)
-{
-	return (c == '"');
-}
-
-static int	not_double_quote_condition(char c)
-{
-	return (c != '"');
-}
-
 t_state		*word_automaton(void)
 {
 	t_state			*sm; // state_main
