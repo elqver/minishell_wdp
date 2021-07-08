@@ -12,15 +12,21 @@ void	handle_line(char **line)
 {
 	t_tokenizer	*t;
 	t_ast		*ast;
+	pid_t		pid;
 
 	t = new_tokenizer(); // TODO: LEAK HERE
 	t->exec(t, line);
-	print_token_list(t->token_list);
 	ast = build_ast(t->token_list);
-	ast->exec(ast);
+	print_ast(ast, 0);
+	pid = fork();
+	if (pid == 0)
+	{
+		ast->exec(ast);
+		exit(1);
+	}
+	waitpid(pid, NULL, 0);
 	destroy_ast(ast);
 	destroy_tokenizer(t);
-	//print_ast(ast, 0);
 }
 
 void	main_loop(void)
@@ -55,4 +61,3 @@ int		main(int argc, char *argv[], char *envp[])
 	create_env_list(envp);
 	main_loop();
 }
-

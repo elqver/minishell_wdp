@@ -75,6 +75,7 @@ void			print_ast(t_ast *root, int pref_len)
 		print_tab(pref_len);
 		printf("}\n");
 	}
+	white();
 }
 
 static t_ast	*create_ast_node(t_token *token)
