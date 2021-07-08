@@ -38,8 +38,11 @@ void	main_loop(void)
 		line = readline("WilliamD $ ");
 		if (strlen(line))
 		{
+			printf("heredoc lexem_len: %d\n", get_lexeme_len(heredoc_automaton(), line));
+			/*
 			add_history(line);
 			handle_line(&line);
+			*/
 		}
 		free(line);
 	}
