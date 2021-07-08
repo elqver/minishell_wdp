@@ -81,19 +81,17 @@ int			automatonize(t_tokenizer *self, char *s)
 
 int			tokenize_string(t_tokenizer *self, char *s)
 {
-	int	tmp; // how many chars skiped in automatonize (lexeme_len to be clear)
+	int	lexeme_len; // how many chars skiped in automatonize (lexeme_len to be clear)
 
-	tmp = 1;
+	lexeme_len = 1;
 	while (*s != '\0')
 	{
 		if (!isspace(*s))
-		{
-			tmp = automatonize(self, s);
-		}
-		if (tmp == -1)
+			lexeme_len = automatonize(self, s);
+		if (lexeme_len == -1)
 			return (-1);
-		s += tmp;
-		tmp = 1;
+		s += lexeme_len;
+		lexeme_len = 1;
 	}
 	return (0);
 }
@@ -116,7 +114,7 @@ void	destroy_tokenizer(t_tokenizer *self)
 
 void	resect_quotes(t_tokenizer *self)
 {
-	int	i;
+	int		i;
 	t_token	*token;
 
 	token = self->token_list;
@@ -125,22 +123,19 @@ void	resect_quotes(t_tokenizer *self)
 		i = 0;
 		while (token->data[i])
 		{
-			if (token->data[i] == '\'' || token->data[i] == '"')
-				resect_substring(&(token->data), i, 1);
+			if (token->data[i] == '\'' || token->data[i] == '\"')
+				resect_substring(&(token->data), i--, 1);
 			i++;
 		}
 		token = token->next;
 	}
 } 
 
-
 int	tokenizer_executor(t_tokenizer *self, char **line)
 {
-	// pretokenizer -- handle env == DONE
 	handle_envs(line);
 	tokenize_string(self, *line);
 	resect_quotes(self);
-	// posttokenizer -- quotes resection
 	return (0xBEEF);
 }
 
