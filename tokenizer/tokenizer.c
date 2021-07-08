@@ -56,8 +56,10 @@ t_token			*get_last_token(t_token *t)
 
 int			automatonize(t_tokenizer *self, char *s)
 {
-	static t_state	*(* automata[4])(void) = {word_automaton, redir_automaton,
-												pipe_automaton, NULL};
+	//static t_state	*(* automata[5])(void) = {word_automaton, heredoc_automaton,
+												//redir_automaton, pipe_automaton, NULL};
+	//static int		token_properties[4] = {ARG_P, HEREDOC_P, REDIR_P, PIPE_P};
+	static t_state	*(* automata[4])(void) = {word_automaton, redir_automaton, pipe_automaton, NULL};
 	static int		token_properties[3] = {ARG_P, REDIR_P, PIPE_P};
 	t_state			*automaton;
 	int				lexeme_len;

@@ -13,7 +13,6 @@ int	not_double_quote_condition(char c);
 
 int	left_redir_condition(char c);
 int	right_redir_condition(char c);
-int	digit_condition(char c);
 
 int	pipe_condition(char c);
 

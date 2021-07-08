@@ -9,8 +9,3 @@ int	left_redir_condition(char c)
 {
 	return (c == '<');
 }
-
-int	digit_condition(char c)
-{
-	return (isdigit(c)); // TODO: replace with own
-}

@@ -2,6 +2,17 @@
 #include <ctype.h> //???
 #include <fcntl.h>
 
+/* //////////////////////////////////////////////////////////////////// */
+/*																		*/
+/*							МИША МИША МИША								*/
+/*					Я УБРАЛ ВОЗМОЖНОСТЬ РЕДИРЕКТА 						*/
+/*					КОНКРЕТНОГО ПОТОКА В НАШЕМ ШЕЛЛЕ.					*/
+/*																		*/
+/*					НАДО ЧТО-ТО СДЕЛАТЬ С								*/
+/*					get_fd_of_redir()									*/
+/*																		*/
+/* //////////////////////////////////////////////////////////////////// */
+
 int			get_fd_of_redir(char *redir)
 {
 	if (!isdigit(*redir)) //???
@@ -9,6 +20,7 @@ int			get_fd_of_redir(char *redir)
 	return (atoi(redir));
 }
 
+/*
 int			get_type_of_redir(char *redir)
 {
 	while (isdigit(*redir))
@@ -18,6 +30,20 @@ int			get_type_of_redir(char *redir)
 	if (!strcmp(">>", redir))
 		return (TWO_RIGHT_REDIR);
 	return (ONE_RIGHT_REDIR);
+}
+*/
+
+int	get_type_of_redir(char *redir)
+{
+	if (strncmp(redir, "<", 1) == 0)
+		return (ONE_LEFT_REDIR);
+	if (strncmp(redir, "<<", 2) == 0)
+		return (TWO_LEFT_REDIR);
+	if (strncmp(redir, ">", 1) == 0)
+		return (ONE_RIGHT_REDIR);
+	if (strncmp(redir, ">>", 2) == 0)
+		return (TWO_RIGHT_REDIR);
+	return (0);
 }
 
 static int	one_left_redir(t_ast *self)
@@ -30,6 +56,11 @@ static int	one_left_redir(t_ast *self)
 	dup2(fd, 0);
 	close(fd);
 	return (0);
+}
+
+static int	two_left_redir(t_ast *self)
+{
+	int	command_fd;
 }
 
 static int	one_right_redir(t_ast *self)
@@ -62,6 +93,13 @@ static int	two_right_redir(t_ast *self)
 	dup2(file_fd, redir_fd);
 	close(file_fd);
 	return (0);
+}
+
+static int	two_left_redit(t_ast *self)
+{
+	int	redir_fd;
+	int	file_fd;
+
 }
 
 static int	redir_exec(t_ast *self)
