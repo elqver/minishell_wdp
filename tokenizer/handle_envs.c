@@ -103,6 +103,20 @@ static int	skip_single_quotes(char *line, unsigned int *i)
 	return (0);
 }
 
+static int	skip_heredoc(char *line, unsigned int *i)
+{
+	static t_state	*automaton;
+	int				lexeme_len;
+
+	if (automaton == NULL)
+		automaton = heredoc_automaton();
+	lexeme_len = get_lexeme_len(automaton, line + *i);
+	if (lexeme_len == -1)
+		return (-1);
+	*i += lexeme_len;
+	return (0);
+}
+
 int	handle_envs(char **line)
 {
 	unsigned int	i;
@@ -111,6 +125,8 @@ int	handle_envs(char **line)
 	while ((*line)[i])
 	{
 		if ((*line)[i] == '\'' && skip_single_quotes(*line, &i) == -1)
+			return (-1);
+		if ((*line)[i] == '<' && (*line)[i + 1] == '<' && skip_heredoc(*line, &i) == -1)
 			return (-1);
 		handle_env(line, i);
 		i++;

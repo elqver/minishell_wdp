@@ -19,6 +19,7 @@ typedef struct		s_token
 	struct s_token	*next;
 }					t_token;
 
+void	resect_quotes_from_line(char **line);
 void			print_token_list(t_token *t);
 t_token			*new_token(char *s, int priority);
 t_token			*append_token_list(t_token **t, char *s, int priority);

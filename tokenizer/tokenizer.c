@@ -56,9 +56,6 @@ t_token			*get_last_token(t_token *t)
 
 int			automatonize(t_tokenizer *self, char *s)
 {
-	//static t_state	*(* automata[5])(void) = {word_automaton, heredoc_automaton,
-												//redir_automaton, pipe_automaton, NULL};
-	//static int		token_properties[4] = {ARG_P, HEREDOC_P, REDIR_P, PIPE_P};
 	static t_state	*(* automata[4])(void) = {word_automaton, redir_automaton, pipe_automaton, NULL};
 	static int		token_properties[3] = {ARG_P, REDIR_P, PIPE_P};
 	t_state			*automaton;
@@ -114,21 +111,31 @@ void	destroy_tokenizer(t_tokenizer *self)
 	free(self);
 }
 
+void	resect_quotes_from_line(char **line)
+{
+	int	i;
+
+	i = 0;
+	while ((*line)[i])
+	{
+		if ((*line)[i] == '\'' || (*line)[i] == '\"')
+			resect_substring(line, i--, 1);
+		i++;
+	}
+}
+
 void	resect_quotes(t_tokenizer *self)
 {
-	int		i;
+	int		is_prev_heredoc;
 	t_token	*token;
 
+	is_prev_heredoc = 0;
 	token = self->token_list;
 	while (token)
 	{
-		i = 0;
-		while (token->data[i])
-		{
-			if (token->data[i] == '\'' || token->data[i] == '\"')
-				resect_substring(&(token->data), i--, 1);
-			i++;
-		}
+		if (!is_prev_heredoc)
+			resect_quotes_from_line(&(token->data));
+		is_prev_heredoc = !strncmp("<<", token->data, 2);
 		token = token->next;
 	}
 } 
@@ -146,7 +153,6 @@ t_tokenizer	*new_tokenizer(void)
 	t_tokenizer	*t;
 
 	t = calloc(sizeof(t_tokenizer), 1);
-	//t->exec = tokenize_string;
 	t->exec = tokenizer_executor;
 	return (t);
 }

@@ -1,6 +1,16 @@
 #include "command_commands.h"
 #include "../builtins/builtins.h"
 
+void	delete_args_arr(char **args)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+		free(args[i++]);
+	free(args);
+}
+
 int		is_executable_in_dir(char *executable, char *dir)
 {
 	DIR				*dirp;
@@ -23,12 +33,32 @@ int		is_executable_in_dir(char *executable, char *dir)
    return (0);
 }
 
+int		execute_command_in_dir(char **av, char *command_directory)
+{
+	char	*path;
+	char	*tmp;
+	pid_t	pid;
+
+	tmp = ft_strjoin(command_directory, "/");
+	path = ft_strjoin(tmp, av[0]);	
+	free(tmp);
+	pid = fork();
+	if (pid == 0)
+	{
+		execve(path, av, array_from_list(*env_list(get)));
+		exit(1);
+	}
+	free(path);
+	waitpid(pid, NULL, 0);
+	return (0);
+}
+
 int		execute_command_from_path(char **av)
 {
 	char		**paths_arr;
 	char		*path;
 	unsigned	i;
-	pid_t		pid;
+	int			res;
 
 	paths_arr = ft_split(getenv("PATH"), ':');
 	i = 0;
@@ -36,19 +66,13 @@ int		execute_command_from_path(char **av)
 	{
 		if (is_executable_in_dir(av[0], paths_arr[i]) == 1)
 		{
-			path = ft_strjoin(paths_arr[i], "/");
-			path = ft_strjoin(path, av[0]);		// LEAKS !!!!!!!!!!!!!!
-			pid = fork();
-			if (pid == 0)
-			{
-				execve(path, av, array_from_list(*env_list(get)));
-				exit(1);
-			}
-			waitpid(pid, NULL, 0);
-			return (0);
+			res = execute_command_in_dir(av, paths_arr[i]);
+			delete_args_arr(paths_arr);
+			return res;
 		}
 		i++;
 	}
+	delete_args_arr(paths_arr);
 	return (1); // error
 }
 
@@ -83,16 +107,6 @@ char		**generate_args_arr(t_ast *self)
 	return (argv);
 }
 
-void	delete_args_arr(char **args)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (args[i] != NULL)
-		free(args[i++]);
-	free(args);
-}
-
 int			execute_command(t_ast *self)
 {
 	char		**args;
@@ -100,6 +114,7 @@ int			execute_command(t_ast *self)
 		"export", "unset", "env", "exit", NULL};
 	static void	(*builtins[8])(char **) = {echo, cd, pwd, env_export, unset, env, wdp_exit, NULL};
 	int			i;
+	int			res;
 
 	i = 0;
 	args = generate_args_arr(self);
@@ -109,12 +124,13 @@ int			execute_command(t_ast *self)
 		{
 			builtins[i](args);
 			delete_args_arr(args);
-			return (69);
+			return (1);
 		}
 		i++;
 	}
-	return (execute_command_from_path(args));
-	return (1);
+	res = execute_command_from_path(args);
+	delete_args_arr(args);
+	return (res);
 }
 
 t_ast		*create_command_node(t_token *token)

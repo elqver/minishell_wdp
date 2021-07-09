@@ -46,7 +46,7 @@ static int	pipe_exec(t_ast *self)
 	close(fd_redirect[1]);
 	waitpid(right_pid, NULL, 0);
 	waitpid(left_pid, NULL, 0);
-	exit(0);
+	return (0);
 }
 
 t_ast		*create_pipe_node()

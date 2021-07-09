@@ -12,35 +12,45 @@ void	handle_line(char **line)
 {
 	t_tokenizer	*t;
 	t_ast		*ast;
-	//pid_t		pid;
 
-	t = new_tokenizer(); // TODO: LEAK HERE
+	t = new_tokenizer(); 
 	t->exec(t, line);
-	print_token_list(t->token_list);
 	ast = build_ast(t->token_list);
-	print_ast(ast, 0);
 	ast->exec(ast);
-	/*
-	 *	Миша, прикинь как весело
-	 *	Если форкаться, а потом создавать новые энвы,
-	 *	то они не создадутся в родительском процессе (duh)
-	 *
-	pid = fork();
-	if (pid == 0)
-	{
-		ast->exec(ast);
-		exit(1);
-	}
-	waitpid(pid, NULL, 0);
-	*/
 	destroy_ast(ast);
 	destroy_tokenizer(t);
+}
+
+static int	*singleton_original_file_descriptors(void)
+{
+	static int	original_descriptors[2];	
+
+	return (original_descriptors);
+}
+
+static void	restore_original_file_descriptors(void)
+{
+	int	*original_descriptors;
+
+	original_descriptors = singleton_original_file_descriptors();
+	dup2(original_descriptors[0], 0);
+	dup2(original_descriptors[1], 1);
+}
+
+static void	save_original_file_descriptors(void)
+{
+	int	*original_descriptors;
+
+	original_descriptors = singleton_original_file_descriptors();
+	original_descriptors[0] = dup(0);
+	original_descriptors[1] = dup(1);
 }
 
 void	main_loop(void)
 {
 	char *line;
 	
+	save_original_file_descriptors();
 	while (0xDEFEC8ED)
 	{
 		line = readline("WilliamD $ ");
@@ -50,6 +60,7 @@ void	main_loop(void)
 			handle_line(&line);
 		}
 		free(line);
+		restore_original_file_descriptors();
 	}
 }
 
