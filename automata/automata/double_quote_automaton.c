@@ -1,15 +1,5 @@
 #include "../nfa/nfa.h"
 
-static int	double_quote_condition(char c)
-{
-	return (c == '"');
-}
-
-static int	not_double_quote_condition(char c)
-{
-	return (c != '"');
-}
-
 t_state		*double_quote_automaton(void)
 {
 	t_state		*s2;

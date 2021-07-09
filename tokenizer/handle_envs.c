@@ -58,21 +58,6 @@ static void	replace_substring(char **line, int index, int len, char *replacement
 	insert_substring(line, index, replacement);
 }
 
-static int	dollar_condition(char c)
-{
-	return (c == '$');
-}
-
-static int	letter_underscore_condition(char c)
-{
-	return (isalpha(c) || c == '_');
-}
-
-static int	letter_digit_underscore_condition(char c)
-{
-	return (isalnum(c) || c == '_');
-}
-
 static t_state	*env_automaton(void)
 {
 	t_state	*s1;

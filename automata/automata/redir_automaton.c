@@ -1,33 +1,15 @@
 #include "../nfa/nfa.h"
 
-static int	right_redir_condition(char c)
-{
-	return (c == '>');
-}
-
-static int	left_redir_condition(char c)
-{
-	return (c == '<');
-}
-
-static int	digit_condition(char c)
-{
-	return (isdigit(c)); // TODO: replace with own
-}
-
 t_state		*redir_automaton(void)
 {
-	t_state		*s1;
-	t_state		*s2;
-	t_state		*s3;
-	t_state		*s4;
+	t_state	*initial;
+	t_state	*one_lr;
+	t_state	*one_rr;
 
-	s4 = new_state(1, 0, NULL);
-	s3 = new_state(1, 0, new_transition(right_redir_condition, s4));
-	s2 = new_state(0, 0, new_transition(right_redir_condition, s3));
-	append_transition(&s2->transition_list, digit_condition, s2);
-	s1 = new_state(0, 1, new_transition(left_redir_condition, s4));
-	append_transition(&s1->transition_list, right_redir_condition, s3);
-	append_transition(&s1->transition_list, digit_condition, s2);
-	return (s1);
+	one_lr = new_state(1, 0, new_transition(left_redir_condition, new_state(1, 0, NULL)));
+	one_rr = new_state(1, 0, new_transition(right_redir_condition, new_state(1, 0, NULL)));
+	initial = new_state(0, 1, NULL);
+	append_transition(&(initial->transition_list), left_redir_condition, one_lr);
+	append_transition(&(initial->transition_list), right_redir_condition, one_rr);
+	return (initial);
 }
