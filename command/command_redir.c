@@ -34,7 +34,7 @@ static int	one_right_redir(t_ast *self)
 {
 	int file_fd;
 
-	file_fd = open(self->left->data, O_WRONLY | O_CREAT, S_IWUSR | S_IXGRP);
+	file_fd = open(self->left->data, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (file_fd < 0)
 		return (1);
 	dup2(file_fd, 1);
@@ -70,6 +70,7 @@ static void	heredoc(char *delimeter, int env_subst_needed, int *fd_here)
 	char	*line_read;
 
 	line_read = readline("> ");
+	
 	while (strcmp(line_read, delimeter)) // TODO: replace later
 	{
 		if (env_subst_needed)
@@ -85,15 +86,17 @@ static int	two_left_redir(t_ast *self)
 	char	*delimeter;
 	int		env_subst_needed;
 	int		fd_redirect[2];
+	char	*line_read;
 
+	restore_original_file_descriptors();
 	delimeter = self->left->data;
 	env_subst_needed = !has_quotes(delimeter);
 	resect_quotes_from_line(&delimeter);
 	pipe(fd_redirect);
-
 	heredoc(delimeter, env_subst_needed, fd_redirect);
 	close(fd_redirect[1]);
 	dup2(fd_redirect[0], 0);
+	close(fd_redirect[0]);
 
 	return (0);
 }

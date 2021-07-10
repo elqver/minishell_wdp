@@ -40,8 +40,8 @@ static int	pipe_exec(t_ast *self)
 	int	right_pid;
 
 	pipe(fd_redirect);
-	left_pid = substitution_in(self->left, fd_redirect);	
 	right_pid = substitution_out(self->right, fd_redirect);
+	left_pid = substitution_in(self->left, fd_redirect);	
 	close(fd_redirect[0]);
 	close(fd_redirect[1]);
 	waitpid(right_pid, NULL, 0);

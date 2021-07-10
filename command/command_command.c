@@ -56,11 +56,10 @@ int		execute_command_in_dir(char **av, char *command_directory)
 int		execute_command_from_path(char **av)
 {
 	char		**paths_arr;
-	char		*path;
-	unsigned	i;
 	int			res;
+	unsigned	i;
 
-	paths_arr = ft_split(getenv("PATH"), ':');
+	paths_arr = ft_split(find_env_val("PATH"), ':');
 	i = 0;
 	while (paths_arr[i] != NULL)
 	{
@@ -116,7 +115,7 @@ int			execute_command(t_ast *self)
 	int			i;
 	int			res;
 
-	i = 0;
+	i = 1; // TODO: HERE 0 SHOULD BE WE WERE TESTING REPLACE!!!
 	args = generate_args_arr(self);
 	while (builtins[i] != NULL)
 	{

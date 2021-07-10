@@ -2,6 +2,7 @@
 
 void	echo(char **args)
 {
+
 	unsigned int	i;
 	int				newline_flag;
 
