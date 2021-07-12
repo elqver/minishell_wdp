@@ -14,36 +14,35 @@ static t_state	*create_export_automaton(void)
 	return (s1);
 }
 
-static t_env	*_append_env_list(t_env **list, char *var, char *val)
+static int	_append_env_list(t_env **list, char *var, char *val)
 {
 	if (*list == NULL)
-		return (*list = new_env_node(var, val));
-	return (_append_env_list(&((*list)->next), var, val));
+	{
+		*list = new_env_node(var, val);
+		return (0);
+	}
+	_append_env_list(&((*list)->next), var, val);
+	return (0);
 }
 
-t_env	*append_env_list(char *var, char *val)
+int	append_env_list(char *var, char *val)
 {
 	static t_state	*export_automaton;
 	t_env			*tmp;
 
 	if (export_automaton == NULL)
 		export_automaton = create_export_automaton();
-	if (get_lexeme_len(export_automaton, var) == -1)
-		return (NULL);
+	if (get_lexeme_len(export_automaton, var) != strlen(var)) // TODO: ft_
+		return (1);
 	tmp = find_env_var(var);
 	if (tmp)
 	{
 		free(tmp->val);
 		if (val == NULL)
-		{
-			tmp->val = NULL;
-			return (tmp);
-		}
-		if (val == NULL)
 			tmp->val = NULL;
 		else
 			tmp->val = strdup(val); // TODO: replace with ft_
-		return (tmp);
+		return (0);
 	}
 	return (_append_env_list(env_list(get), var, val));
 }

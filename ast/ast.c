@@ -1,6 +1,8 @@
 #include "ast.h"
 #include "../tokenizer/tokenizer.h"
 #include "../command/command_commands.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 # define RED "\033[0;31m"
 # define YEL "\033[0;33m"
@@ -144,10 +146,67 @@ void	*destroy_ast(t_ast *ast)
 	return (NULL);
 }
 
+static int	has_quotes(char *line)
+{
+	while (*line)
+	{
+		if (single_quote_condition(*line) || double_quote_condition(*line))
+			return (1);
+		line++;
+	}
+	return (0);
+}
+
+static void	heredoc(char *delimeter, int env_subst_needed, int *fd_here)
+{
+	char	*line_read;
+
+	line_read = readline("> ");
+	while (strcmp(line_read, delimeter)) // TODO: replace later
+	{
+		if (env_subst_needed)
+			handle_envs(&line_read);
+		write(fd_here[1], line_read, strlen(line_read)); // TODO: replace later
+		write(fd_here[1], "\n", 1); // TODO: replace later
+		free(line_read);
+		line_read = readline("> ");
+	}
+	free(line_read);
+}
+
+static void		handle_heredoc_node(t_ast *self)
+{
+	char	*delimeter;
+	int		fd_redirect[2];
+	int		env_subst_needed;
+
+	restore_original_file_descriptors();
+	delimeter = self->left->data;
+	env_subst_needed = !has_quotes(delimeter);
+	resect_quotes_from_line(&delimeter);
+	pipe(fd_redirect);
+	heredoc(delimeter, env_subst_needed, fd_redirect);
+	close(fd_redirect[1]);
+	free(self->left->data);
+	self->left->data = malloc(3);
+	sprintf(self->left->data, "%d", fd_redirect[0]);
+}
+
+void		handle_heredocs(t_ast *self)
+{
+	if (self == NULL)
+		return ;
+	if (self->right != NULL)
+		handle_heredocs(self->right);
+	if (self->left != NULL)
+		handle_heredocs(self->left);
+	if (strncmp(self->data, "<<", 2) == 0)
+		handle_heredoc_node(self);
+}
+
 t_ast			*build_ast(t_token *token)
 {
 	t_ast	*root;
-	//t_ast	*node_to_insert;
 
 	root = NULL;
 	while (token != NULL)

@@ -1,5 +1,6 @@
 #include "tokenizer.h"
 #include "../builtins/env.h"
+#include "../builtins/builtins.h"
 
 #include <ctype.h> // TODO: delete
 
@@ -58,7 +59,7 @@ static void	replace_substring(char **line, int index, int len, char *replacement
 	insert_substring(line, index, replacement);
 }
 
-static t_state	*env_automaton(void)
+static t_state	*dollar_env_automaton(void)
 {
 	t_state	*s1;
 	t_state	*s2;
@@ -73,14 +74,27 @@ static t_state	*env_automaton(void)
 	return (s1);
 }
 
+static char	*get_exit_code_string(void)
+{
+	static char	exit_code_string[4];
+	
+	sprintf(exit_code_string, "%d", get_exit_code());
+	return (exit_code_string);
+}
+
 static void	handle_env(char **line, int i)
 {
 	static t_state	*automaton;
 	char			*env;
 	int				lexeme_len;
 
+	if (strncmp(*line + i, "$?", 2) == 0)
+	{
+		replace_substring(line, i, 2, get_exit_code_string());
+		return ;
+	}
 	if (automaton == NULL)
-		automaton = env_automaton();
+		automaton = dollar_env_automaton();
 	lexeme_len = get_lexeme_len(automaton, *line + i);
 	if (lexeme_len == -1)
 		return ;

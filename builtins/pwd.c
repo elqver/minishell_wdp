@@ -2,7 +2,7 @@
 #include "builtins.h"
 #include <limits.h>
 
-void	pwd(char **args)
+int	pwd(char **args)
 {
 	char	*cwd;
 
@@ -12,4 +12,5 @@ void	pwd(char **args)
 	write(1, cwd, strlen(cwd));
 	write(1, "\n", 1);
 	free(cwd);
+	return (0);
 }

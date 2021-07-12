@@ -7,9 +7,7 @@ static void	_delete_env_list(t_env **list)
 	while (*list != NULL)
 	{
 		t = (*list)->next;
-		free((*list)->var);
-		free((*list)->val);
-		free(*list);
+		delete_env_node(list);
 		*list = t;
 	}
 }

@@ -53,7 +53,6 @@ t_token			*get_last_token(t_token *t)
 	return (t);
 }
 
-
 int			automatonize(t_tokenizer *self, char *s)
 {
 	static t_state	*(* automata[4])(void) = {word_automaton, redir_automaton, pipe_automaton, NULL};

@@ -38,7 +38,7 @@ t_state	*single_quote_automaton(void);
 //t_state	*double_quote_automaton(void);
 t_state	*redir_automaton(void);
 t_state	*pipe_automaton(void);
-//t_state	*env_automaton(void);
+t_state	*env_automaton(void);
 t_state	*heredoc_automaton(void);
 
 #endif

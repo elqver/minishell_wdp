@@ -1,4 +1,5 @@
 #include "command_commands.h"
+#include "../builtins/builtins.h"
 #include <sys/wait.h>
 
 static int	substitution_in(t_ast *node, int fd_redirect[2])
@@ -44,8 +45,8 @@ static int	pipe_exec(t_ast *self)
 	left_pid = substitution_in(self->left, fd_redirect);	
 	close(fd_redirect[0]);
 	close(fd_redirect[1]);
-	waitpid(right_pid, NULL, 0);
-	waitpid(left_pid, NULL, 0);
+	waitpid_logging(right_pid);
+	waitpid_logging(left_pid);
 	return (0);
 }
 
@@ -57,6 +58,5 @@ t_ast		*create_pipe_node()
 	pipe_node->priority = PIPE_P;
 	pipe_node->exec = pipe_exec;
 	pipe_node->data = strdup("|"); //Replace this with ft
-
 	return (pipe_node);
 }

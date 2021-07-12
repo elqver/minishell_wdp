@@ -44,12 +44,9 @@ int		execute_command_in_dir(char **av, char *command_directory)
 	free(tmp);
 	pid = fork();
 	if (pid == 0)
-	{
 		execve(path, av, array_from_list(*env_list(get)));
-		exit(1);
-	}
 	free(path);
-	waitpid(pid, NULL, 0);
+	waitpid_logging(pid);
 	return (0);
 }
 
@@ -59,6 +56,7 @@ int		execute_command_from_path(char **av)
 	int			res;
 	unsigned	i;
 
+	// TODO: test with unset PATH
 	paths_arr = ft_split(find_env_val("PATH"), ':');
 	i = 0;
 	while (paths_arr[i] != NULL)
@@ -111,11 +109,11 @@ int			execute_command(t_ast *self)
 	char		**args;
 	static char *builtins_names[8] = {"echo", "cd", "pwd", \
 		"export", "unset", "env", "exit", NULL};
-	static void	(*builtins[8])(char **) = {echo, cd, pwd, env_export, unset, env, wdp_exit, NULL};
+	static int	(*builtins[8])(char **) = {echo, cd, pwd, env_export, unset, env, wdp_exit, NULL};
 	int			i;
 	int			res;
 
-	i = 1; // TODO: HERE 0 SHOULD BE WE WERE TESTING REPLACE!!!
+	i = 0;
 	args = generate_args_arr(self);
 	while (builtins[i] != NULL)
 	{

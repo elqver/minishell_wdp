@@ -47,6 +47,8 @@ char	**ft_split(char *s, char c)
 	size_t	i = 0;
 	size_t	j = 0;
 
+	if (s == NULL)
+		return (NULL);
 	res = malloc(sizeof(char *) * (count + 1));
 	while (*s)
 	{

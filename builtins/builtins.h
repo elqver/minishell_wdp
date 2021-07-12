@@ -2,14 +2,19 @@
 # define BUILTINS_H
 
 # include "../ast/ast.h"
+# include "../automata/nfa/nfa.h"
 # include "env.h"
 
-void	echo(char **args);
-void	cd(char **args);
-void	pwd(char **args);
-void	env_export(char **args);
-void	unset(char **args);
-void	env(char **args);
-void	wdp_exit(char **args);
+int		echo(char **args);
+int		cd(char **args);
+int		pwd(char **args);
+int		env_export(char **args);
+int		unset(char **args);
+int		env(char **args);
+int		wdp_exit(char **args);
+
+void	set_exit_code(int new_code);
+int		get_exit_code(void);
+void	waitpid_logging(pid_t pid);
 
 #endif

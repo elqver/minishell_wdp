@@ -1,20 +1,28 @@
 #include "builtins.h"
 
-static void	unset_one(char *variable)
+static int	check_env_var(char *var)
 {
-	t_env	**env;
+	static t_state	*automaton;
+
+	if (var == NULL)
+		return (1);
+	if (automaton == NULL)
+		automaton = env_automaton();
+	return (get_lexeme_len(automaton, var) != strlen(var)); // TODO: ft_
+}
+
+static int	unset_one(char *variable)
+{
 	t_env	*cur;
 	t_env	*prev;
 
-	env = env_list(get);
-	cur = *env;
+	if (check_env_var(variable) == 1)
+		return (1);
+	cur = *env_list(get);
 	if (strcmp(cur->var, variable) == 0)
 	{
-		*env = (*env)->next;
-		free(cur->var);
-		free(cur->val);
-		free(cur);
-		return ;
+		cur = cur->next;
+		return (delete_env_node(&cur));
 	}
 	prev = cur;
 	cur = cur->next;
@@ -23,22 +31,23 @@ static void	unset_one(char *variable)
 		if (strcmp(cur->var, variable) == 0)
 		{
 			prev->next = cur->next;
-			free(cur->var);
-			free(cur->val);
-			free(cur);
-			return ;
+			return (delete_env_node(&cur));
 		}
 		cur = cur->next;
 		prev = prev->next;
 	}
+	return (0);
 }
 
-void		unset(char **args)
+int	unset(char **args)
 {
 	unsigned int	i;
+	int				ret_status;
 
 	i = 0;
+	ret_status = 0;
 	while (args[i] != NULL)
-		unset_one(args[i++]);
+		ret_status |= unset_one(args[i++]);
+	return (ret_status);
 }
 

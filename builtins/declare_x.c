@@ -89,24 +89,13 @@ void	sort_alphabetically(t_env *list)
 	tcs(list, list->next, 0);
 }
 
-t_ast	*declare_x(void)
+int	declare_x(void)
 {
 	t_env	*copy;
 
 	copy = copy_list();
-	if (copy == NULL)
-		return (NULL);
 	sort_alphabetically(copy);
 	print_sorted_list(copy);
 	_delete_env_list(&copy);
-	return ((void *) -1); // that means everything went well
+	return (0);
 }
-
-/*
-int	main(int ac, char **av, char **envp)
-{
-	create_env_list(envp);
-	declare_x();
-	delete_env_list();
-}
-*/

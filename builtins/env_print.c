@@ -1,7 +1,8 @@
 #include "builtins.h"
 
-void	env(char **args)
+int	env(char **args)
 {
 	(void)args;
 	print_env_list();
+	return (0);
 }

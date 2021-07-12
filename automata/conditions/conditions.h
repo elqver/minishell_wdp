@@ -19,6 +19,7 @@ int	pipe_condition(char c);
 int	space_condition(char c);
 
 int	dollar_condition(char c);
+int	question_mark_condition(char c);
 int	letter_underscore_condition(char c);
 int	letter_digit_underscore_condition(char c);
 

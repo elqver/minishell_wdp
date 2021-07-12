@@ -1,15 +1,14 @@
 #include "builtins.h"
 
-void	env_export(char **args)
+int	env_export(char **args)
 {
 	unsigned int	i;
 
 	if (args[1] == NULL)
-	{
-		declare_x();
-		return ;
-	}
+		return (declare_x());
 	i = 1;
 	while (args[i] != NULL)
-		split_append_env(args[i++]);
+		if (split_append_env(args[i++]) == 1)
+			return (1);
+	return (0);
 }

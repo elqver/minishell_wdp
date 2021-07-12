@@ -15,16 +15,17 @@ void	handle_line(char **line)
 
 	t = new_tokenizer(); 
 	t->exec(t, line);
+	print_token_list(t->token_list);
 	ast = build_ast(t->token_list);
-	if (ast != NULL)
-		ast->exec(ast);
-	else
+	destroy_tokenizer(t);
+	if (ast == NULL)
 	{
 		printf("Error: invalid syntax\n");
 		return ;
 	}
+	handle_heredocs(ast);
+	ast->exec(ast);
 	destroy_ast(ast);
-	destroy_tokenizer(t);
 }
 
 static int	*singleton_original_file_descriptors(void)

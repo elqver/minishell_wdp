@@ -1,8 +1,6 @@
 #include "command_commands.h"
 #include "../tokenizer/tokenizer.h"
 #include <ctype.h> //???
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <fcntl.h>
 
 int	get_type_of_redir(char *redir)
@@ -54,50 +52,14 @@ static int	two_right_redir(t_ast *self)
 	return (0);
 }
 
-static int	has_quotes(char *line)
-{
-	while (*line)
-	{
-		if (single_quote_condition(*line) || double_quote_condition(*line))
-			return (1);
-		line++;
-	}
-	return (0);
-}
-
-static void	heredoc(char *delimeter, int env_subst_needed, int *fd_here)
-{
-	char	*line_read;
-
-	line_read = readline("> ");
-	
-	while (strcmp(line_read, delimeter)) // TODO: replace later
-	{
-		if (env_subst_needed)
-			handle_envs(&line_read);
-		write(fd_here[1], line_read, strlen(line_read)); // TODO: replace later
-		write(fd_here[1], "\n", 1); // TODO: replace later
-		line_read = readline("> ");
-	}
-}
-
 static int	two_left_redir(t_ast *self)
 {
-	char	*delimeter;
-	int		env_subst_needed;
-	int		fd_redirect[2];
-	char	*line_read;
+	int	new_fd_stdin;
 
-	restore_original_file_descriptors();
-	delimeter = self->left->data;
-	env_subst_needed = !has_quotes(delimeter);
-	resect_quotes_from_line(&delimeter);
-	pipe(fd_redirect);
-	heredoc(delimeter, env_subst_needed, fd_redirect);
-	close(fd_redirect[1]);
-	dup2(fd_redirect[0], 0);
-	close(fd_redirect[0]);
-
+	new_fd_stdin = atoi(self->left->data); // TODO: replace with ft_
+	dup2(new_fd_stdin, 0);
+	close(new_fd_stdin);
+	self->right->exec(self->right);
 	return (0);
 }
 

@@ -1,16 +1,12 @@
 #include "builtins.h"
 
-void	echo(char **args)
+int	echo(char **args)
 {
-
 	unsigned int	i;
 	int				newline_flag;
 
 	if (args[1] == NULL)
-	{
-		write(1, "\n", 1);
-		return ;
-	}
+		return (!!write(1, "\n", 1));
 	newline_flag = 1;
 	i = 1;
 	if (strcmp(args[1], "-n") == 0)
@@ -27,4 +23,5 @@ void	echo(char **args)
 	}
 	if (newline_flag)
 		write(1, "\n", 1);
+	return (0);
 }

@@ -16,6 +16,7 @@ typedef struct			s_ast
 }						t_ast;
 
 t_ast	*build_ast(t_token *token);
+void	handle_heredocs(t_ast *self);
 void	*destroy_ast(t_ast *ast);
 void	print_ast(t_ast *a, int pref_len);
 
