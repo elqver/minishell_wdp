@@ -80,6 +80,28 @@ void			print_ast(t_ast *root, int pref_len)
 	white();
 }
 
+t_ast	*ast_singleton(t_ast *new_ast, int is_set)
+{
+	static t_ast	*saved_ast;
+
+	if (is_set)
+	{
+		destroy_ast(saved_ast);
+		saved_ast = new_ast;
+	}
+	return (saved_ast);
+}
+
+t_ast	*get_ast(void)
+{
+	return (ast_singleton(NULL, 0));
+}
+
+t_ast	*set_ast(t_ast *new_ast)
+{
+	return (ast_singleton(new_ast, 1));
+}
+
 static t_ast	*create_ast_node(t_token *token)
 {
 	if (token->priority == PIPE_P)
@@ -192,30 +214,43 @@ static void		handle_heredoc_node(t_ast *self)
 	sprintf(self->left->data, "%d", fd_redirect[0]);
 }
 
-void		handle_heredocs(t_ast *self)
+static void	recursive_handle_heredocs(t_ast	*self)
 {
 	if (self == NULL)
 		return ;
 	if (self->right != NULL)
-		handle_heredocs(self->right);
+		recursive_handle_heredocs(self->right);
 	if (self->left != NULL)
-		handle_heredocs(self->left);
+		recursive_handle_heredocs(self->left);
 	if (strncmp(self->data, "<<", 2) == 0)
 		handle_heredoc_node(self);
 }
 
-t_ast			*build_ast(t_token *token)
+void		handle_heredocs()
+{
+	recursive_handle_heredocs(get_ast());
+}
+
+void		execute_abstract_syntax_tree(void)
+{
+	get_ast()->exec(get_ast());
+}
+
+t_ast		*build_ast(t_token *token)
 {
 	t_ast	*root;
 
 	root = NULL;
+	print_token_list(token);
 	while (token != NULL)
 	{
+		printf("TOKEN DATA TO INSERT = |%s|\n", token->data);
 		if (insert(&root, create_ast_node(token)) == NULL)
-			return (NULL);
+			return (set_ast(destroy_ast(root)));
 		token = token->next;
 	}
 	if (!is_ast_valid(root))
-		return (destroy_ast(root));
-	return root;
+		return (set_ast(destroy_ast(root)));
+	print_ast(root, 0);
+	return (set_ast(root));
 }

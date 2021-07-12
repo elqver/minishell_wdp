@@ -2,6 +2,7 @@
 #include "automata/nfa/nfa.h"
 #include "tokenizer/tokenizer.h"
 #include "ast/ast.h"
+#include "builtins/builtins.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <string.h> // TODO: replace later
@@ -11,21 +12,20 @@ void	rl_replace_line(char *a, int b);
 void	handle_line(char **line)
 {
 	t_tokenizer	*t;
-	t_ast		*ast;
 
 	t = new_tokenizer(); 
 	t->exec(t, line);
-	print_token_list(t->token_list);
-	ast = build_ast(t->token_list);
+	build_ast(t->token_list);
 	destroy_tokenizer(t);
-	if (ast == NULL)
+	if (get_ast() == NULL)
 	{
 		printf("Error: invalid syntax\n");
+		set_exit_code(258);
 		return ;
 	}
-	handle_heredocs(ast);
-	ast->exec(ast);
-	destroy_ast(ast);
+	handle_heredocs();
+	execute_abstract_syntax_tree();
+	set_ast(NULL);
 }
 
 static int	*singleton_original_file_descriptors(void)
@@ -85,6 +85,7 @@ void	signal_handler(int signo)
 		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }

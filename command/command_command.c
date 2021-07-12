@@ -44,7 +44,10 @@ int		execute_command_in_dir(char **av, char *command_directory)
 	free(tmp);
 	pid = fork();
 	if (pid == 0)
+	{
 		execve(path, av, array_from_list(*env_list(get)));
+		exit(126);
+	}
 	free(path);
 	waitpid_logging(pid);
 	return (0);
@@ -69,6 +72,7 @@ int		execute_command_from_path(char **av)
 		}
 		i++;
 	}
+	set_exit_code(127);
 	delete_args_arr(paths_arr);
 	return (1); // error
 }
@@ -119,13 +123,15 @@ int			execute_command(t_ast *self)
 	{
 		if (strcmp(self->data, builtins_names[i]) == 0)
 		{
-			builtins[i](args);
+			set_exit_code(builtins[i](args));
 			delete_args_arr(args);
 			return (1);
 		}
 		i++;
 	}
 	res = execute_command_from_path(args);
+	if (res)
+		printf("Command not found\n");
 	delete_args_arr(args);
 	return (res);
 }
