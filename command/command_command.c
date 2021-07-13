@@ -62,6 +62,11 @@ int	execute_command_from_path(char **av)
 	unsigned int	i;
 
 	// TODO: test with unset PATH
+	if (find_env_var("PATH") == NULL)
+	{
+		set_exit_code(127);
+		return (1);
+	}
 	paths_arr = ft_split(find_env_val("PATH"), ':');
 	i = 0;
 	while (paths_arr[i] != NULL)

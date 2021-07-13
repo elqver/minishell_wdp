@@ -78,7 +78,7 @@ void	main_loop(void)
 	}
 }
 
-static void	increment_shlvl(t_env *list)
+static void	increment_shlvl(void)
 {
 	t_env	*env;
 	int		delete_this_shit;
@@ -103,7 +103,9 @@ static void	increment_shlvl(t_env *list)
 
 int		main(int argc, char *argv[], char *envp[])
 {
+	(void)argc;
+	(void)argv;
 	create_env_list(envp);
-	increment_shlvl(*env_list(get));
+	increment_shlvl();
 	main_loop();
 }

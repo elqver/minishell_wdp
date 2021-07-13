@@ -24,7 +24,7 @@ VPATH		= ast:automata/automata:automata/nfa:automata/transition: \
 
 CC			= gcc
 
-#CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= #-Wall -Werror -Wextra
 
 DEBUG		= -g
 
@@ -38,10 +38,10 @@ deps		= $(patsubst %.o,%.d,$(objs))
 DEPFLAGS	= -MMD -MF $(@:.o=.d)
 
 $(NAME):	$(objs)
-			$(CC) $(DEBUG) $(READLINE) $^ -o $@
+			$(CC) $(CFLAGS) $(DEBUG) $(READLINE) $^ -o $@
 
 %.o:		%.c
-			$(CC) $(DEBUG) -c $< $(DEPFLAGS)
+			$(CC) $(CFLAGS) $(DEBUG) -c $< $(DEPFLAGS)
 
 clean:
 			rm -rf $(objs) $(deps)
