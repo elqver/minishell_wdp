@@ -2,5 +2,5 @@
 
 int	space_condition(char c)
 {
-	return (c == ' ' || c == '\t'); // TODO: is tab needed?
+	return (c == ' ' || c == '\t');
 }

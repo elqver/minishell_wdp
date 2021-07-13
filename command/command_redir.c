@@ -1,7 +1,6 @@
 #include "command_commands.h"
 #include "../tokenizer/tokenizer.h"
 #include <ctype.h> //???
-#include <fcntl.h>
 
 int	get_type_of_redir(char *redir)
 {
@@ -30,9 +29,10 @@ static int	one_left_redir(t_ast *self)
 
 static int	one_right_redir(t_ast *self)
 {
-	int file_fd;
+	int	file_fd;
 
-	file_fd = open(self->left->data, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	file_fd = open(self->left->data, O_RDWR | O_CREAT,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (file_fd < 0)
 		return (1);
 	dup2(file_fd, 1);
@@ -42,9 +42,10 @@ static int	one_right_redir(t_ast *self)
 
 static int	two_right_redir(t_ast *self)
 {
-	int file_fd;
+	int	file_fd;
 
-	file_fd = open(self->left->data, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	file_fd = open(self->left->data, O_WRONLY | O_CREAT | O_APPEND,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (file_fd < 0)
 		return (1);
 	dup2(file_fd, 1);
@@ -80,7 +81,7 @@ static int	redir_exec(t_ast *self)
 	return (1);
 }
 
-t_ast		*create_redir_node(t_token *token)
+t_ast	*create_redir_node(t_token *token)
 {
 	t_ast	*redir_node;
 

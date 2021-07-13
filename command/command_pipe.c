@@ -1,10 +1,8 @@
 #include "command_commands.h"
-#include "../builtins/builtins.h"
-#include <sys/wait.h>
 
 static int	substitution_in(t_ast *node, int fd_redirect[2])
 {
-	int child_pid;
+	int	child_pid;
 
 	child_pid = fork();
 	if (child_pid == 0)
@@ -20,7 +18,7 @@ static int	substitution_in(t_ast *node, int fd_redirect[2])
 
 static int	substitution_out(t_ast *node, int fd_redirect[2])
 {
-	int child_pid;
+	int	child_pid;
 
 	child_pid = fork();
 	if (child_pid == 0)
@@ -42,7 +40,7 @@ static int	pipe_exec(t_ast *self)
 
 	pipe(fd_redirect);
 	right_pid = substitution_out(self->right, fd_redirect);
-	left_pid = substitution_in(self->left, fd_redirect);	
+	left_pid = substitution_in(self->left, fd_redirect);
 	close(fd_redirect[0]);
 	close(fd_redirect[1]);
 	waitpid_logging(right_pid);
@@ -50,7 +48,7 @@ static int	pipe_exec(t_ast *self)
 	return (0);
 }
 
-t_ast		*create_pipe_node()
+t_ast		*create_pipe_node(void)
 {
 	t_ast	*pipe_node;
 

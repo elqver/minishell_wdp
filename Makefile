@@ -15,10 +15,12 @@ objs		= main.o tokenizer.o nfa.o transition.o				\
 			   handle_envs.o find_env_val.o \
 			   word_symbol.o single_quotes.o double_quotes.o redir.o \
 			   pipe.o space.o dollar.o env_symbol.o \
-			   delete_env_node.o env_automaton.o
+			   delete_env_node.o env_automaton.o \
+			   modes.o
 
 VPATH		= ast:automata/automata:automata/nfa:automata/transition: \
-			   automata/conditions:command:tokenizer:utils:builtins
+			   automata/conditions:command:tokenizer:utils:builtins: \
+			   signals
 
 CC			= gcc
 

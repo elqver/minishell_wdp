@@ -12,7 +12,8 @@ char	*resect_substring(char **line, int start, int length)
 
 	len = strlen(*line);
 	new_line = malloc(len - length + 1); // TODO: take it out
-	if (!new_line || start >= len || start + length > len || start < 0 || length <= 0)
+	if (!new_line || start >= len || start + length > len
+		|| start < 0 || length <= 0)
 		return (NULL);
 	i = -1;
 	while (++i < start)
@@ -51,7 +52,8 @@ char	*insert_substring(char **line, int index, char *subs)
 	return (new_line);
 }
 
-static void	replace_substring(char **line, int index, int len, char *replacement)
+static void	replace_substring(char **line, int index,
+		int len, char *replacement)
 {
 	resect_substring(line, index, len);
 	if (replacement == NULL)
@@ -67,7 +69,7 @@ static t_state	*dollar_env_automaton(void)
 
 	s3 = new_state(1, 0, NULL);
 	append_transition(&s3->transition_list,
-			letter_digit_underscore_condition, s3);
+		letter_digit_underscore_condition, s3);
 	s2 = new_state(0, 0, new_transition(
 				letter_underscore_condition, s3));
 	s1 = new_state(0, 1, new_transition(dollar_condition, s2));
@@ -77,8 +79,8 @@ static t_state	*dollar_env_automaton(void)
 static char	*get_exit_code_string(void)
 {
 	static char	exit_code_string[4];
-	
-	sprintf(exit_code_string, "%d", get_exit_code());
+
+	sprintf(exit_code_string, "%d", get_exit_code()); // TODO: replace with idk what
 	return (exit_code_string);
 }
 
@@ -140,7 +142,8 @@ int	handle_envs(char **line)
 	{
 		if ((*line)[i] == '\'' && skip_single_quotes(*line, &i) == -1)
 			return (-1);
-		if ((*line)[i] == '<' && (*line)[i + 1] == '<' && skip_heredoc(*line, &i) == -1)
+		if ((*line)[i] == '<' && (*line)[i + 1] == '<' &&
+				skip_heredoc(*line, &i) == -1)
 			return (-1);
 		handle_env(line, i);
 		i++;

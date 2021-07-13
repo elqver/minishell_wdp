@@ -1,6 +1,7 @@
 #include "ast.h"
 #include "../tokenizer/tokenizer.h"
 #include "../command/command_commands.h"
+#include "../signals/modes.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -179,39 +180,67 @@ static int	has_quotes(char *line)
 	return (0);
 }
 
-static void	heredoc(char *delimeter, int env_subst_needed, int *fd_here)
+static void	heredoc(char *delimeter, int env_subst_needed, int fd_to_write)
 {
 	char	*line_read;
 
 	line_read = readline("> ");
-	while (strcmp(line_read, delimeter)) // TODO: replace later
+	if (!line_read)
+		return ;
+	while (strcmp(line_read, delimeter) && get_ast()) // TODO: replace later
 	{
+		if (!line_read)
+			return ;
 		if (env_subst_needed)
 			handle_envs(&line_read);
-		write(fd_here[1], line_read, strlen(line_read)); // TODO: replace later
-		write(fd_here[1], "\n", 1); // TODO: replace later
+		write(fd_to_write, line_read, strlen(line_read)); // TODO: replace later
+		write(fd_to_write, "\n", 1); // TODO: replace later
 		free(line_read);
 		line_read = readline("> ");
 	}
 	free(line_read);
 }
 
-static void		handle_heredoc_node(t_ast *self)
+static void		handle_heredoc_node_parent(t_ast *self, pid_t childs_pid, int *fd_redirect)
+{
+	close(fd_redirect[1]);
+	waitpid_logging(childs_pid);
+	if (get_exit_code() == 1)
+	{
+		close(fd_redirect[0]);
+		set_ast(NULL);
+		return ;
+	}
+	free(self->left->data);
+	self->left->data = malloc(3);
+	sprintf(self->left->data, "%d", fd_redirect[0]); // TODO: sgaslfgkjasdlfkjasldkfj
+}
+
+static void		handle_heredoc_node_child(t_ast *self, int fd_to_write)
 {
 	char	*delimeter;
-	int		fd_redirect[2];
 	int		env_subst_needed;
 
-	restore_original_file_descriptors();
+	switch_to_heredoc_mode();
 	delimeter = self->left->data;
 	env_subst_needed = !has_quotes(delimeter);
 	resect_quotes_from_line(&delimeter);
+	heredoc(delimeter, env_subst_needed, fd_to_write);
+	exit(0);
+}
+
+static void		handle_heredoc_node(t_ast *self)
+{
+	int		fd_redirect[2];
+	pid_t	pid;
+
+	restore_original_file_descriptors();
 	pipe(fd_redirect);
-	heredoc(delimeter, env_subst_needed, fd_redirect);
-	close(fd_redirect[1]);
-	free(self->left->data);
-	self->left->data = malloc(3);
-	sprintf(self->left->data, "%d", fd_redirect[0]);
+	pid = fork();
+	if (pid == 0)
+		handle_heredoc_node_child(self, fd_redirect[1]);
+	else
+		handle_heredoc_node_parent(self, pid, fd_redirect);
 }
 
 static void	recursive_handle_heredocs(t_ast	*self)
@@ -226,14 +255,20 @@ static void	recursive_handle_heredocs(t_ast	*self)
 		handle_heredoc_node(self);
 }
 
-void		handle_heredocs()
+void	handle_heredocs(void)
 {
 	recursive_handle_heredocs(get_ast());
 }
 
 void		execute_abstract_syntax_tree(void)
 {
-	get_ast()->exec(get_ast());
+	t_ast	*self;
+
+	self = get_ast();
+	if (self == NULL)
+		return ;
+	switch_to_command_mode();
+	self->exec(self);
 }
 
 t_ast		*build_ast(t_token *token)
@@ -241,16 +276,13 @@ t_ast		*build_ast(t_token *token)
 	t_ast	*root;
 
 	root = NULL;
-	print_token_list(token);
 	while (token != NULL)
 	{
-		printf("TOKEN DATA TO INSERT = |%s|\n", token->data);
 		if (insert(&root, create_ast_node(token)) == NULL)
 			return (set_ast(destroy_ast(root)));
 		token = token->next;
 	}
 	if (!is_ast_valid(root))
 		return (set_ast(destroy_ast(root)));
-	print_ast(root, 0);
 	return (set_ast(root));
 }

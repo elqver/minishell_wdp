@@ -9,4 +9,3 @@ int	letter_digit_underscore_condition(char c)
 {
 	return (isalnum(c) || c == '_');
 }
-

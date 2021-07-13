@@ -17,7 +17,7 @@ void	print_token_list(t_token *t)
 	}
 }
 
-t_token		*new_token(char *s, int priority)
+t_token	*new_token(char *s, int priority)
 {
 	t_token	*new;
 
@@ -28,7 +28,7 @@ t_token		*new_token(char *s, int priority)
 	return (new);
 }
 
-t_token		*append_token_list(t_token **t, char *s, int priority)
+t_token	*append_token_list(t_token **t, char *s, int priority)
 {
 	t_token	*ptr;
 
@@ -44,7 +44,7 @@ t_token		*append_token_list(t_token **t, char *s, int priority)
 	return (*t);
 }
 
-t_token			*get_last_token(t_token *t)
+t_token	*get_last_token(t_token *t)
 {
 	if (t == NULL)
 		return (NULL);
@@ -53,9 +53,10 @@ t_token			*get_last_token(t_token *t)
 	return (t);
 }
 
-int			automatonize(t_tokenizer *self, char *s)
+int	automatonize(t_tokenizer *self, char *s)
 {
-	static t_state	*(* automata[4])(void) = {word_automaton, redir_automaton, pipe_automaton, NULL};
+	static	t_state	*(*automata[4])(void) = {word_automaton,
+		redir_automaton, pipe_automaton, NULL};
 	static int		token_properties[3] = {ARG_P, REDIR_P, PIPE_P};
 	t_state			*automaton;
 	int				lexeme_len;
@@ -70,16 +71,16 @@ int			automatonize(t_tokenizer *self, char *s)
 		if (lexeme_len >= 0)
 		{
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
-								token_properties[i]);
+				token_properties[i]);
 			return (lexeme_len);
 		}
 	}
 	return (-1);
 }
 
-int			tokenize_string(t_tokenizer *self, char *s)
+int	tokenize_string(t_tokenizer *self, char *s)
 {
-	int	lexeme_len; // how many chars skiped in automatonize (lexeme_len to be clear)
+	int	lexeme_len;
 
 	lexeme_len = 1;
 	while (*s != '\0')
@@ -96,8 +97,8 @@ int			tokenize_string(t_tokenizer *self, char *s)
 
 void	destroy_tokenizer(t_tokenizer *self)
 {
-	t_token *token;
-	t_token *tmp;
+	t_token	*token;
+	t_token	*tmp;
 
 	token = self->token_list;
 	while (token != NULL)
@@ -137,7 +138,7 @@ void	resect_quotes(t_tokenizer *self)
 		is_prev_heredoc = !strncmp("<<", token->data, 2);
 		token = token->next;
 	}
-} 
+}
 
 int	tokenizer_executor(t_tokenizer *self, char **line)
 {

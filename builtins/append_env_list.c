@@ -9,7 +9,8 @@ static t_state	*create_export_automaton(void)
 	t_state		*s2;
 
 	s2 = new_state(1, 0, NULL);
-	append_transition(&s2->transition_list, letter_digit_underscore_condition, s2);
+	append_transition(&s2->transition_list,
+		letter_digit_underscore_condition, s2);
 	s1 = new_state(0, 1, new_transition(letter_underscore_condition, s2));
 	return (s1);
 }
@@ -46,4 +47,3 @@ int	append_env_list(char *var, char *val)
 	}
 	return (_append_env_list(env_list(get), var, val));
 }
-

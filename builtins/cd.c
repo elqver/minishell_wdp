@@ -20,7 +20,7 @@ static int	cd_path(char *path)
 	if (chdir(path) == -1)
 	{
 		append_env_list("OLDPWD", tmp);
-		return (1);	
+		return (1);
 	}
 	tmp = getcwd(NULL, 0);
 	append_env_list("PWD", tmp);

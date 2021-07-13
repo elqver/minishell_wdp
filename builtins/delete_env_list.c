@@ -16,4 +16,3 @@ void	delete_env_list(void)
 {
 	_delete_env_list(env_list(get));
 }
-

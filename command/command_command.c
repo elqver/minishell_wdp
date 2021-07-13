@@ -11,36 +11,38 @@ void	delete_args_arr(char **args)
 	free(args);
 }
 
-int		is_executable_in_dir(char *executable, char *dir)
+int	is_executable_in_dir(char *executable, char *dir)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
 	size_t			len;
 
-   dirp = opendir(dir);
-   if (dirp == NULL)
-	   return (0);
-   len = strlen(executable);
-   while ((dp = readdir(dirp)) != NULL)
-   {
-	   if (dp->d_namlen == len && strcmp(dp->d_name, executable) == 0)
-	   {
-		   (void)closedir(dirp);
-		   return (1);
-	   }
-   }
-   (void)closedir(dirp);
-   return (0);
+	dirp = opendir(dir);
+	if (dirp == NULL)
+		return (0);
+	len = strlen(executable);
+	dp = readdir(dirp);
+	while (dp != NULL)
+	{
+		if (dp->d_namlen == len && strcmp(dp->d_name, executable) == 0) // TODO: replace with ft_
+		{
+			(void)closedir(dirp);
+			return (1);
+		}
+		dp = readdir(dirp);
+	}
+	(void)closedir(dirp);
+	return (0);
 }
 
-int		execute_command_in_dir(char **av, char *command_directory)
+int	execute_command_in_dir(char **av, char *command_directory)
 {
 	char	*path;
 	char	*tmp;
 	pid_t	pid;
 
 	tmp = ft_strjoin(command_directory, "/");
-	path = ft_strjoin(tmp, av[0]);	
+	path = ft_strjoin(tmp, av[0]);
 	free(tmp);
 	pid = fork();
 	if (pid == 0)
@@ -53,11 +55,11 @@ int		execute_command_in_dir(char **av, char *command_directory)
 	return (0);
 }
 
-int		execute_command_from_path(char **av)
+int	execute_command_from_path(char **av)
 {
-	char		**paths_arr;
-	int			res;
-	unsigned	i;
+	char			**paths_arr;
+	int				res;
+	unsigned int	i;
 
 	// TODO: test with unset PATH
 	paths_arr = ft_split(find_env_val("PATH"), ':');
@@ -68,7 +70,7 @@ int		execute_command_from_path(char **av)
 		{
 			res = execute_command_in_dir(av, paths_arr[i]);
 			delete_args_arr(paths_arr);
-			return res;
+			return (res);
 		}
 		i++;
 	}
@@ -77,7 +79,7 @@ int		execute_command_from_path(char **av)
 	return (1); // error
 }
 
-int			calculate_args_arr_length(t_ast *self)
+int	calculate_args_arr_length(t_ast *self)
 {
 	int	length;
 
@@ -90,9 +92,9 @@ int			calculate_args_arr_length(t_ast *self)
 	return (length);
 }
 
-char		**generate_args_arr(t_ast *self)
+char	**generate_args_arr(t_ast *self)
 {
-	char 	**argv;
+	char	**argv;
 	int		argc;
 	int		i;
 
@@ -108,12 +110,13 @@ char		**generate_args_arr(t_ast *self)
 	return (argv);
 }
 
-int			execute_command(t_ast *self)
+int	execute_command(t_ast *self)
 {
 	char		**args;
-	static char *builtins_names[8] = {"echo", "cd", "pwd", \
+	static char	*builtins_names[8] = {"echo", "cd", "pwd", \
 		"export", "unset", "env", "exit", NULL};
-	static int	(*builtins[8])(char **) = {echo, cd, pwd, env_export, unset, env, wdp_exit, NULL};
+	static	int	(*builtins[8])(char **) = {echo, cd, pwd, env_export,
+		unset, env, wdp_exit, NULL};
 	int			i;
 	int			res;
 
@@ -136,7 +139,7 @@ int			execute_command(t_ast *self)
 	return (res);
 }
 
-t_ast		*create_command_node(t_token *token)
+t_ast	*create_command_node(t_token *token)
 {
 	t_ast	*command_node;
 

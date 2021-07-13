@@ -50,4 +50,3 @@ int	unset(char **args)
 		ret_status |= unset_one(args[i++]);
 	return (ret_status);
 }
-

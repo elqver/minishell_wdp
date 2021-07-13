@@ -2,5 +2,5 @@
 
 int	word_symbol_condition(char c)
 {
-	return (!strchr("><| \t\n\v\f\r\'\"", c));
+	return (!strchr("><| \t\n\v\f\r\'\"", c)); // TODO: replace with ft_
 }

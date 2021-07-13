@@ -1,8 +1,8 @@
 #include "nfa.h"
 
-t_state					*new_state(int final,
-										int initial,
-										t_transition *transition_list)
+t_state	*new_state(int final,
+					int initial,
+					t_transition *transition_list)
 {
 	t_state	*state;
 
@@ -10,19 +10,15 @@ t_state					*new_state(int final,
 	state->final = final;
 	state->initial = initial;
 	state->transition_list = transition_list;
-
 	return (state);
 }
 
-int						change_state(t_state **current_state, char c)
+int	change_state(t_state **current_state, char c)
 {
 	t_transition	*transition;
 
 	if (*current_state == NULL)
-	{
-		printf("strange thing happend -> current_state of automate is NULL\n"); // TODO: delete
 		return (-1);
-	}
 	transition = (*current_state)->transition_list;
 	while (transition != NULL)
 	{
@@ -45,7 +41,7 @@ int	get_lexeme_len(t_state *regex, char *s)
 	int	i;
 	int	status;
 	int	match_found;
-	
+
 	i = 0;
 	match_found = 0;
 	while (s[i])
@@ -62,17 +58,17 @@ int	get_lexeme_len(t_state *regex, char *s)
 	return (-1);
 }
 
-t_state_list			*new_state_list(t_state *state)
+t_state_list	*new_state_list(t_state *state)
 {
-	t_state_list *state_list_node;
+	t_state_list	*state_list_node;
 
 	state_list_node = calloc(sizeof(t_state_list), 1);
 	state_list_node->state = state;
 	return (state_list_node);
 }
 
-void					append_state_list(t_state_list **state_list,
-											t_state *state)
+void	append_state_list(t_state_list **state_list,
+							t_state *state)
 {
 	t_state_list	*tmp;
 
@@ -87,7 +83,7 @@ void					append_state_list(t_state_list **state_list,
 	tmp->next = new_state_list(state);
 }
 
-void					free_state_list(t_state_list *state_list)
+void	free_state_list(t_state_list *state_list)
 {
 	t_state_list	*tmp;
 
@@ -101,8 +97,8 @@ void					free_state_list(t_state_list *state_list)
 	}
 }
 
-static int 				is_state_in_state_list(t_state_list *state_list,
-												t_state *state)
+static int	is_state_in_state_list(t_state_list *state_list,
+									t_state *state)
 {
 	while (state_list != NULL)
 	{
@@ -113,7 +109,7 @@ static int 				is_state_in_state_list(t_state_list *state_list,
 	return (0);
 }
 
-static void				expand_state_list_from_state(t_state_list **state_list,
+static void	expand_state_list_from_state(t_state_list **state_list,
 														t_state *state)
 {
 	t_transition	*transition;
@@ -129,16 +125,16 @@ static void				expand_state_list_from_state(t_state_list **state_list,
 	}
 }
 
-static t_state_list 	*find_all_automaton_nodes(t_state *state)
+static t_state_list	*find_all_automaton_nodes(t_state *state)
 {
-	t_state_list *state_list;
+	t_state_list	*state_list;
 
 	state_list = NULL;
 	expand_state_list_from_state(&state_list, state);
 	return (state_list);
 }
 
-void					destroy_regex(t_state *state)
+void	destroy_regex(t_state *state)
 {
 	free_state_list(find_all_automaton_nodes(state));
 }

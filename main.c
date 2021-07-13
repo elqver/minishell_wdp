@@ -3,11 +3,10 @@
 #include "tokenizer/tokenizer.h"
 #include "ast/ast.h"
 #include "builtins/builtins.h"
+#include "signals/modes.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <string.h> // TODO: replace later
-
-void	rl_replace_line(char *a, int b);
 
 void	handle_line(char **line)
 {
@@ -61,6 +60,7 @@ void	main_loop(void)
 	line = NULL;
 	while (0xDEFEC8ED)
 	{
+		switch_to_interactive_mode();
 		line = readline("WilliamD $ ");
 		if (!line)
 		{
@@ -78,22 +78,12 @@ void	main_loop(void)
 	}
 }
 
-void	signal_handler(int signo)
-{
-	if (signo == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
+// TODO: execute commands that start with a period
+// TODO: SHLVL
+// TODO: ; && backslash
 
 int		main(int argc, char *argv[], char *envp[])
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_handler);
 	create_env_list(envp);
 	main_loop();
 }
