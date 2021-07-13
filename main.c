@@ -54,7 +54,7 @@ static void	save_original_file_descriptors(void)
 
 void	main_loop(void)
 {
-	char *line;
+	char	*line;
 	
 	save_original_file_descriptors();
 	line = NULL;
@@ -67,7 +67,7 @@ void	main_loop(void)
 			printf("exit\n");
 			exit(0);
 		}
-		if (strlen(line))
+		if (strlen(line)) // TODO: replace with ft_
 		{
 			add_history(line);
 			handle_line(&line);
@@ -78,12 +78,32 @@ void	main_loop(void)
 	}
 }
 
-// TODO: execute commands that start with a period
-// TODO: SHLVL
+static void	increment_shlvl(t_env *list)
+{
+	t_env	*env;
+	int		delete_this_shit;
+	
+	env = find_env_var("SHLVL");
+	if (env == NULL)
+	{
+		append_env_list("SHLVL", strdup("1"));
+		return ;
+	}
+	delete_this_shit = atoi(env->val) + 1;
+	free(env->val);
+	env->val = calloc(sizeof(char), 20);
+	// TODO:
+	// TODO: replace all this with normal code
+	// TODO:
+	// TODO:
+	sprintf(env->val, "%d", delete_this_shit);
+}
+
 // TODO: ; && backslash
 
 int		main(int argc, char *argv[], char *envp[])
 {
 	create_env_list(envp);
+	increment_shlvl(*env_list(get));
 	main_loop();
 }

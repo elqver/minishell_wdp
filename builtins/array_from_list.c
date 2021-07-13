@@ -22,9 +22,9 @@ static char	*strdup_env(t_env *env_node)
 	var_len = strlen(env_node->var);
 	val_len = strlen(env_node->val);
 	env = calloc(sizeof(char), var_len + val_len + 2);
-	env = strncpy(env, env_node->var, var_len);
+	strncpy(env, env_node->var, var_len + 1);
 	env[var_len] = '=';
-	env = strncpy(env + var_len + 1, env_node->val, val_len);
+	strncpy(env + var_len + 1, env_node->val, val_len);
 	return (env);
 }
 

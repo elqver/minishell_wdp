@@ -77,8 +77,12 @@ static int	redir_exec(t_ast *self)
 		two_right_redir(self);
 	if (redir_type == TWO_LEFT_REDIR)
 		two_left_redir(self);
-	self->right->exec(self->right);
-	return (1);
+	if (self->right)
+	{
+		self->right->exec(self->right);
+		return (1);
+	}
+	return (0);
 }
 
 t_ast	*create_redir_node(t_token *token)

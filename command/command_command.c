@@ -110,6 +110,36 @@ char	**generate_args_arr(t_ast *self)
 	return (argv);
 }
 
+static int	contains_slash(char *path_to_binary)
+{
+	int	i;
+
+	i = 0;
+	while (path_to_binary[i] != '\0')
+	{
+		if (path_to_binary[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	execute_binary_file(char *path, char **av)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		execve(path, av, array_from_list(*env_list(get)));
+		delete_args_arr(av);
+		exit(126);
+	}
+	delete_args_arr(av);
+	waitpid_logging(pid);
+	return (0);
+}
+
 int	execute_command(t_ast *self)
 {
 	char		**args;
@@ -120,8 +150,15 @@ int	execute_command(t_ast *self)
 	int			i;
 	int			res;
 
+	if (self == NULL)
+	{
+		set_exit_code(0);
+		return (0);
+	}
 	i = 0;
 	args = generate_args_arr(self);
+	if (contains_slash(args[0]))
+		return (execute_binary_file(args[0], args));
 	while (builtins[i] != NULL)
 	{
 		if (strcmp(self->data, builtins_names[i]) == 0)

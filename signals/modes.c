@@ -5,9 +5,11 @@
 static void	interactive_mode_sigint_handler(int no)
 {
 	(void)no;
-	printf("\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	rl_redisplay();
+	write(1, "  \b\b\n", 5);
+	rl_on_new_line();
+	rl_replace_line("", 1);
 	rl_redisplay();
 }
 
@@ -18,7 +20,7 @@ static void	dummy(int beef)
 
 void	switch_to_interactive_mode(void)
 {
-	signal(SIGQUIT, exit);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, interactive_mode_sigint_handler); 
 }
 
@@ -28,11 +30,9 @@ void	switch_to_command_mode(void)
 	signal(SIGINT, dummy);
 }
 
-static void	heredoc_mode_sigint_handler(int no)
+static void	heredoc_mode_sigint_handler(int signo)
 {
-	(void)no;
-	rl_replace_line("", 0);
-	rl_on_new_line();
+	(void)signo;
 	exit(1);
 }
 
