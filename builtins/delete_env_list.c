@@ -1,6 +1,6 @@
 #include "env.h"
 
-static void	_delete_env_list(t_env **list)
+void	_delete_env_list(t_env **list)
 {
 	t_env	*t;
 

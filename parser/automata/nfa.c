@@ -1,14 +1,12 @@
 #include "nfa.h"
 
 t_state	*new_state(int final,
-					int initial,
 					t_transition *transition_list)
 {
 	t_state	*state;
 
 	state = malloc(sizeof(t_state));
 	state->final = final;
-	state->initial = initial;
 	state->transition_list = transition_list;
 	return (state);
 }

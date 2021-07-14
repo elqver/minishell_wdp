@@ -1,18 +1,5 @@
 #include "env.h"
 
-// TODO:
-// this function is written twice.
-// reorganize stuff ?
-static t_env	*_append_env_list(t_env **list, char *var, char *val)
-{
-	if (*list == NULL)
-		return (*list = new_env_node(var, val));
-	return (_append_env_list(&((*list)->next), var, val));
-}
-
-// TODO:
-// this function is written twice.
-// reorganize stuff ?
 static void	print_sorted_list(t_env *list)
 {
 	while (list != NULL)
@@ -23,21 +10,7 @@ static void	print_sorted_list(t_env *list)
 	}
 }
 
-static void	_delete_env_list(t_env **list)
-{
-	t_env	*t;
-
-	while (*list != NULL)
-	{
-		t = (*list)->next;
-		free((*list)->var);
-		free((*list)->val);
-		free(*list);
-		*list = t;
-	}
-}
-
-static t_env	*_copy_list(t_env *list)
+static t_env	*copy_list(t_env *list)
 {
 	t_env	*new;
 
@@ -45,26 +18,21 @@ static t_env	*_copy_list(t_env *list)
 	while (list != NULL)
 	{
 		_append_env_list(&new, list->var, list->val);
-		// if (...error...)
-		// 	...free stuff...
-		// 	return (NULL);
 		list = list->next;
 	}
 	return (new);
 }
 
-static t_env	*copy_list(void)
-{
-	return (_copy_list(*env_list(get)));
-}
-
-static void	swap(char **a, char **b)
+static void	swap(t_env *a, t_env *b)
 {
 	char	*t;
 
-	t = *a;
-	*a = *b;
-	*b = t;
+	t = a->var;
+	a->var = b->var;
+	b->var = t;
+	t = a->val;
+	a->val = b->val;
+	b->val = t;
 }
 
 // tcs == two cycle sort
@@ -75,10 +43,7 @@ static void	*tcs(t_env *p1, t_env *p2, int i)
 	if ((p1->var[i] == p2->var[i]) && p1->var[i])
 		return (tcs(p1, p2, i + 1));
 	if (p1->var[i] > p2->var[i])
-	{
-		swap(&(p1->var), &(p2->var));
-		swap(&(p1->val), &(p2->val));
-	}
+		swap(p1, p2);
 	if (p2->next != NULL)
 		return (tcs(p1, p2->next, 0));
 	return (tcs(p1->next, p1->next->next, 0));
@@ -93,7 +58,7 @@ int	declare_x(void)
 {
 	t_env	*copy;
 
-	copy = copy_list();
+	copy = copy_list(*env_list(get));
 	sort_alphabetically(copy);
 	print_sorted_list(copy);
 	_delete_env_list(&copy);

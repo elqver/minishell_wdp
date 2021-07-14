@@ -8,15 +8,16 @@
 # include <string.h>					// TODO: replace
 # include <ctype.h>						// TODO: replace
 
+# define FINAL 		1
+# define NON_FINAL	0
+
 typedef struct s_state
 {
 	int				final;
-	int				initial;
 	t_transition	*transition_list;
 }				t_state;
 
 t_state			*new_state(int final,
-					int initial,
 					t_transition *transition_list);
 int				change_state(t_state **current_state, char c);
 int				get_lexeme_len(t_state *regex, char *s);
@@ -39,6 +40,8 @@ t_state			*double_quote_automaton(void);
 t_state			*redir_automaton(void);
 t_state			*pipe_automaton(void);
 t_state			*env_automaton(void);
+t_state			*dollar_env_automaton(void);
+t_state			*export_automaton(void);
 t_state			*heredoc_automaton(void);
 
 #endif

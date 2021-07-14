@@ -2,7 +2,7 @@
 # define BUILTINS_H
 
 # include "../ast/ast.h"
-# include "../automata/nfa/nfa.h"
+# include "../parser/automata/nfa.h"
 # include "env.h"
 
 int		echo(char **args);

@@ -1,58 +1,5 @@
 #include "tokenizer.h"
 
-static void	print_token(t_token *t)
-{
-	printf("Token value:\t%s\n", t->data);
-	printf("Token priority:\t%d\n", t->priority);
-}
-
-void	print_token_list(t_token *t)
-{
-	if (t == NULL)
-		printf("Token list is empty\n");
-	while (t != NULL)
-	{
-		print_token(t);
-		t = t->next;
-	}
-}
-
-t_token	*new_token(char *s, int priority)
-{
-	t_token	*new;
-
-	new = malloc(sizeof(t_token));
-	new->data = s;
-	new->priority = priority;
-	new->next = NULL;
-	return (new);
-}
-
-t_token	*append_token_list(t_token **t, char *s, int priority)
-{
-	t_token	*ptr;
-
-	if (*t == NULL)
-	{
-		*t = new_token(s, priority);
-		return (*t);
-	}
-	ptr = *t;
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = new_token(s, priority);
-	return (*t);
-}
-
-t_token	*get_last_token(t_token *t)
-{
-	if (t == NULL)
-		return (NULL);
-	while (t->next != NULL)
-		t = t->next;
-	return (t);
-}
-
 int	automatonize(t_tokenizer *self, char *s)
 {
 	static	t_state	*(*automata[4])(void) = {word_automaton,
@@ -67,7 +14,7 @@ int	automatonize(t_tokenizer *self, char *s)
 	{
 		automaton = automata[i]();
 		lexeme_len = get_lexeme_len(automaton, s);
-		destroy_regex(automaton);
+		//destroy_regex(automaton);
 		if (lexeme_len >= 0)
 		{
 			append_token_list(&self->token_list, strndup(s, lexeme_len),
@@ -111,36 +58,7 @@ void	destroy_tokenizer(t_tokenizer *self)
 	free(self);
 }
 
-void	resect_quotes_from_line(char **line)
-{
-	int	i;
-
-	i = 0;
-	while ((*line)[i])
-	{
-		if ((*line)[i] == '\'' || (*line)[i] == '\"')
-			resect_substring(line, i--, 1);
-		i++;
-	}
-}
-
-void	resect_quotes(t_tokenizer *self)
-{
-	int		is_prev_heredoc;
-	t_token	*token;
-
-	is_prev_heredoc = 0;
-	token = self->token_list;
-	while (token)
-	{
-		if (!is_prev_heredoc)
-			resect_quotes_from_line(&(token->data));
-		is_prev_heredoc = !strncmp("<<", token->data, 2);
-		token = token->next;
-	}
-}
-
-int	tokenizer_executor(t_tokenizer *self, char **line)
+int	tokenizer_exec(t_tokenizer *self, char **line)
 {
 	handle_envs(line);
 	tokenize_string(self, *line);
@@ -153,6 +71,6 @@ t_tokenizer	*new_tokenizer(void)
 	t_tokenizer	*t;
 
 	t = calloc(sizeof(t_tokenizer), 1);
-	t->exec = tokenizer_executor;
+	t->exec = tokenizer_exec;
 	return (t);
 }

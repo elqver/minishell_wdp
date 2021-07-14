@@ -4,7 +4,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "../tokenizer/tokenizer.h"
-# include "../signals/modes.h"
+# include "../signals/signal_modes.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 

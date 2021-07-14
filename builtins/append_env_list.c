@@ -1,49 +1,40 @@
 #include "env.h"
-#include "../automata/nfa/nfa.h"
+#include "../parser/automata/nfa.h"
 
 #include <ctype.h> // TODO: delete
 
-static t_state	*create_export_automaton(void)
-{
-	t_state		*s1;
-	t_state		*s2;
-
-	s2 = new_state(1, 0, NULL);
-	append_transition(&s2->transition_list,
-		letter_digit_underscore_condition, s2);
-	s1 = new_state(0, 1, new_transition(letter_underscore_condition, s2));
-	return (s1);
-}
-
-static int	_append_env_list(t_env **list, char *var, char *val)
+t_env	*_append_env_list(t_env **list, char *var, char *val)
 {
 	if (*list == NULL)
-	{
-		*list = new_env_node(var, val);
-		return (0);
-	}
-	_append_env_list(&((*list)->next), var, val);
+		return (*list = new_env_node(var, val));
+	return (_append_env_list(&((*list)->next), var, val));
+}
+
+static int	replace_old_env(t_env *env, char *val)
+{
+	free(env->val);
+	// When we include libft,
+	// the if-else won't be needed.
+	// env->val = ft_strdup(val);
+	if (val == NULL)
+		env->val = NULL;
+	else
+		env->val = strdup(val); // TODO: replace with ft_
 	return (0);
 }
 
 int	append_env_list(char *var, char *val)
 {
-	static t_state	*export_automaton;
-	t_env			*tmp;
+	t_env	*env;
 
-	if (export_automaton == NULL)
-		export_automaton = create_export_automaton();
-	if (get_lexeme_len(export_automaton, var) != strlen(var)) // TODO: ft_
-		return (1);
-	tmp = find_env_var(var);
-	if (tmp)
+	if (get_lexeme_len(export_automaton(), var) != strlen(var)) // TODO: ft_
 	{
-		free(tmp->val);
-		if (val == NULL)
-			tmp->val = NULL;
-		else
-			tmp->val = strdup(val); // TODO: replace with ft_
-		return (0);
+		printf("here ?? \n");
+		return (1);
 	}
-	return (_append_env_list(env_list(get), var, val));
+	env = find_env_var(var);
+	if (env)
+		return (replace_old_env(env, val));
+	_append_env_list(env_list(get), var, val);
+	return (0);
 }

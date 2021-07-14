@@ -1,9 +1,9 @@
 #include "builtins/env.h"
-#include "automata/nfa/nfa.h"
+#include "parser/automata/nfa.h"
 #include "tokenizer/tokenizer.h"
 #include "ast/ast.h"
 #include "builtins/builtins.h"
-#include "signals/modes.h"
+#include "signals/signal_modes.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <string.h> // TODO: replace later
@@ -15,7 +15,6 @@ void	handle_line(char **line)
 	t = new_tokenizer(); 
 	t->exec(t, line);
 	build_ast(t->token_list);
-	//print_ast(get_ast());
 	destroy_tokenizer(t);
 	if (get_ast() == NULL)
 	{

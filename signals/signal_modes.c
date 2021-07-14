@@ -1,4 +1,4 @@
-#include "modes.h"
+#include "signal_modes.h"
 #include "../ast/ast.h"
 #include "../builtins/builtins.h"
 

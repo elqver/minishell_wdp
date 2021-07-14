@@ -1,7 +1,7 @@
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-# include "../automata/nfa/nfa.h"
+# include "../parser/automata/nfa.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -19,14 +19,16 @@ typedef struct s_token
 }				t_token;
 
 void		resect_quotes_from_line(char **line);
-void		print_token_list(t_token *t);
-t_token		*new_token(char *s, int priority);
 t_token		*append_token_list(t_token **t, char *s, int priority);
 void		free_token_list(t_token *t);
-t_token		*get_last_token(t_token *t);
 int			handle_envs(char **line);
+void		replace_substring(char **line, int index,
+				int len, char *replacement);
 char		*resect_substring(char **line, int start, int length);
 char		*insert_substring(char **line, int index, char *subs);
+
+//			Print
+void		print_token_list(t_token *t);
 
 typedef struct s_tokenizer
 {

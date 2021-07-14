@@ -1,6 +1,6 @@
 #include "nfa.h"
 
-static t_state	*create_env_automaton(void)
+static t_state	*create_export_automaton(void)
 {
 	t_state		*s1;
 	t_state		*s2;
@@ -12,11 +12,11 @@ static t_state	*create_env_automaton(void)
 	return (s1);
 }
 
-t_state	*env_automaton(void)
+t_state	*export_automaton(void)
 {
 	static t_state	*automaton;
 
 	if (automaton == NULL)
-		automaton = create_env_automaton();
+		create_export_automaton();
 	return (automaton);
 }
