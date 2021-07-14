@@ -1,6 +1,6 @@
 NAME		= minishell
 
-objs		= main.o \
+objs		= main.o main_loop.o \
 			  tokenizer.o append_token_list.o \
 			  resect_quotes.o replace_substring.o \
 			  print_token_list.o \

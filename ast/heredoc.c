@@ -9,7 +9,7 @@ static void	recursive_handle_heredocs(t_ast	*self)
 		recursive_handle_heredocs(self->right);
 	if (self->left != NULL)
 		recursive_handle_heredocs(self->left);
-	if (ft_strncmp(self->data, "<<", 2) == 0) 
+	if (ft_strncmp(self->data, "<<", 2) == 0)
 		handle_heredoc_node(self);
 }
 

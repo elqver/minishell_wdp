@@ -27,8 +27,8 @@ static void	execute_heredoc(char *delimeter,
 			return ;
 		if (env_subst_needed)
 			handle_envs(&line_read);
-		write(fd_to_write, line_read, ft_strlen(line_read)); 
-		write(fd_to_write, "\n", 1); 
+		write(fd_to_write, line_read, ft_strlen(line_read));
+		write(fd_to_write, "\n", 1);
 		free(line_read);
 		line_read = readline("> ");
 	}
