@@ -1,9 +1,6 @@
 #ifndef CONDITIONS_H
 # define CONDITIONS_H
 
-# include <string.h> // TODO: delete
-# include <ctype.h> // TODO: delete
-
 int	word_symbol_condition(char c);
 
 int	single_quote_condition(char c);

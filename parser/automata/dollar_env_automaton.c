@@ -23,4 +23,3 @@ t_state	*dollar_env_automaton(void)
 		automaton = create_dollar_env_automaton();
 	return (automaton);
 }
-

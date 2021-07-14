@@ -25,7 +25,7 @@ objs		= main.o main_loop.o \
 				word_symbol.o single_quotes.o double_quotes.o redir.o \
 				pipe.o space.o dollar.o env_symbol.o \
 				delete_env_list.o delete_env_node.o \
-				signal_modes.o						\
+				switch_to_command_mode.o switch_to_heredoc_mode.o switch_to_interactive_mode.o \
 				args_array.o create_ast_nodes.o		\
 				execute_binary_file.o execute_command_from_path.o	\
 				destroy_automata.o destroy_automata_util.o			\

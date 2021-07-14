@@ -1,10 +1,6 @@
 #include "env_substr.h"
 #include "../utils/utils.h"
 
-// TODO:
-// there's a lot of libft functions here
-// that need to be replaced with ft_ analogs
-
 static char	*_substr(char *str, char *start, char *end)
 {
 	char	*sub;

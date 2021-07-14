@@ -8,7 +8,7 @@ char	*resect_substring(char **line, int start, int length)
 	int		len;
 
 	len = ft_strlen(*line);
-	new_line = malloc(len - length + 1); 
+	new_line = malloc(len - length + 1);
 	if (!new_line || start >= len || start + length > len
 		|| start < 0 || length <= 0)
 		return (NULL);
