@@ -28,6 +28,7 @@ objs		= main.o main_loop.o \
 				signal_modes.o						\
 				args_array.o create_ast_nodes.o		\
 				execute_binary_file.o execute_command_from_path.o	\
+				destroy_automata.o destroy_automata_util.o			\
 				ft_atoi.o ft_calloc.o ft_isalnum.o ft_isalpha.o ft_isdigit.o \
 			  	ft_itoa.o ft_memcpy.o ft_memmove.o ft_split.o ft_strchr.o \
 			    ft_strcmp.o ft_strdup.o ft_strjoin.o ft_strlcpy.o ft_strlen.o \
