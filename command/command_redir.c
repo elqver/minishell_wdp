@@ -1,16 +1,16 @@
 #include "command_commands.h"
 #include "../tokenizer/tokenizer.h"
-#include <ctype.h> //???
+#include "../utils/utils.h"
 
 int	get_type_of_redir(char *redir)
 {
-	if (strncmp(redir, "<<", 2) == 0)
+	if (ft_strncmp(redir, "<<", 2) == 0)
 		return (TWO_LEFT_REDIR);
-	if (strncmp(redir, ">>", 2) == 0)
+	if (ft_strncmp(redir, ">>", 2) == 0)
 		return (TWO_RIGHT_REDIR);
-	if (strncmp(redir, "<", 1) == 0)
+	if (ft_strncmp(redir, "<", 1) == 0)
 		return (ONE_LEFT_REDIR);
-	if (strncmp(redir, ">", 1) == 0)
+	if (ft_strncmp(redir, ">", 1) == 0)
 		return (ONE_RIGHT_REDIR);
 	return (0);
 }
@@ -57,7 +57,7 @@ static int	two_left_redir(t_ast *self)
 {
 	int	new_fd_stdin;
 
-	new_fd_stdin = atoi(self->left->data); // TODO: replace with ft_
+	new_fd_stdin = ft_atoi(self->left->data); 
 	dup2(new_fd_stdin, 0);
 	close(new_fd_stdin);
 	self->right->exec(self->right);
@@ -92,6 +92,6 @@ t_ast	*create_redir_node(t_token *token)
 	redir_node = calloc(sizeof(t_ast), 1);
 	redir_node->priority = REDIR_P;
 	redir_node->exec = redir_exec;
-	redir_node->data = strdup(token->data); //Replace this with ft
+	redir_node->data = ft_strdup(token->data); 
 	return (redir_node);
 }

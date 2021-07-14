@@ -5,7 +5,7 @@ t_transition	*new_transition(int (*condition)(char c),
 {
 	t_transition	*transition;
 
-	transition = calloc(1, sizeof(t_transition));
+	transition = ft_calloc(1, sizeof(t_transition));
 	transition->target = target;
 	transition->condition = condition;
 	return (transition);

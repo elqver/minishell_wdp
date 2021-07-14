@@ -28,11 +28,12 @@ static int	cd_path(char *path)
 	return (0);
 }
 
-static int	cd_root(void)
+static int	cd_root(void) // TODO: protect for unset $HOME is it actually working?
 {
 	return (cd_path(find_env_val("HOME")));
 }
 
+// TODO: if ~ is an argument for cd need to ask OS for $HOME value in runtime
 int	cd(char **args)
 {
 	int	arg_l;

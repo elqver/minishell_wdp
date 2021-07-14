@@ -5,7 +5,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
-# include <string.h> // TODO: you know it
 
 # define ARG_P		0
 # define REDIR_P	1
@@ -27,7 +26,6 @@ void		replace_substring(char **line, int index,
 char		*resect_substring(char **line, int start, int length);
 char		*insert_substring(char **line, int index, char *subs);
 
-//			Print
 void		print_token_list(t_token *t);
 
 typedef struct s_tokenizer

@@ -4,10 +4,6 @@
 # include <stdlib.h>
 # include "../ast/ast.h"
 
-// TODO: delete
-#include <string.h>
-#include <stdio.h>
-
 typedef struct s_env
 {
 	char			*var;
@@ -24,8 +20,8 @@ void	create_env_list(char **envp);
 int		delete_env_node(t_env **node);
 void	delete_env_list(void);
 void	_delete_env_list(t_env **list);
-t_env	*find_env_var(char const *name);
-char	*find_env_val(char const *name);
+t_env	*find_env_var(char *name);
+char	*find_env_val(char *name);
 int		split_append_env(char *env);
 void	print_env_list(void);
 void	print_env(char *var, char *val);

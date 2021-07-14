@@ -1,4 +1,5 @@
 #include "ast.h"
+#include "../utils/utils.h"
 #include "../command/command_commands.h"
 
 static int	has_quotes(char *line)
@@ -20,14 +21,14 @@ static void	execute_heredoc(char *delimeter,
 	line_read = readline("> ");
 	if (!line_read)
 		return ;
-	while (strcmp(line_read, delimeter) && get_ast()) // TODO: replace later
+	while (ft_strcmp(line_read, delimeter) && get_ast())
 	{
 		if (!line_read)
 			return ;
 		if (env_subst_needed)
 			handle_envs(&line_read);
-		write(fd_to_write, line_read, strlen(line_read)); // TODO: replace later
-		write(fd_to_write, "\n", 1); // TODO: replace later
+		write(fd_to_write, line_read, ft_strlen(line_read)); 
+		write(fd_to_write, "\n", 1); 
 		free(line_read);
 		line_read = readline("> ");
 	}
@@ -47,7 +48,7 @@ static void	handle_heredoc_node_parent(t_ast *self,
 	}
 	free(self->left->data);
 	self->left->data = malloc(3);
-	sprintf(self->left->data, "%d", fd_redirect[0]); // TODO: sgaslfgkjasdlfkjasldkfj
+	self->left->data = ft_itoa(fd_redirect[0]);
 }
 
 static void	handle_heredoc_node_child(t_ast *self, int fd_to_write)

@@ -1,4 +1,5 @@
 #include "tokenizer.h"
+#include "../utils/utils.h"
 
 char	*resect_substring(char **line, int start, int length)
 {
@@ -6,8 +7,8 @@ char	*resect_substring(char **line, int start, int length)
 	int		i;
 	int		len;
 
-	len = strlen(*line);
-	new_line = malloc(len - length + 1); // TODO: take it out
+	len = ft_strlen(*line);
+	new_line = malloc(len - length + 1); 
 	if (!new_line || start >= len || start + length > len
 		|| start < 0 || length <= 0)
 		return (NULL);
@@ -30,8 +31,8 @@ char	*insert_substring(char **line, int index, char *subs)
 	int		subs_len;
 	int		i;
 
-	line_len = strlen(*line);
-	subs_len = strlen(subs);
+	line_len = ft_strlen(*line);
+	subs_len = ft_strlen(subs);
 	new_line = malloc(line_len + subs_len + 1);
 	i = -1;
 	while (++i < index)

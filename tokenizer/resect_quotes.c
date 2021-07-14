@@ -1,4 +1,5 @@
 #include "tokenizer.h"
+#include "../utils/utils.h"
 
 void	resect_quotes_from_line(char **line)
 {
@@ -24,7 +25,7 @@ void	resect_quotes(t_tokenizer *self)
 	{
 		if (!is_prev_heredoc)
 			resect_quotes_from_line(&(token->data));
-		is_prev_heredoc = !strncmp("<<", token->data, 2);
+		is_prev_heredoc = !ft_strncmp("<<", token->data, 2);
 		token = token->next;
 	}
 }

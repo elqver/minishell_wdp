@@ -1,4 +1,5 @@
 #include "env.h"
+#include "../utils/utils.h"
 
 static size_t	list_len(t_env *env_list)
 {
@@ -19,12 +20,12 @@ static char	*strdup_env(t_env *env_node)
 	size_t	var_len;
 	size_t	val_len;
 
-	var_len = strlen(env_node->var);
-	val_len = strlen(env_node->val);
-	env = calloc(sizeof(char), var_len + val_len + 2);
+	var_len = ft_strlen(env_node->var);
+	val_len = ft_strlen(env_node->val);
+	env = ft_calloc(sizeof(char), var_len + val_len + 2);
 	strncpy(env, env_node->var, var_len + 1);
 	env[var_len] = '=';
-	strncpy(env + var_len + 1, env_node->val, val_len);
+	ft_strncpy(env + var_len + 1, env_node->val, val_len);
 	return (env);
 }
 
@@ -57,7 +58,7 @@ char	**array_from_list(t_env *env)
 	char	**env_arr;
 	int		i;
 
-	env_arr = calloc(sizeof(char *),
+	env_arr = ft_calloc(sizeof(char *),
 			list_len(env) - count_nulled_envs(env) + 1);
 	i = 0;
 	while (env != NULL)

@@ -1,13 +1,14 @@
 #include "env.h"
+#include "../utils/utils.h"
 
 void	print_env(char *var, char *val)
 {
-	write(1, var, strlen(var)); // TODO: replace with ft_
+	write(1, var, ft_strlen(var)); 
 	if (val)
 	{
 		write(1, "=", 1);
 		write(1, "\"", 1);
-		write(1, val, strlen(val)); // TODO: replace with your mom
+		write(1, val, ft_strlen(val)); 
 		write(1, "\"", 1);
 	}
 	write(1, "\n", 1);

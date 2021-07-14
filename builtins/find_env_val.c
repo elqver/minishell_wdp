@@ -1,6 +1,6 @@
 #include "env.h"
 
-char	*find_env_val(char const *name)
+char	*find_env_val(char *name)
 {
 	t_env	*env;
 

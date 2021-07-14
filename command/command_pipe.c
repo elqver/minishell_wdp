@@ -1,4 +1,5 @@
 #include "command_commands.h"
+#include "../utils/utils.h"
 
 static int	substitution_in(t_ast *node, int fd_redirect[2])
 {
@@ -52,7 +53,7 @@ t_ast		*create_pipe_node(void)
 {
 	t_ast	*pipe_node;
 
-	pipe_node = calloc(sizeof(t_ast), 1);
+	pipe_node = ft_calloc(sizeof(t_ast), 1);
 	pipe_node->priority = PIPE_P;
 	pipe_node->exec = pipe_exec;
 	pipe_node->data = strdup("|"); //Replace this with ft

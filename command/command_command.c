@@ -1,5 +1,6 @@
 #include "command_commands.h"
 #include "../builtins/builtins.h"
+#include "../utils/utils.h"
 
 void	delete_args_arr(char **args)
 {
@@ -20,11 +21,11 @@ int	is_executable_in_dir(char *executable, char *dir)
 	dirp = opendir(dir);
 	if (dirp == NULL)
 		return (0);
-	len = strlen(executable);
+	len = ft_strlen(executable);
 	dp = readdir(dirp);
 	while (dp != NULL)
 	{
-		if (dp->d_namlen == len && strcmp(dp->d_name, executable) == 0) // TODO: replace with ft_
+		if (dp->d_namlen == len && ft_strcmp(dp->d_name, executable) == 0) // TODO: replace with ft_
 		{
 			(void)closedir(dirp);
 			return (1);
@@ -104,11 +105,11 @@ char	**generate_args_arr(t_ast *self)
 	int		i;
 
 	argc = calculate_args_arr_length(self);
-	argv = calloc(sizeof(char *), argc + 1);
+	argv = ft_calloc(sizeof(char *), argc + 1);
 	i = 0;
 	while (i < argc)
 	{
-		argv[i] = strdup(self->data);
+		argv[i] = ft_strdup(self->data);
 		self = self->right;
 		i++;
 	}
@@ -166,7 +167,7 @@ int	execute_command(t_ast *self)
 		return (execute_binary_file(args[0], args));
 	while (builtins[i] != NULL)
 	{
-		if (strcmp(self->data, builtins_names[i]) == 0)
+		if (ft_strcmp(self->data, builtins_names[i]) == 0)
 		{
 			set_exit_code(builtins[i](args));
 			delete_args_arr(args);
@@ -185,10 +186,10 @@ t_ast	*create_command_node(t_token *token)
 {
 	t_ast	*command_node;
 
-	command_node = calloc(sizeof(t_ast), 1);
+	command_node = ft_calloc(sizeof(t_ast), 1);
 	command_node->priority = 1;
 	command_node->exec = execute_command;
-	command_node->data = strdup(token->data); //Replace this with ft
+	command_node->data = ft_strdup(token->data); //Replace this with ft
 	command_node->priority = ARG_P;
 	return (command_node);
 }

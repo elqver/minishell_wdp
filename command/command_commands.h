@@ -8,10 +8,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include "../utils/ft_string.h"
 # include <dirent.h>
 # include <sys/wait.h>
-#include <string.h> // TODO: delete
 
 # define ONE_LEFT_REDIR		1
 # define ONE_RIGHT_REDIR	2

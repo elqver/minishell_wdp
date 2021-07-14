@@ -5,8 +5,6 @@
 # include <stdlib.h>
 # include "../conditions/conditions.h"
 # include "../transition/transition.h"
-# include <string.h>					// TODO: replace
-# include <ctype.h>						// TODO: replace
 
 # define FINAL 		1
 # define NON_FINAL	0

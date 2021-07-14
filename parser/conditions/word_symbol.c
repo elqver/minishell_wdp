@@ -1,6 +1,7 @@
 #include "conditions.h"
+#include "../../utils/utils.h"
 
 int	word_symbol_condition(char c)
 {
-	return (!strchr("><| \t\n\v\f\r\'\"", c)); // TODO: replace with ft_
+	return (!ft_strchr("><| \t\n\v\f\r\'\"", c)); // TODO: replace with ft_
 }

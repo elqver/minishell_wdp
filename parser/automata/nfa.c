@@ -1,4 +1,5 @@
 #include "nfa.h"
+#include "../../utils/utils.h"
 
 t_state	*new_state(int final,
 					t_transition *transition_list)
@@ -60,7 +61,7 @@ t_state_list	*new_state_list(t_state *state)
 {
 	t_state_list	*state_list_node;
 
-	state_list_node = calloc(sizeof(t_state_list), 1);
+	state_list_node = ft_calloc(sizeof(t_state_list), 1);
 	state_list_node->state = state;
 	return (state_list_node);
 }

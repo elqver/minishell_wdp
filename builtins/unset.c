@@ -1,4 +1,5 @@
 #include "builtins.h"
+#include "../utils/utils.h"
 
 static int	check_env_var(char *var)
 {
@@ -8,7 +9,7 @@ static int	check_env_var(char *var)
 		return (1);
 	if (automaton == NULL)
 		automaton = env_automaton();
-	return (get_lexeme_len(automaton, var) != strlen(var)); // TODO: ft_
+	return (get_lexeme_len(automaton, var) != ft_strlen(var));
 }
 
 static int	unset_one(char *variable)
@@ -19,7 +20,7 @@ static int	unset_one(char *variable)
 	if (check_env_var(variable) == 1)
 		return (1);
 	cur = *env_list(get);
-	if (strcmp(cur->var, variable) == 0)
+	if (ft_strcmp(cur->var, variable) == 0)
 	{
 		cur = cur->next;
 		return (delete_env_node(&cur));
@@ -28,7 +29,7 @@ static int	unset_one(char *variable)
 	cur = cur->next;
 	while (cur != NULL)
 	{
-		if (strcmp(cur->var, variable) == 0)
+		if (ft_strcmp(cur->var, variable) == 0)
 		{
 			prev->next = cur->next;
 			return (delete_env_node(&cur));

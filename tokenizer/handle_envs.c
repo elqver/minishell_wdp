@@ -2,15 +2,11 @@
 #include "../builtins/env.h"
 #include "../builtins/builtins.h"
 
-#include <ctype.h> // TODO: delete
-
-// TODO: replace with ft_itoa();
-//
 static char	*get_exit_code_string(void)
 {
-	static char	exit_code_string[4];
+	static char	*exit_code_string;
 
-	sprintf(exit_code_string, "%d", get_exit_code()); // TODO: replace with idk what
+	exit_code_string = ft_itoa(get_exit_code());
 	return (exit_code_string);
 }
 
@@ -19,7 +15,7 @@ static void	handle_env(char **line, int i)
 	char	*env;
 	int		lexeme_len;
 
-	if (strncmp(*line + i, "$?", 2) == 0) // TODO: replace
+	if (ft_strncmp(*line + i, "$?", 2) == 0) 
 	{
 		replace_substring(line, i, 2, get_exit_code_string());
 		return ;
@@ -27,7 +23,7 @@ static void	handle_env(char **line, int i)
 	lexeme_len = get_lexeme_len(dollar_env_automaton(), *line + i);
 	if (lexeme_len == -1)
 		return ;
-	env = strndup(*line + i + 1, lexeme_len - 1); // TODO: replace
+	env = ft_strndup(*line + i + 1, lexeme_len - 1); 
 	replace_substring(line, i, lexeme_len, find_env_val(env));
 	free(env);
 }

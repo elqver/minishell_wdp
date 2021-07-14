@@ -1,4 +1,5 @@
 #include "builtins.h"
+#include "../utils/utils.h"
 
 int	echo(char **args)
 {
@@ -9,14 +10,14 @@ int	echo(char **args)
 		return (!!write(1, "\n", 1));
 	newline_flag = 1;
 	i = 1;
-	if (strcmp(args[1], "-n") == 0)
+	if (ft_strcmp(args[1], "-n") == 0)
 	{
 		newline_flag = 0;
 		i = 2;
 	}
 	while (args[i] != NULL)
 	{
-		write(1, args[i], strlen(args[i])); // TODO: replace with ft_
+		write(1, args[i], ft_strlen(args[i]));
 		if (args[i + 1] != NULL)
 			write(1, " ", 1);
 		i++;
