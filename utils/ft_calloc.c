@@ -11,5 +11,5 @@ void	*ft_calloc(size_t count, size_t size)
 	i = 0;
 	while (i < size * count)
 		result[i++] = 0;
-	return (void *)result;
+	return ((void *)result);
 }
