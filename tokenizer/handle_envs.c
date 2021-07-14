@@ -15,7 +15,7 @@ static void	handle_env(char **line, int i)
 	char	*env;
 	int		lexeme_len;
 
-	if (ft_strncmp(*line + i, "$?", 2) == 0) 
+	if (ft_strncmp(*line + i, "$?", 2) == 0)
 	{
 		replace_substring(line, i, 2, get_exit_code_string());
 		return ;
@@ -23,7 +23,7 @@ static void	handle_env(char **line, int i)
 	lexeme_len = get_lexeme_len(dollar_env_automaton(), *line + i);
 	if (lexeme_len == -1)
 		return ;
-	env = ft_strndup(*line + i + 1, lexeme_len - 1); 
+	env = ft_strndup(*line + i + 1, lexeme_len - 1);
 	replace_substring(line, i, lexeme_len, find_env_val(env));
 	free(env);
 }

@@ -13,31 +13,8 @@ static void	interactive_mode_sigint_handler(int no)
 	rl_redisplay();
 }
 
-static void	dummy(int beef)
-{
-	(void)beef;
-}
-
 void	switch_to_interactive_mode(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, interactive_mode_sigint_handler);
-}
-
-void	switch_to_command_mode(void)
-{
-	signal(SIGQUIT, dummy);
-	signal(SIGINT, dummy);
-}
-
-static void	heredoc_mode_sigint_handler(int signo)
-{
-	(void)signo;
-	exit(1);
-}
-
-void	switch_to_heredoc_mode(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, heredoc_mode_sigint_handler);
 }
