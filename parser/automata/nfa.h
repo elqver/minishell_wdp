@@ -15,6 +15,18 @@ typedef struct s_state
 	t_transition	*transition_list;
 }				t_state;
 
+//				Automata
+t_state			*word_automaton(void);
+t_state			*single_quote_automaton(void);
+t_state			*double_quote_automaton(void);
+t_state			*redir_automaton(void);
+t_state			*pipe_automaton(void);
+t_state			*env_automaton(void);
+t_state			*dollar_env_automaton(void);
+t_state			*export_automaton(void);
+t_state			*heredoc_automaton(void);
+
+//				Using automata
 t_state			*new_state(int final,
 					t_transition *transition_list);
 int				change_state(t_state **current_state, char c);
@@ -27,19 +39,11 @@ typedef struct s_state_list
 	struct s_state_list	*next;
 }				t_state_list;
 
-t_state_list	*new_state_list(t_state *state);
+//				Destroying automata
 void			append_state_list(t_state_list **state_list,
 					t_state *state);
 void			free_state_list(t_state_list *state_list);
-
-t_state			*word_automaton(void);
-t_state			*single_quote_automaton(void);
-t_state			*double_quote_automaton(void);
-t_state			*redir_automaton(void);
-t_state			*pipe_automaton(void);
-t_state			*env_automaton(void);
-t_state			*dollar_env_automaton(void);
-t_state			*export_automaton(void);
-t_state			*heredoc_automaton(void);
+int				is_state_in_state_list(t_state_list *state_list,
+					t_state *state);
 
 #endif
