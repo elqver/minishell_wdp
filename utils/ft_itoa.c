@@ -4,7 +4,10 @@ static int	len_number(int n)
 {
 	int	i;
 
-	i = n <= 0 ? 1 : 0;
+	if (n <= 0)
+		i = 1;
+	else
+		i = 0;
 	while (n)
 	{
 		n /= 10;
@@ -13,14 +16,17 @@ static int	len_number(int n)
 	return (i);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*res;
 	char	sign;
 	int		len;
 
 	len = len_number(n);
-	sign = n < 0 ? -1 : 1;
+	if (n < 0)
+		sign = -1;
+	else
+		sign = 1;
 	res = (char *)malloc((len + 1) * sizeof(char));
 	if (res == NULL)
 		return (NULL);

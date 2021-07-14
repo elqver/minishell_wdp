@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-#include <stdlib.h>
+# include <stdlib.h>
 
 char		**ft_split(char const *s, char c);
 int			ft_atoi(const char *str);
