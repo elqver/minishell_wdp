@@ -5,7 +5,7 @@ char	*ft_strndup(const char *s, size_t n)
 	char			*res;
 	unsigned int	i;
 
-	if (res == NULL)
+	if (s == NULL)
 		return (NULL);
 	i = 0;
 	res = malloc(sizeof(char) * (n + 1));

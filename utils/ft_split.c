@@ -25,7 +25,6 @@ char	**ft_split(char const *s, char c)
 {
 	int		i;
 	int		n_s;
-	int		b;
 	int		start;
 	char	**sp_s;
 
@@ -35,12 +34,12 @@ char	**ft_split(char const *s, char c)
 	n_s = 0;
 	start = 0;
 	sp_s = n_words(s, c);
-	while (s[i] && i < ft_strlen(s))
+	while (s[i] && i < (int)ft_strlen(s))
 	{
 		if (s[i] != c)
 		{
 			start = i;
-			while (s[i] !=c && i < ft_strlen(s))
+			while (s[i] !=c && i < (int)ft_strlen(s))
 				i++;
 			sp_s[n_s++] = ft_substr(s, start, i - start);
 		}

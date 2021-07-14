@@ -9,7 +9,7 @@ static int	check_env_var(char *var)
 		return (1);
 	if (automaton == NULL)
 		automaton = env_automaton();
-	return (get_lexeme_len(automaton, var) != ft_strlen(var));
+	return ((int)get_lexeme_len(automaton, var) != (int)ft_strlen(var));
 }
 
 static int	unset_one(char *variable)

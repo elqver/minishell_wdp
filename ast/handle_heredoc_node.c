@@ -1,6 +1,7 @@
 #include "ast.h"
 #include "../utils/utils.h"
 #include "../command/command_commands.h"
+#include "../main_header.h"
 
 static int	has_quotes(char *line)
 {

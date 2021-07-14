@@ -42,7 +42,7 @@ VPATH		= ast:\
 
 CC			= clang
 
-CFLAGS		= #-Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra
 
 DEBUG		= -g
 
