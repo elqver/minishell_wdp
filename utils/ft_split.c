@@ -35,11 +35,9 @@ char			**ft_split(char const *s, char c)
 	n_s = 0;
 	start = 0;
 	b = ft_strlen(s);
-	printf("%d << b\n", b);
 	sp_s = n_words(s, c);
 	while (s[i] && i < b)
 	{
-		printf("%d\n", i);
 		if (s[i] != c)
 		{
 			start = i;

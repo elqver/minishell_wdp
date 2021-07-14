@@ -48,17 +48,3 @@ int	pipe_exec(t_ast *self)
 	waitpid_logging(left_pid);
 	return (0);
 }
-<<<<<<< HEAD
-
-t_ast		*create_pipe_node(void)
-{
-	t_ast	*pipe_node;
-
-	pipe_node = ft_calloc(sizeof(t_ast), 1);
-	pipe_node->priority = PIPE_P;
-	pipe_node->exec = pipe_exec;
-	pipe_node->data = strdup("|"); //Replace this with ft
-	return (pipe_node);
-}
-=======
->>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3

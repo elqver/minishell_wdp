@@ -29,6 +29,7 @@ static int	cd_path(char *path)
 	return (0);
 }
 
+// TODO: if "-" is arg go to OLDPWD
 static int	cd_root(void) // TODO: protect for unset $HOME is it actually working?
 {
 	return (cd_path(find_env_val("HOME")));

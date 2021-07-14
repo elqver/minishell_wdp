@@ -10,11 +10,11 @@ static int	is_executable_in_dir(char *executable, char *dir)
 	dirp = opendir(dir);
 	if (dirp == NULL)
 		return (0);
-	len = strlen(executable); // TODO: replace with ft_
+	len = ft_strlen(executable);
 	dp = readdir(dirp);
 	while (dp != NULL)
 	{
-		if (dp->d_namlen == len && strcmp(dp->d_name, executable) == 0) // TODO: replace with ft_
+		if (dp->d_namlen == len && ft_strcmp(dp->d_name, executable) == 0)
 		{
 			(void)closedir(dirp);
 			return (1);
