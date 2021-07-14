@@ -1,6 +1,6 @@
 NAME		= minishell
 
-objs		= main.o main_loop.o \
+objs		= main.o main_loop.o flags_singleton.o print_help_message.o \
 			  tokenizer.o append_token_list.o \
 			  resect_quotes.o replace_substring.o \
 			  print_token_list.o \
@@ -32,7 +32,7 @@ objs		= main.o main_loop.o \
 				ft_atoi.o ft_calloc.o ft_isalnum.o ft_isalpha.o ft_isdigit.o \
 			  	ft_itoa.o ft_memcpy.o ft_memmove.o ft_split.o ft_strchr.o \
 			    ft_strcmp.o ft_strdup.o ft_strjoin.o ft_strlcpy.o ft_strlen.o \
-			    ft_strncmp.o ft_strncpy.o ft_substr.o ft_strndup.o
+			    ft_strncmp.o ft_strncpy.o ft_substr.o ft_strndup.o ft_isspace.o 
 
 VPATH		= ast:\
 			  parser/automata::parser/transition:parser/conditions: \

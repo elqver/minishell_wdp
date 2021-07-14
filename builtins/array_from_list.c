@@ -23,7 +23,7 @@ static char	*strdup_env(t_env *env_node)
 	var_len = ft_strlen(env_node->var);
 	val_len = ft_strlen(env_node->val);
 	env = ft_calloc(sizeof(char), var_len + val_len + 2);
-	strncpy(env, env_node->var, var_len + 1);
+	ft_strncpy(env, env_node->var, var_len + 1);
 	env[var_len] = '=';
 	ft_strncpy(env + var_len + 1, env_node->val, val_len);
 	return (env);

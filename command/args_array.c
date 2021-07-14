@@ -36,7 +36,7 @@ char	**generate_args_arr(t_ast *self)
 	i = 0;
 	while (i < argc)
 	{
-		argv[i] = strdup(self->data);
+		argv[i] = ft_strdup(self->data);
 		self = self->right;
 		i++;
 	}

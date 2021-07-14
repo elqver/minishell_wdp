@@ -6,8 +6,7 @@
 #include "signals/signal_modes.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-
-int	get_printing_flags(void);
+#include "main_header.h"
 
 void	handle_line(char **line)
 {
@@ -84,5 +83,3 @@ void	main_loop(void)
 		restore_original_file_descriptors();
 	}
 }
-
-

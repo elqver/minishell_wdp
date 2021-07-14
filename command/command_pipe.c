@@ -44,7 +44,7 @@ int	pipe_exec(t_ast *self)
 	left_pid = substitution_in(self->left, fd_redirect);
 	close(fd_redirect[0]);
 	close(fd_redirect[1]);
-	waitpid_logging(right_pid);
 	waitpid_logging(left_pid);
+	waitpid_logging(right_pid);
 	return (0);
 }
