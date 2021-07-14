@@ -11,15 +11,27 @@ static int	arg_len(char **args)
 	return (i);
 }
 
+static void	replace_tilda(char **path)
+{
+	char	*home_val;
+
+	home_val = getenv("HOME");
+	if (home_val == NULL)
+		return ;
+	replace_substring(path, 0, 1, home_val);
+}
+
 static int	cd_path(char *path)
 {
 	char	*tmp;
 
+	if (path[0] == '~')
+		replace_tilda(&path);
 	tmp = find_env_val("OLDPWD");
 	append_env_list("OLDPWD", find_env_val("PWD"));
-	printf("| %s |\n", path);
 	if (chdir(path) == -1)
 	{
+		printf("%s: No such directory\n", path);
 		append_env_list("OLDPWD", tmp);
 		return (1);
 	}
@@ -29,19 +41,28 @@ static int	cd_path(char *path)
 	return (0);
 }
 
-// TODO: if "-" is arg go to OLDPWD
-static int	cd_root(void) // TODO: protect for unset $HOME is it actually working?
+static int	cd_root(void)
 {
-	return (cd_path(find_env_val("HOME")));
+	char	*home_val;
+
+	home_val = find_env_val("HOME");
+	if (home_val)
+		return (cd_path(home_val));
+	printf("Error: HOME not set\n");
+	return (1);
 }
 
-// TODO: if ~ is an argument for cd need to ask OS for $HOME value in runtime
 int	cd(char **args)
 {
-	int	arg_l;
+	int		arg_l;
+	int		res;
+	char	*path;
 
 	arg_l = arg_len(args);
 	if (arg_l == 1)
 		return (cd_root());
-	return (cd_path(args[1]));
+	path = ft_strdup(args[1]);
+	res = cd_path(path);
+	free(path);
+	return (res);
 }

@@ -20,7 +20,7 @@ int	append_env_list(char *var, char *val)
 {
 	t_env	*env;
 
-	if (get_lexeme_len(export_automaton(), var) != strlen(var)) // TODO: ft_
+	if (get_lexeme_len(export_automaton(), var) != ft_strlen(var))
 		return (1);
 	env = find_env_var(var);
 	if (env)

@@ -3,12 +3,12 @@
 
 void	print_env(char *var, char *val)
 {
-	write(1, var, ft_strlen(var)); 
+	write(1, var, ft_strlen(var));
 	if (val)
 	{
 		write(1, "=", 1);
 		write(1, "\"", 1);
-		write(1, val, ft_strlen(val)); 
+		write(1, val, ft_strlen(val));
 		write(1, "\"", 1);
 	}
 	write(1, "\n", 1);

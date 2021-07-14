@@ -14,4 +14,3 @@ t_env	*find_env_var(char *name)
 	}
 	return (NULL);
 }
-
