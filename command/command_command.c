@@ -2,6 +2,7 @@
 #include "../builtins/builtins.h"
 #include "../utils/utils.h"
 
+<<<<<<< HEAD
 void	delete_args_arr(char **args)
 {
 	unsigned int	i;
@@ -146,25 +147,23 @@ static int	execute_binary_file(char *path, char **av)
 	return (0);
 }
 
+=======
+>>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3
 int	execute_command(t_ast *self)
 {
 	char		**args;
-	static char	*builtins_names[8] = {"echo", "cd", "pwd", \
+	static char	*builtin_names[8] = {"echo", "cd", "pwd", \
 		"export", "unset", "env", "exit", NULL};
 	static	int	(*builtins[8])(char **) = {echo, cd, pwd, env_export,
 		unset, env, wdp_exit, NULL};
 	int			i;
-	int			res;
 
 	if (self == NULL)
-	{
-		set_exit_code(0);
-		return (0);
-	}
-	i = 0;
+		return (set_exit_code(0));
 	args = generate_args_arr(self);
 	if (contains_slash(args[0]))
 		return (execute_binary_file(args[0], args));
+<<<<<<< HEAD
 	while (builtins[i] != NULL)
 	{
 		if (ft_strcmp(self->data, builtins_names[i]) == 0)
@@ -192,4 +191,14 @@ t_ast	*create_command_node(t_token *token)
 	command_node->data = ft_strdup(token->data); //Replace this with ft
 	command_node->priority = ARG_P;
 	return (command_node);
+=======
+	i = 0;
+	while (builtin_names[i] != NULL && strcmp(self->data, builtin_names[i])) // TODO: replace with ft_
+		i++;
+	if (builtin_names[i] != NULL)
+		set_exit_code(builtins[i](args));
+	else if (execute_command_from_path(args) != 0)
+		printf("%s: command not found\n", args[0]);
+	return (delete_args_arr(args));
+>>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3
 }

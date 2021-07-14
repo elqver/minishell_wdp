@@ -11,8 +11,8 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-t_env	**env_list(t_env **(*action)(t_env **));
-t_env	**get(t_env **env_list);
+t_env	*get_env_list(void);
+t_env	**get_env_list_addr(void);
 t_env	*new_env_node(char *var, char *val);
 int		append_env_list(char *var, char *val);
 t_env	*_append_env_list(t_env **list, char *var, char *val);

@@ -21,7 +21,7 @@ static void	dummy(int beef)
 void	switch_to_interactive_mode(void)
 {
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, interactive_mode_sigint_handler); 
+	signal(SIGINT, interactive_mode_sigint_handler);
 }
 
 void	switch_to_command_mode(void)
@@ -36,7 +36,7 @@ static void	heredoc_mode_sigint_handler(int signo)
 	exit(1);
 }
 
-void	switch_to_heredoc_mode()
+void	switch_to_heredoc_mode(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, heredoc_mode_sigint_handler);

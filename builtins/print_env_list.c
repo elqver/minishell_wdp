@@ -25,5 +25,5 @@ static void	_print_env_list(t_env *list)
 
 void	print_env_list(void)
 {
-	_print_env_list(*env_list(get));
+	_print_env_list(get_env_list());
 }

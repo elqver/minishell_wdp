@@ -17,6 +17,6 @@ t_state	*export_automaton(void)
 	static t_state	*automaton;
 
 	if (automaton == NULL)
-		create_export_automaton();
+		automaton = create_export_automaton();
 	return (automaton);
 }

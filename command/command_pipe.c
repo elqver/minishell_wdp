@@ -33,7 +33,7 @@ static int	substitution_out(t_ast *node, int fd_redirect[2])
 	return (child_pid);
 }
 
-static int	pipe_exec(t_ast *self)
+int	pipe_exec(t_ast *self)
 {
 	int	fd_redirect[2];
 	int	left_pid;
@@ -48,6 +48,7 @@ static int	pipe_exec(t_ast *self)
 	waitpid_logging(left_pid);
 	return (0);
 }
+<<<<<<< HEAD
 
 t_ast		*create_pipe_node(void)
 {
@@ -59,3 +60,5 @@ t_ast		*create_pipe_node(void)
 	pipe_node->data = strdup("|"); //Replace this with ft
 	return (pipe_node);
 }
+=======
+>>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3

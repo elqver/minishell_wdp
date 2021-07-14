@@ -19,8 +19,13 @@ static int	unset_one(char *variable)
 
 	if (check_env_var(variable) == 1)
 		return (1);
+<<<<<<< HEAD
 	cur = *env_list(get);
 	if (ft_strcmp(cur->var, variable) == 0)
+=======
+	cur = get_env_list();
+	if (strcmp(cur->var, variable) == 0)
+>>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3
 	{
 		cur = cur->next;
 		return (delete_env_node(&cur));

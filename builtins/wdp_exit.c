@@ -14,9 +14,9 @@ int	get_exit_code(void)
 	return (exit_code_singleton(NULL));
 }
 
-void	set_exit_code(int new_code)
+int	set_exit_code(int new_code)
 {
-	exit_code_singleton(&new_code);
+	return (exit_code_singleton(&new_code));
 }
 
 void	waitpid_logging(pid_t pid)

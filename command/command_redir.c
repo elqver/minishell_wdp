@@ -2,6 +2,7 @@
 #include "../tokenizer/tokenizer.h"
 #include "../utils/utils.h"
 
+<<<<<<< HEAD
 int	get_type_of_redir(char *redir)
 {
 	if (ft_strncmp(redir, "<<", 2) == 0)
@@ -15,6 +16,8 @@ int	get_type_of_redir(char *redir)
 	return (0);
 }
 
+=======
+>>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3
 static int	one_left_redir(t_ast *self)
 {
 	int	fd;
@@ -64,15 +67,19 @@ static int	two_left_redir(t_ast *self)
 	return (0);
 }
 
-static int	redir_exec(t_ast *self)
+int	redir_exec(t_ast *self)
 {
-	int	redir_type;
-
-	redir_type = get_type_of_redir(self->data);
-	if (redir_type == ONE_LEFT_REDIR)
+	if (self == NULL || self->right == NULL)
+		return (0);
+	else if (strncmp(self->data, "<<", 2) == 0)
+		two_left_redir(self);
+	else if (strncmp(self->data, ">>", 2) == 0)
+		two_right_redir(self);
+	else if (strncmp(self->data, "<", 1) == 0)
 		one_left_redir(self);
-	if (redir_type == ONE_RIGHT_REDIR)
+	else if (strncmp(self->data, ">", 1) == 0)
 		one_right_redir(self);
+<<<<<<< HEAD
 	if (redir_type == TWO_RIGHT_REDIR)
 		two_right_redir(self);
 	if (redir_type == TWO_LEFT_REDIR)
@@ -94,4 +101,10 @@ t_ast	*create_redir_node(t_token *token)
 	redir_node->exec = redir_exec;
 	redir_node->data = ft_strdup(token->data); 
 	return (redir_node);
+=======
+	else
+		return (0);
+	self->right->exec(self->right);
+	return (1);
+>>>>>>> f4960ae9bbf3e6b6db9c0ed6dede2deeb0034ed3
 }

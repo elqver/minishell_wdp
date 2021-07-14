@@ -13,7 +13,7 @@ int		unset(char **args);
 int		env(char **args);
 int		wdp_exit(char **args);
 
-void	set_exit_code(int new_code);
+int		set_exit_code(int new_code);
 int		get_exit_code(void);
 void	waitpid_logging(pid_t pid);
 
