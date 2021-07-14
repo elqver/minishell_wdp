@@ -1,4 +1,4 @@
-# ifndef COMMAND_COMMANDS_H
+#ifndef COMMAND_COMMANDS_H
 # define COMMAND_COMMANDS_H
 
 # include "../ast/ast.h"

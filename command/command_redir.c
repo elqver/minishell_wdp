@@ -44,7 +44,7 @@ static int	two_left_redir(t_ast *self)
 {
 	int	new_fd_stdin;
 
-	new_fd_stdin = ft_atoi(self->left->data); 
+	new_fd_stdin = ft_atoi(self->left->data);
 	dup2(new_fd_stdin, 0);
 	close(new_fd_stdin);
 	self->right->exec(self->right);

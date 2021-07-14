@@ -8,7 +8,7 @@ t_ast	*create_command_node(t_token *token)
 	command_node = calloc(sizeof(t_ast), 1);
 	command_node->priority = 1;
 	command_node->exec = execute_command;
-	command_node->data = strdup(token->data); //Replace this with ft
+	command_node->data = ft_strdup(token->data);
 	command_node->priority = ARG_P;
 	return (command_node);
 }
@@ -20,7 +20,7 @@ t_ast	*create_pipe_node(void)
 	pipe_node = calloc(sizeof(t_ast), 1);
 	pipe_node->priority = PIPE_P;
 	pipe_node->exec = pipe_exec;
-	pipe_node->data = strdup("|"); //Replace this with ft
+	pipe_node->data = ft_strdup("|");
 	return (pipe_node);
 }
 
@@ -31,6 +31,6 @@ t_ast	*create_redir_node(t_token *token)
 	redir_node = calloc(sizeof(t_ast), 1);
 	redir_node->priority = REDIR_P;
 	redir_node->exec = redir_exec;
-	redir_node->data = strdup(token->data); //Replace this with ft_
+	redir_node->data = ft_strdup(token->data);
 	return (redir_node);
 }
