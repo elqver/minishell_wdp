@@ -32,7 +32,7 @@ char	**generate_args_arr(t_ast *self)
 	int		i;
 
 	argc = calculate_args_arr_length(self);
-	argv = calloc(sizeof(char *), argc + 1);
+	argv = ft_calloc(sizeof(char *), argc + 1);
 	i = 0;
 	while (i < argc)
 	{

@@ -16,7 +16,7 @@ int	automatonize(t_tokenizer *self, char *s)
 		lexeme_len = get_lexeme_len(automaton, s);
 		if (lexeme_len >= 0)
 		{
-			append_token_list(&self->token_list, strndup(s, lexeme_len),
+			append_token_list(&self->token_list, ft_strndup(s, lexeme_len),
 				token_properties[i]);
 			return (lexeme_len);
 		}
@@ -31,7 +31,7 @@ int	tokenize_string(t_tokenizer *self, char *s)
 	lexeme_len = 1;
 	while (*s != '\0')
 	{
-		if (!isspace(*s))
+		if (!ft_isspace(*s))
 			lexeme_len = automatonize(self, s);
 		if (lexeme_len == -1)
 			return (-1);
@@ -69,7 +69,7 @@ t_tokenizer	*new_tokenizer(void)
 {
 	t_tokenizer	*t;
 
-	t = calloc(sizeof(t_tokenizer), 1);
+	t = ft_calloc(sizeof(t_tokenizer), 1);
 	t->exec = tokenizer_exec;
 	return (t);
 }
