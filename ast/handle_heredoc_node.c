@@ -48,7 +48,6 @@ static void	handle_heredoc_node_parent(t_ast *self,
 		return ;
 	}
 	free(self->left->data);
-	self->left->data = malloc(3);
 	self->left->data = ft_itoa(fd_redirect[0]);
 }
 

@@ -1,50 +1,85 @@
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
 #include "utils.h"
 
-static char	**n_words(char const *s, char c)
+static int	count_words(char const *s, char delimeter)
+{
+	char	in_word;
+	size_t	result;
+
+	in_word = 0;
+	result = 0;
+	while (*s != '\0')
+	{
+		if (in_word && *s == delimeter)
+			in_word = 0;
+		else if (!in_word && *s != delimeter)
+		{
+			in_word = 1;
+			result += 1;
+		}
+		s++;
+	}
+	return (result);
+}
+
+static void	skip_delimeter(char const **s, char delimeter)
+{
+	while (**s == delimeter && **s != '\0')
+		(*s)++;
+}
+
+static char	*pick_out_word(char const **s, char delimeter)
+{
+	char	*word;
+	char	*sc;
+
+	skip_delimeter(s, delimeter);
+	sc = ft_strchr(*s, delimeter);
+	if (sc == NULL)
+		word = (char *)malloc((ft_strlen(*s) + 1) * sizeof(char));
+	else
+		word = (char *)malloc(((sc - *s) + 1) * sizeof(char));
+	ft_strlcpy(word, *s, (int)(sc - *s + 1));
+	*s = sc;
+	return (word);
+}
+
+void	clean(char **res, int len)
 {
 	int	i;
-	int	b;
-	int	count;
 
 	i = 0;
-	count = 0;
-	b = ft_strlen(s);
-	while (s[i])
+	while (i < len)
 	{
-		if (s[i] != c && (s[i + 1] == c || i + 1 == b))
-			count++;
+		free(res[i]);
 		i++;
 	}
-	return ((char **)malloc((count + 1) * sizeof(char *)));
 }
 
 char	**ft_split(char const *s, char c)
 {
-	int		i;
-	int		n_s;
-	int		start;
-	char	**sp_s;
+	char	**res;
+	int		word_number;
+	int		cw;
 
-	if (s == NULL && c != '\0')
+	if (s == NULL)
 		return (NULL);
-	i = 0;
-	n_s = 0;
-	start = 0;
-	sp_s = n_words(s, c);
-	while (s[i] && i < (int)ft_strlen(s))
+	cw = count_words(s, c);
+	res = (char **)malloc((cw + 1) * sizeof(char *));
+	if (res == NULL)
+		return (NULL);
+	word_number = 0;
+	while (word_number < cw)
 	{
-		if (s[i] != c)
+		res[word_number] = pick_out_word(&s, c);
+		if (res[word_number] == NULL)
 		{
-			start = i;
-			while (s[i] !=c && i < (int)ft_strlen(s))
-				i++;
-			sp_s[n_s++] = ft_substr(s, start, i - start);
+			clean(res, word_number - 1);
+			free(res);
+			return (NULL);
 		}
-		i++;
+		word_number++;
 	}
-	sp_s[n_s] = NULL;
-	return (sp_s);
+	res[word_number] = NULL;
+	return (res);
 }

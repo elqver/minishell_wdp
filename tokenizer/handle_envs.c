@@ -13,11 +13,14 @@ static char	*get_exit_code_string(void)
 static void	handle_env(char **line, int i)
 {
 	char	*env;
+	char	*exit_string_code;
 	int		lexeme_len;
 
 	if (ft_strncmp(*line + i, "$?", 2) == 0)
 	{
-		replace_substring(line, i, 2, get_exit_code_string());
+		exit_string_code = get_exit_code_string();
+		replace_substring(line, i, 2, exit_string_code);
+		free(exit_string_code);
 		return ;
 	}
 	lexeme_len = get_lexeme_len(dollar_env_automaton(), *line + i);
