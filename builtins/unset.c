@@ -18,7 +18,7 @@ static int	unset_one(char *variable)
 
 	if (check_env_var(variable) == 1)
 		return (1);
-	cur = *env_list(get);
+	cur = get_env_list();
 	if (strcmp(cur->var, variable) == 0)
 	{
 		cur = cur->next;

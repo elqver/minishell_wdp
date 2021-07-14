@@ -26,7 +26,9 @@ objs		= main.o \
 				word_symbol.o single_quotes.o double_quotes.o redir.o \
 				pipe.o space.o dollar.o env_symbol.o \
 				delete_env_list.o delete_env_node.o \
-				signal_modes.o
+				signal_modes.o						\
+				args_array.o create_ast_nodes.o		\
+				execute_binary_file.o execute_command_from_path.o
 
 VPATH		= ast:\
 				parser/automata::parser/transition:parser/conditions: \

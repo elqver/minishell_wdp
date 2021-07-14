@@ -32,7 +32,7 @@ static int	substitution_out(t_ast *node, int fd_redirect[2])
 	return (child_pid);
 }
 
-static int	pipe_exec(t_ast *self)
+int	pipe_exec(t_ast *self)
 {
 	int	fd_redirect[2];
 	int	left_pid;
@@ -46,15 +46,4 @@ static int	pipe_exec(t_ast *self)
 	waitpid_logging(right_pid);
 	waitpid_logging(left_pid);
 	return (0);
-}
-
-t_ast		*create_pipe_node(void)
-{
-	t_ast	*pipe_node;
-
-	pipe_node = calloc(sizeof(t_ast), 1);
-	pipe_node->priority = PIPE_P;
-	pipe_node->exec = pipe_exec;
-	pipe_node->data = strdup("|"); //Replace this with ft
-	return (pipe_node);
 }

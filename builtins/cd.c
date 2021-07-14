@@ -17,6 +17,7 @@ static int	cd_path(char *path)
 
 	tmp = find_env_val("OLDPWD");
 	append_env_list("OLDPWD", find_env_val("PWD"));
+	printf("| %s |\n", path);
 	if (chdir(path) == -1)
 	{
 		append_env_list("OLDPWD", tmp);

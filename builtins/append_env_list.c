@@ -28,13 +28,10 @@ int	append_env_list(char *var, char *val)
 	t_env	*env;
 
 	if (get_lexeme_len(export_automaton(), var) != strlen(var)) // TODO: ft_
-	{
-		printf("here ?? \n");
 		return (1);
-	}
 	env = find_env_var(var);
 	if (env)
 		return (replace_old_env(env, val));
-	_append_env_list(env_list(get), var, val);
+	_append_env_list(get_env_list_addr(), var, val);
 	return (0);
 }

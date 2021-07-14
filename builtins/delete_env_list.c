@@ -14,5 +14,5 @@ void	_delete_env_list(t_env **list)
 
 void	delete_env_list(void)
 {
-	_delete_env_list(env_list(get));
+	_delete_env_list(get_env_list_addr());
 }

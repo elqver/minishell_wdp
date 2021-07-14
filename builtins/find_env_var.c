@@ -4,7 +4,7 @@ t_env	*find_env_var(char const *name)
 {
 	t_env	*env;
 
-	env = *env_list(get);
+	env = get_env_list();
 	while (env != NULL)
 	{
 		if (strcmp(env->var, name) == 0)
