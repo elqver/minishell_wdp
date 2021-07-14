@@ -6,7 +6,11 @@ objs		= main.o tokenizer.o nfa.o transition.o				\
 			   heredoc_automaton.o \
 			   ft_string.o	\
 			   command_command.o command_pipe.o command_redir.o \
-			   ast.o \
+			   \
+			   ast_singleton.o \
+			   ast.o create_ast_node.o insert_ast_node.o \
+			   print_ast.o choose_color.o \
+			   heredoc.o handle_heredoc_node.o \
 			   \
 			   env_singleton.o new_env_node.o create_env_list.o declare_x.o \
 			   array_from_list.o append_env_list.o split_append_env.o env_substr.o \
@@ -18,11 +22,11 @@ objs		= main.o tokenizer.o nfa.o transition.o				\
 			   delete_env_node.o env_automaton.o \
 			   modes.o
 
-VPATH		= ast:automata/automata:automata/nfa:automata/transition: \
-			   automata/conditions:command:tokenizer:utils:builtins: \
+VPATH		= ast:parser/automata:parser/nfa:parser/transition: \
+			   parser/conditions:command:tokenizer:utils:builtins: \
 			   signals
 
-CC			= gcc
+CC			= clang
 
 CFLAGS		= #-Wall -Werror -Wextra
 

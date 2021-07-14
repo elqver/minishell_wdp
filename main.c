@@ -15,6 +15,7 @@ void	handle_line(char **line)
 	t = new_tokenizer(); 
 	t->exec(t, line);
 	build_ast(t->token_list);
+	//print_ast(get_ast());
 	destroy_tokenizer(t);
 	if (get_ast() == NULL)
 	{
@@ -23,7 +24,7 @@ void	handle_line(char **line)
 		return ;
 	}
 	handle_heredocs();
-	execute_abstract_syntax_tree();
+	execute_ast();
 	set_ast(NULL);
 }
 
@@ -98,8 +99,6 @@ static void	increment_shlvl(void)
 	// TODO:
 	sprintf(env->val, "%d", delete_this_shit);
 }
-
-// TODO: ; && backslash
 
 int		main(int argc, char *argv[], char *envp[])
 {
