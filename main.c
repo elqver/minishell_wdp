@@ -7,10 +7,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void	main_loop(void);
+
 static void	increment_shlvl(void)
 {
 	t_env	*env;
-	int		delete_this_shit;
+	int		next_shlvl;
 
 	env = find_env_var("SHLVL");
 	if (env == NULL)
@@ -18,12 +20,10 @@ static void	increment_shlvl(void)
 		append_env_list("SHLVL", ft_strdup("1"));
 		return ;
 	}
-	delete_this_shit = atoi(env->val) + 1;
+	next_shlvl = ft_atoi(env->val) + 1;
 	free(env->val);
-	env->val = ft_itoa(delete_this_shit);
+	env->val = ft_itoa(next_shlvl);
 }
-
-void	main_loop(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
