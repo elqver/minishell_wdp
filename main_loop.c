@@ -7,13 +7,21 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+int	get_printing_flags(void);
+
 void	handle_line(char **line)
 {
 	t_tokenizer	*t;
+	int			print_flag;
 
 	t = new_tokenizer();
 	t->exec(t, line);
 	build_ast(t->token_list);
+	print_flag = get_printing_flags();
+	if (print_flag & 2)
+		print_token_list(t->token_list);
+	if (print_flag & 1)
+		print_ast(get_ast());
 	destroy_tokenizer(t);
 	if (get_ast() == NULL)
 	{
