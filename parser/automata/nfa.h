@@ -40,6 +40,7 @@ typedef struct s_state_list
 }				t_state_list;
 
 //				Destroying automata
+void			destroy_automata(void);
 void			append_state_list(t_state_list **state_list,
 					t_state *state);
 void			free_state_list(t_state_list *state_list);
